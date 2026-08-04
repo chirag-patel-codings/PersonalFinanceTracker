@@ -1,0 +1,40 @@
+﻿@model ErrorViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Error {Model.StatusCode}";
+}
+
+<div class="container text-center my-5 py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <!-- 1. Display the dynamic HTTP status code -->
+            <h1 class="display-1 fw-bold @(Model.StatusCode == 404 ? "text-secondary" : "text-danger")">
+                @Model.StatusCode
+            </h1>
+
+            <!-- 2. Display the dynamic user message -->
+            <h2 class="h4 text-muted mb-4">@Model.ErrorMessage</h2>
+
+            <div class="alert alert-warning text-start my-4 p-4">
+                <h5>What should I do?</h5>
+                <ul class="mb-0">
+                    <li>Double check the URL spelling for typos.</li>
+                    <li>If you were uploading bulk data, please check your file formatting.</li>
+                    <li>If the problem persists, contact support with the tracking ID below.</li>
+                </ul>
+            </div>
+
+            <!-- 3. Display the technical tracking ID for debugging -->
+            @if (Model.ShowRequestId)
+            {
+                <div class="bg-light border rounded p-2 mb-4">
+                    <small class="text-muted d-block">Support Tracking ID:</small>
+                    <code class="fw-bold fs-6 text-dark">@Model.RequestId</code>
+                </div>
+            }
+
+            <a href="javascript:history.back()" class="btn btn-outline-secondary px-4 me-2">Go Back</a>
+            <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary px-4">Home Dashboard</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Access Denied - {Model.StatusCode}";
+}
+
+<div class="container text-center mt-5">
+    <h1 class="text-danger display-1"><i class="bi bi-shield-lock"></i> 403</h1>
+    <h2 class="mb-3">Access Denied</h2>
+    <p class="lead text-muted">
+        You do not have the required permissions or roles to view this page.
+    </p>
+    <hr class="my-4">
+    <div class="d-flex justify-content-center gap-3">
+        <a href="/" class="btn btn-primary">Go to Home</a>
+        <a href="/auth/logout" class="btn btn-outline-secondary">Switch Account</a>
+    </div>
+</div>

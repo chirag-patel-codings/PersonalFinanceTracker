@@ -1,0 +1,916 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* Custom Page Layout - Starts Here  */
+/* 1. Global Reset & Layout Architecture */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 11pt;
+    background-color: #f4f6f9;
+    color: #333;
+    display: grid;
+    /* Fixed Header, Flexible Core Body, Fixed Footer */
+    grid-template-rows: 60px 1fr 40px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 2. Top Header Panel Setup */
+.header-panel {
+    grid-row: 1;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+}
+
+.brand-logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #2563eb;
+}
+
+/* Right Corner Navigation Group */
+.header-menu-right {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    position: relative; /* Context anchor for mobile dropdown alignment */
+}
+
+    .header-menu-right a {
+        text-decoration: none;
+        color: #4b5563;
+        font-size: 0.9rem;
+        padding: 12px 24px;
+        border-radius: 4px;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .header-menu-right a:hover {
+            background-color: #f1f5f9;
+            color: #2563eb;
+        }
+
+/* --- HEADER SUB-MENU GLOBAL & DESKTOP STYLES (FIXED POSITIONING) --- */
+.header-dropdown-container {
+    position: relative;
+    list-style: none;
+}
+
+.header-subpanel {
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 100%;
+    right: 0; /* Aligns right side with user profile block bounds */
+    width: 160px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 6px 0;
+    z-index: 100;
+}
+
+    .header-subpanel a {
+        display: block !important;
+        width: 100%;
+        padding: 10px 16px !important;
+        font-size: 0.9rem;
+        color: #4b5563 !important;
+        text-decoration: none;
+        text-align: left;
+        border-radius: 0 !important;
+        justify-content: flex-start !important;
+    }
+
+        .header-subpanel a:hover {
+            background-color: #f1f5f9 !important;
+            color: #2563eb !important;
+        }
+
+
+.header-subpanel-logout a:hover {
+    background-color: #7f1d1d !important;
+    color: #ffffff !important;
+}
+
+/* Open menu when parent is hovered */
+.header-dropdown-container:hover .header-subpanel {
+    display: block;
+}
+
+/* 3. Middle Main Wrap (Houses Side Panel & Content) */
+.app-workspace {
+    grid-row: 2;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 4. Left Auto-Collapsible Panel Logic */
+.left-side-panel {
+    width: 65px;
+    background-color: #0f172a;
+    color: #f8fafc;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+    z-index: 5;
+}
+
+/* TRIGGER: Expand sidebar smoothly on Hover (Desktop Only) */
+@media (min-width: 768px) {
+    .left-side-panel:hover {
+        width: 240px;
+    }
+}
+
+/* Sidebar Navigation Links */
+.side-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+}
+
+    .side-nav-list a {
+        display: flex;
+        align-items: center;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 3px 10px;
+        white-space: nowrap;
+        transition: background 0.2s, color 0.2s;
+    }
+
+        .side-nav-list a:hover {
+            background-color: #1e293b;
+            color: #38bdf8;
+        }
+
+/* Custom Code */
+.side-bar-active {
+    background-color: #1e293b;
+    color: #38bdf8;
+}
+
+.side-icon {
+    font-size: 2rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* Hidden label visibility system */
+.side-label {
+    margin-left: 15px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Sub menu items -- START here */
+.sub-menu-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
+}
+
+/* Custom color block for subpanels links */
+.side-subpanel {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #1a2333;
+    transition: max-height 0.25s ease-out;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
+}
+
+    .side-subpanel a {
+        padding: 8px 10px 8px 50px !important;
+        font-size: 0.85rem;
+        color: #94a3b8 !important;
+        display: block !important;
+    }
+
+        .side-subpanel a:hover {
+            color: #ffffff !important;
+            background-color: #2563eb !important;
+        }
+
+/* Custom Code */
+.side-subpanel-active {
+    color: #ffffff !important;
+    background-color: #2563eb !important;
+}
+
+/* Sidebar Logout Styles */
+.sidebar-logout {
+    margin-top: auto;
+    border-top: 1px solid #1e293b;
+    padding-top: 15px !important;
+    color: #f87171 !important;
+}
+
+    .sidebar-logout:hover {
+        background-color: #7f1d1d !important;
+        color: #ffffff !important;
+    }
+
+/* Activate dropdown opening DOWNWARD only when sidebar is hovered */
+@media (min-width: 768px) {
+    .left-side-panel:hover .sub-menu-container:hover .side-subpanel {
+        max-height: 200px;
+    }
+}
+
+/* Dynamic Turn-Arrow indicator setups */
+.arrow-icon {
+    margin-left: auto;
+    font-size: 0.65rem;
+    transition: transform 0.2s ease;
+    color: #64748b;
+}
+
+.sub-menu-container:hover .arrow-icon {
+    transform: rotate(180deg);
+    color: #38bdf8;
+}
+
+/* Reveal labels inside panel when hovered (Desktop Only) */
+@media (min-width: 768px) {
+    .left-side-panel:hover .side-label {
+        opacity: 1;
+    }
+}
+
+/* 5. Center Flexible Document Body */
+.document-body {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background-color: #f8fafc;
+}
+
+.data-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+/* 6. Multi-Line Bottom Navigation System */
+.bottom-section-navigation {
+    margin-top: 40px;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.nav-section-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.nav-section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    width: 120px;
+    font-weight: 700;
+}
+
+.nav-section-items {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+    .nav-section-items a {
+        text-decoration: none;
+        color: #3b82f6;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+        .nav-section-items a:hover {
+            text-decoration: underline;
+        }
+
+/* 7. Global Base Footer Frame */
+.global-footer {
+    grid-row: 3;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #64748b;
+    z-index: 10;
+    padding: 10px;
+    text-align: center;
+}
+
+/* ==========================================================================
+       8. Media Queries for Mobile Responsiveness (Screens under 768px wide)
+       ========================================================================== */
+@media (max-width: 767px) {
+    body {
+        grid-template-rows: auto auto 1fr auto;
+        height: auto;
+        overflow: auto;
+    }
+
+    .header-panel {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+        height: auto;
+    }
+
+    .header-menu-right {
+        width: 100%;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .header-subpanel {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 90vw;
+        max-width: 280px;
+    }
+
+    .app-workspace {
+        flex-direction: column;
+        overflow: visible;
+        height: auto;
+    }
+
+    .left-side-panel {
+        width: 100%;
+        height: auto;
+        padding: 5px 0;
+        overflow: visible;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .side-nav-list {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+        /* max-width: 100px !important; Changes the elements width so that they can not span across the width */
+        gap: 0 !important;
+    }
+
+        .side-nav-list > li {
+            flex: 1 1 0px !important;
+            width: 0 !important;
+            text-align: center !important;
+            list-style: none !important;
+        }
+
+    .sub-menu-container {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        /* max-width: 100px !important;    Changed to fix the span across entire width...*/
+    }
+
+    .side-nav-list a {
+        padding: 10px 5px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .sidebar-logout {
+        margin-top: 0 !important;
+        border-top: none !important;
+        padding-top: 10px !important;
+    }
+
+    .sub-menu-container {
+        position: relative;
+    }
+
+    /* FIX: Completely hides the submenu elements on mobile layout calculations by default */
+    .left-side-panel .side-subpanel {
+        display: none !important;
+    }
+
+    /* FIX: Instantly brings them back into view ONLY on hover/focus states */
+    .left-side-panel .sub-menu-container:hover .side-subpanel,
+    .left-side-panel .sub-menu-container:focus-within .side-subpanel {
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 250px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 130px;
+        background-color: #1a2333;
+        border: 1px solid #1e293b;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        z-index: 99;
+    }
+
+    .side-subpanel a {
+        padding: 10px 12px !important;
+        text-align: left !important;
+        flex-direction: row !important;
+    }
+
+    .arrow-icon {
+        display: inline-block;
+        font-size: 0.6rem;
+        margin-left: 2px;
+    }
+
+    .side-label {
+        opacity: 1;
+        margin-left: 0;
+        font-size: 0.75rem;
+    }
+
+    .document-body {
+        width: 100%;
+        padding: 20px 15px;
+        overflow: visible;
+    }
+
+    .nav-section-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 15px 0;
+    }
+
+    .nav-section-title {
+        width: 100%;
+    }
+
+    .nav-section-items {
+        gap: 12px;
+    }
+}
+
+
+/* Page Layout - Ends Here  */
+
+
+/* Floating above the surface (Drop Shadow) */
+.shadow-raised {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+}
+
+/* My Customly added:  Highlights the input field border in red */
+.input-validation-error {
+    border: 1px solid #dc3545 !important; /* Bootstrap's danger red */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    background-color: #fff8f8; /* Optional: adds a subtle red tint */
+}
+
+    /* Target the label when the input has an error */
+    .input-validation-error ~ .input-label {
+        color: #dc3545 !important;
+    }
+
+    /* Optional: If you want the label to stay red even when focused during an error */
+    .input-validation-error:focus ~ .input-label {
+        color: #dc3545 !important;
+    }
+
+/* Replaces \n\t characters with new line and tab chars */
+.field-validation-error,
+.validation-summary-errors {
+    white-space: pre;
+    font-size: 9pt;
+}
+
+
+/* Highlights the checkbox frame when validation fails */
+input[type="checkbox"].input-validation-error {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 2px solid #dc3545 !important; /* Error Red */
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+    /* Draws a white checkmark inside the red box if they check it while invalid */
+    input[type="checkbox"].input-validation-error:checked {
+        background-color: #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+
+
+/* This forces the icon to stay relative to this box, not the whole page */
+.password-container {
+    position: relative;
+    width: 100%; /* Or set a max-width like 300px depending on your form layout */
+}
+
+    /* Give the input room on the right side so text doesn't overlap the icon */
+    .password-container .form-control {
+        padding-right: 40px;
+    }
+
+/* Position the eye icon perfectly inside the right side of the input box */
+#togglePassword, #toggleConfirmPassword {
+    position: absolute;
+    opacity: 0.5;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    z-index: 10; /* Ensures the icon stays clickable over the input background */
+}
+
+
+/* shows the lable as lagend - STARTS HERE */
+.field {
+    position: relative;
+    margin: 1rem 0;
+}
+
+    .field input,
+    .field textarea,
+    .field select {
+        width: 100%;
+        padding: 0.75rem 0.75rem;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        background: white;
+        outline: none;
+    }
+
+    .field label {
+        position: absolute;
+        left: 1.25rem;
+        top: 0.75rem;
+        color: #777;
+        pointer-events: none;
+        transition: 0.2s ease;
+        background: inherit;
+        padding: 0 0.25rem;
+    }
+
+    /* FLOAT on focus */
+    .field input:focus + label,
+    .field textarea:focus + label,
+    .field select:focus + label {
+        top: -0.6rem;
+        left: 1.25rem;
+        font-size: 0.75rem;
+        background-color: #f4f6f9;
+        color: #2196f3;
+    }
+
+    /* FLOAT when input/textarea has value */
+    .field input:not(:placeholder-shown) + label,
+    .field textarea:not(:placeholder-shown) + label {
+        top: -0.6rem;
+        left: 1.25rem;
+        font-size: 0.75rem;
+        background-color: #f4f6f9;
+        color: #2196f3;
+    }
+
+    /* FLOAT when select has a valid value */
+    .field select:valid + label,
+    .field select:disabled + label {
+        top: -0.6rem;
+        left: 1.25rem;
+        font-size: 0.75rem;
+        background-color: #f4f6f9;
+        color: #2196f3;
+    }
+
+
+/* shows the lable as lagend - ENDS HERE */
+
+/* Display select with right side arrow -- STARTS HERE */
+    .field select {
+        width: 100%;
+        padding: 0.75rem 2rem 0.75rem 0.75rem; /* extra right padding for arrow */
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        background-color: white;
+        outline: none;
+        /* Remove native arrow */
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* Add custom arrow */
+        background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L16 8.548l-6 6-6-6z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+    }
+
+/* Display select with right side arrow -- ENDS HERE */
+
+/* Form Fields - Starts Here */
+input[type="color"] {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #ccc;
+    width: 150px;
+    height: 50px;
+    padding: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L16 8.548l-6 6-6-6z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+}
+
+/* Displayed as  label for input type: color /  or label that does not floats!!! */
+.label-transparent {
+    background-color: transparent !important;
+    color: #2196f3 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    font-weight: 450; /* optional: makes it look like legend */
+    display: inline-block; /* ensures no block background */
+}
+
+.color-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; /* Equal width and height for a perfect circle */
+    height: 20px;
+    border-radius: 50%; /* Makes the element perfectly round */
+    margin-left: 0.25em;
+    border: 1px solid #000000; /* Optional: creates a crisp border edge */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Optional: adds subtle depth */
+}
+/* Form Fields - Ends Here */
+
+
+/* Bootstrap Modals - Starts here */
+.modal-header {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+.modal-body, .modal-footer {
+    background-color: #f4f6f9;
+}
+
+.modal-dialog {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 750px;
+    top: 100px;
+    width: 90%;
+}
+/* Bootstrap Modals - Ends here */
+
+/* Database Operation Result Display - Start Here */
+
+#dbMessage {
+    position: fixed;
+    top: 75px;
+    left: 50%;
+    /* Centering transform NEVER changes */
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+    #dbMessage.show {
+        opacity: 1;
+    }
+
+/* Database Operation Result Display - Ends Here */
+
+
+/* Budget Table - Starts Here */
+
+/* Set a height limit so it scrolls vertically too */
+.table-container {
+    width: 100%;
+    max-height: 650px;
+    min-height: 250px;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    /* Standard Scrollbar Styling */
+    scrollbar-width: thin; /* 'auto' or 'thin' */
+    scrollbar-color: #888 #f1f1f1; /* thumb color | track color */
+}
+
+/*
+    .table-container table {
+        /* Set a larger min-width or 100% to ensure it exceeds small screen widths 
+        width: max-content;
+    }
+*/
+
+/* Move white-space nowrap directly to table headers and cells */
+.table-container th,
+.table-container td {
+    white-space: nowrap;
+}
+
+    /* Force scrollbar visibility for WebKit browsers */
+    .table-container::-webkit-scrollbar {
+        display: block;
+        height: 8px; /* Slightly thicker so it's visible */
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    
+/* Make the entire header row sticky at the top */
+#budgetsTable thead,
+#budgetsTable th {
+    position: sticky;
+    top: 0;
+    background-color: #f5f5f5 !important;
+    z-index: 2; /* Keeps headers above the scrolling body cells */
+    text-align: center !important;
+}
+
+/* Freeze the first column horizontally */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 1; /* Keeps the column above other body cells */
+    font-weight: bold;
+    background-color: #f5f5f5 !important;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* CRITICAL: The intersection cell (top-left header) 
+   needs to stay sticky on BOTH top and left, with the highest z-index */
+th.sticky-col {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 3 !important; /* Keeps the top-left corner above both the header and the column */
+    background-color: #f5f5f5 !important;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#budgetsTable td, /* Also can be written as #budgetsTable :is(th, td) */
+#budgetsTable th {
+    
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    border: 1px solid #e0e0e0;
+}
+
+/* Base style */
+#budgetsTable input[type="number"] {
+    height: 30px;
+    width: 100px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+}
+
+/* Focus state */
+input[type="number"]:focus {
+    outline: 1px solid #e0e0e0;
+    /* border: 2px solid #e0e0e0; /* Only change the color */
+}
+
+#budgetsTable .data-summary {
+    background-color: #f5f5f5 !important;
+    text-align: right !important;
+    font-weight: bold;
+}
+/* Budget Table - Ends Here */
+
+/* Filter Divs - Starts Here */
+.filter-div {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 3px;
+    min-height: 50px;
+}
+
+/* Filter Divs - Ends Here */
+
+/* Budget Rollover Settings - Toggle button - Start */
+
+.form-check-input {
+    width: 65px !important;
+    height: 28px;
+    cursor: pointer;
+    appearance: none; /* removes Bootstrap's internal knob */
+    background-color: #ccc;
+    border-radius: 28px;
+    position: relative;
+    transition: background-color 0.3s;
+    outline: none;
+    border: none;
+    background-image: none !important; /* kills Bootstrap's built-in dots */
+}
+
+    /* single knob */
+    .form-check-input::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 20px;
+        height: 20px;
+        background-color: #0f172a; /* change this to any color you want */
+        border-radius: 50%;
+        transition: transform 0.3s;
+    }
+
+    /* active state */
+    .form-check-input:checked {
+        background-color: #007bff;
+    }
+
+        .form-check-input:checked::after {
+            transform: translateX(37px);
+        }
+
+
+/* Budget Rollover Settings - Toggle button - End */

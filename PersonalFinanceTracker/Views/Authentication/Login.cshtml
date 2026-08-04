@@ -1,0 +1,99 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    @model PersonalFinanceTracker.Models.Authentication.SessionUser
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5 rounded-4 p-5 my-3 bg-light shadow-raised">
+        <div class="row text-center p-2">
+            <h4>Login!</h4>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="w-50 mx-auto text-danger field-validation-error"></div>
+        <form asp-action="Login" asp-controller="Authentication" method="post" data-val="true">
+            <div class="row p-2">
+                <div class="col-sm field">
+                    <input type="text" maxlength="100" asp-for="UserNameOrEmail" class="form-control" placeholder=" " data-val="true" data-val-required="User Name or Email is required!">
+                    <label for="UserName" class="input-label">* Username or Email</label>
+                    <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-sm field">
+                    <div class="password-container">
+                        <input type="password" maxlength="100" asp-for="Password" class="form-control" placeholder=" " data-val="true" data-val-required="Password is required!">
+                        <label for="Password" class="input-label">* Password</label>
+                        <span id="togglePassword">👁️</span>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-sm">
+                    <input type="submit" class="form-control btn btn-primary w-50 p-3 d-block mx-auto" id="login" value="Log-In" />
+                </div>
+            </div>
+        </form>
+        <div class="row p-2">
+            <p class="text-end">
+                Don't have an account?&nbsp;<a asp-controller="auth" asp-action="register"><b>Sign up</b></a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @* AUTOMATIC VALIDATION ON CLIENT SIDE USING jQuery by asp.net mvc core framework!!! *@
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            const passwordInput = document.getElementById('Password');
+            const togglePasswordBtn = document.getElementById('togglePassword');
+            const confirmPasswordInput = document.getElementById('ConfirmPassword');
+            const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
+
+            togglePasswordBtn.addEventListener('click', function() {
+                // Toggle the type attribute
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.textContent = '🙈'; // Changes to monkey emoji
+                } else {
+                    passwordInput.type = 'password';
+                    this.textContent = '👁️'; // Changes back to eye emoji
+                }
+            });
+
+            toggleConfirmPasswordBtn.addEventListener('click', function() {
+                // Toggle the type attribute
+                if (confirmPasswordInput.type === 'password') {
+                    confirmPasswordInput.type = 'text';
+                    this.textContent = '🙈'; // Changes to monkey emoji
+                } else {
+                    confirmPasswordInput.type = 'password';
+                    this.textContent = '👁️'; // Changes back to eye emoji
+                }
+            });
+
+            // Fetch the active form element
+            var $form = $("form");
+
+            // Ensure the unobtrusive validator settings are built and ready
+            if ($form.data("validator")) {
+
+                // Force all elements to validate immediately on blur/focusout
+                $form.data("validator").settings.onfocusout = function (element) {
+                    $(element).valid();
+                };
+            }
+            
+        });
+    </script>
+
+}

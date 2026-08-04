@@ -1,0 +1,372 @@
+﻿@model IEnumerable<PersonalFinanceTracker.Models.Account>;
+<!-- LINK ACCOUNT IS PENDING!!! -->
+<div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
+<h3>Accounts <span title='Add' class="float-end pe-2">➕</span></h3>
+
+<table class="table bg-light shadow-raised" id="accountsTable">
+    <thead>
+        <tr>
+            <th>Account Name</th>
+            <th>Institute Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody id="accountsTBody">
+        <!-- Contents will be added by javascript -->
+    </tbody>
+</table>
+
+<!-- REMOVED aria-hidden="true" from this line entirely -->
+<div class="modal fade" id="addEditAccountModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addEditAccountModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEditAccountModalLabelId"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- DESIGN: ALL THE FORM ELEMENTS MUST HAVE A NAME AND SAME AS DATA-MODEL'S NAME & CASE -->
+                <form id="addEditAccountForm" data-val="true">
+
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="modalAccountId" name="accountId">
+                    <input type="hidden" id="modalIsALinkedAccountId" name="isALinkedAccount">
+                    
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="100" id="modalAccountName" name="accountName"
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Account name is required!">
+                            <label for="modalAccountName" class="input-label">* Account Name</label>
+                            <span data-valmsg-for="accountName" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="100" id="modalAccountInstitutionName" name="accountInstitutionName"
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Account institution name is required!">
+                            <label for="modalAccountInstitutionName" class="input-label">* Account Institution Name</label>
+                            <span data-valmsg-for="accountInstitutionName" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <select id="modalAccountTypeId" name="accountTypeId"
+                                    class="form-control" placeholder=" " data-val="true" data-val-required="Please provide the type of account!">
+                            </select>
+                            <label for="modalAccountTypeId" class="input-label">* Account Type</label>
+                            <span data-valmsg-for="accountTypeId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="255" id="modalAccountDescription" name="accountDescription" class="form-control" placeholder=" " />
+                            <label for="modalAccountDescription" class="input-label">Account Description</label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnAccountModalSaveChanges">💾 Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+         let _token = getSecurityToken('#addEditAccountForm');
+         var accountsPaginationJSON = '';
+         var accountTypesJSON = '';
+         var accountsDataMode = '';
+
+         // Displays the data in the table in UI (<tbody id="accountsTBody">)...
+         const displayAccountData = function (accountsData, pagination) {
+             // Select the table body element
+             const tbody = document.getElementById("accountsTBody");
+
+             // Clear existing contents safely
+             tbody.innerHTML = "";
+
+             // Iterate over the new data and append new rows
+             accountsData.forEach(item => {
+                 // Create a new row element
+                 const row = document.createElement("tr");
+                 //data-secure
+                 row.setAttribute("data-secure-index", item.accountId);
+
+                 // Populate the row with specific cell data
+                 row.innerHTML = `<td>${item.accountName}</td>
+                                  <td>${item.accountInstitutionName}</td>
+                                  <td>${accountTypesJSON.find(t => t.accountTypeId == item.accountTypeId)?.accountTypeName}</td>
+                                  <td>${item.accountDescription}</td>
+                                  <td><span title="Edit">📝</span></td>
+                                  <td><span title="Delete">❌</span></td>`;
+
+                 // Append the complete row to the table body
+                 tbody.appendChild(row);
+             });
+             
+             const row = getPaginationRow(pagination, 6);
+             tbody.appendChild(row);
+         }
+
+        const doNavigation = function (event, navigationRequest, firstRequest) {
+
+            if(event){
+                event.preventDefault();
+            }
+
+            accountsPaginationJSON = firstRequest ? "" : getNewRecordStartAndEndNumber(accountsPaginationJSON, navigationRequest); // First request values will be set at post request regardless!!!
+
+            const payload = {
+                pagination: accountsPaginationJSON,
+                firstRequest: firstRequest
+            };
+
+            fetch('/accounts', {
+                method: 'POST',
+                credentials: "include",
+                headers: {  "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                if(firstRequest){
+                    accountsPaginationJSON = data.pagination;
+                    accountTypesJSON = data.accountTypes;
+                }
+                // Work with your parsed data object here
+                displayAccountData(data.accounts, accountsPaginationJSON);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+
+        }
+
+        // Retrieve single record
+        const getAccountRecord = function(accountId){
+
+            fetch('/Account/GetAccount', {
+                method: 'POST',
+                credentials: "include",   // REQUIRED for antiforgery cookie
+                headers: { "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                 body: JSON.stringify({ accountId: String(accountId) })
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                // Work with parsed data object here
+                showAddEditAccountModal(data);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+        }
+
+        // Generates/Creates a new modal and shows or hide the same modal...
+        const showHideAddEditAccountModal = function(show) {
+
+            const addEditAccountModalElement = document.getElementById('addEditAccountModal');
+
+            // Get the existing instance, or create a new one if it doesn't exist yet
+            let modalInstance = bootstrap.Modal.getInstance(addEditAccountModalElement);
+
+            if (!modalInstance) {
+                modalInstance = new bootstrap.Modal(addEditAccountModalElement);
+            }
+
+            if (show) {
+
+                if(accountsDataMode == 'Add'){
+                     document.getElementById('addEditAccountModalLabelId').innerText = '➕ Add Account';
+                }
+                if(accountsDataMode == 'Edit'){
+                     document.getElementById('addEditAccountModalLabelId').innerText = '📝 Edit Account';
+                }
+
+                modalInstance.show();
+
+            } else {
+
+                modalInstance.hide();
+            }
+
+        }
+
+        // Display the modal with Data
+        const showAddEditAccountModal = function(record) {
+
+            populateSelectFromJSON('modalAccountTypeId', accountTypesJSON, 'accountTypeId', 'accountTypeNameAndDescription', '-- Account Type--');
+            
+            const accountForm = document.getElementById('addEditAccountForm');
+            setFormData(accountForm, record);
+            
+            // Open up the Bootstrap modal visually
+            showHideAddEditAccountModal(true);
+        }
+
+        // Save Current Record or Add New Record!!
+        const saveAccountRecord = function(){
+
+            const form = document.getElementById('addEditAccountForm');
+
+            var data =  getFormEntries(form);
+
+            data.accountTypeId = +data.accountTypeId;   // '+' urinary operator convers string to number if it's number
+            data.isALinkedAccount = +data.isALinkedAccount;
+            
+            fetch("/Account/SaveAccount", {
+                    method: "POST",
+                    credentials: "include",   // REQUIRED for antiforgery cookie
+                    body: JSON.stringify(data),
+                    headers: { "Content-Type": "application/json",
+                               "RequestVerificationToken": _token }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        showHideAddEditAccountModal(false);
+                        doNavigation(null, 'current');  // Refresh the page!
+                        showDbMessage("Account saved successfully.", true);
+                    }
+                    else {
+                        console.error(result.message);
+                        showDbMessage("Error: Account has not been saved successfully!!!", false);
+                        return;
+                    }
+
+                });
+            
+        }
+
+        // Delete the Account Record!!!
+        const deleteAccountRecord = function(accountId){
+
+            fetch('/Account/DeleteAccount', {
+                method: 'POST',
+                credentials: "include",   // REQUIRED for antiforgery cookie
+                headers: { "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                body: JSON.stringify({ accountId:  String(accountId) })
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    // throw new Error(`HTTP error! Status: ${response.status}`);
+                      showDbMessage("Account has not been deleted successfully!!!", true);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Account deleted successfully.", true);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+            
+        }
+
+
+        // Listen for clicks anywhere inside the table body
+        document.querySelector('tbody').addEventListener('click', function (event) {
+
+            // Check if the clicked element (or its parent) has a title of "Edit" or "Delete"
+            const clickedAction = event.target.closest('span[title="Edit"], span[title="Delete"]');
+
+            // If the click wasn't on one of those spans, ignore it
+            if (!clickedAction) return;
+
+            // Prevent any default browser behavior (like anchor tags jumps)
+            event.preventDefault();
+
+            // Find the closest table row containing the clicked span
+            const row = clickedAction.closest('tr');
+
+            if (row) {
+                // Grab the hidden ID from that specific row
+                const recordId = row.getAttribute('data-secure-index');
+                
+                // Get the encrypted record and display or  process!!!
+                const actionType = clickedAction.getAttribute('title');
+                accountsDataMode = actionType;    // Edit and Delete will be confirmed here
+                
+                // Execute specific logic depending on what was clicked
+                if (actionType === "Edit") {
+                    getAccountRecord(recordId);
+        
+                } else if (actionType === "Delete") {
+                    if(confirm("Do you want to delete the account?\nDeleting this account, will delete all of it's related records from transactions!")){
+                            deleteAccountRecord(recordId);
+                    }
+                }
+
+            }
+
+        });
+
+        document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+            const accountForm = document.getElementById('addEditAccountForm');
+            const record = getFormEntries(accountForm);    // Retrieve a blank record!!!
+            accountsDataMode = 'Add';
+            showAddEditAccountModal(record);
+        });
+
+        
+        // Load the first time data!!!
+        doNavigation(null, 'first', true);
+
+        // Configure Unobtrusive Validations Settings On Modal and it's Form
+        setUpUnobtrusiveValidationOnModal('#addEditAccountModal', '#addEditAccountForm');
+
+        $(document).ready(function () {
+
+            // Check validation on Save click
+            $('#btnAccountModalSaveChanges').on('click', function () {
+                const $form = $('#addEditAccountForm');
+                if (!$form.valid()) {
+                    return;
+                }
+                console.log("Form is valid! Sending AJAX payload...");
+                saveAccountRecord();
+
+            });
+
+        });
+    </script>
+}

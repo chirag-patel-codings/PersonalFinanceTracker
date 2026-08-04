@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="MySql.Data" Version="9.7.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Transaction\RecurringSchedules\" />
+    <Folder Include="Controllers\Transaction\Rules\" />
+    <Folder Include="Models\Dashboard\" />
+    <Folder Include="Models\Report\" />
+    <Folder Include="Models\Profile\" />
+    <Folder Include="Models\Transaction\Activities\" />
+    <Folder Include="Models\Transaction\Rules\" />
+    <Folder Include="Models\Transaction\RecurringSchedules\" />
+    <Folder Include="Views\Report\" />
+    <Folder Include="Views\Profile\" />
+    <Folder Include="Views\Transaction\Rules\" />
+    <Folder Include="Views\Transaction\RecurringSchedules\" />
+  </ItemGroup>
+
+<ItemGroup>
+  <None Update="appsettings.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
+</Project>

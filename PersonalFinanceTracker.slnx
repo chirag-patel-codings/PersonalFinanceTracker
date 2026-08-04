@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PersonalFinanceTracker/PersonalFinanceTracker.csproj" />
+  <Project Path="PersonalFinanceTrackerTests/PersonalFinanceTrackerTests.csproj" Id="73cc512e-d58d-4437-a2d1-21869d5a422b" />
+</Solution>

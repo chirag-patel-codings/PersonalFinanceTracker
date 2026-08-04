@@ -1,0 +1,352 @@
+﻿@model IEnumerable<PersonalFinanceTracker.Models.Tag>;
+
+<div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
+<h3>Tags <span title='Add' class="float-end pe-2">➕</span></h3>
+
+<table class="table bg-light shadow-raised" id="tagsTable">
+    <thead>
+        <tr>
+            <th>Color</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody id="tagsTBody">
+        <!-- Contents will be added by javascript -->
+    </tbody>
+</table>
+
+<!-- REMOVED aria-hidden="true" from this line entirely -->
+<div class="modal fade" id="addEditTagModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addEditTagModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEditTagModalLabelId"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- DESIGN: ALL THE FORM ELEMENTS MUST HAVE A NAME AND SAME AS DATA-MODEL'S NAME & CASE -->
+                <form id="addEditTagForm" data-val="true">
+
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="modalTagId" name="tagId">
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="100" id="modalTagName" name="tagName"
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Tag name is required!">
+                            <label for="modalTagName" class="input-label">* Tag Name</label>
+                            <span data-valmsg-for="tagName" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="255" id="modalTagDescription" name="tagDescription" class="form-control" placeholder=" " />
+                            <label for="modalTagDescription" class="input-label">Tag Description</label>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2 field">
+                            <label for="modalTagColor" class="label-transparent">Tag Color:</label>
+                        </div>
+                        <div class="col-sm field">
+                            <input type="color" id="modalTagColor" name="tagColor" class="form-control" placeholder=" " />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnTagModalSaveChanges">💾 Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+         let _token = getSecurityToken('#addEditTagForm');
+         var tagsPaginationJSON = '';
+         var tagsDataMode = '';
+
+         // Displays the data in the table in UI (<tbody id="tagsTBody">)...
+         const displayTagData = function (tagsData, pagination) {
+             // Select the table body element
+             const tbody = document.getElementById("tagsTBody");
+
+             // Clear existing contents safely
+             tbody.innerHTML = "";
+
+             // Iterate over the new data and append new rows
+             tagsData.forEach(item => {
+                 // Create a new row element
+                 const row = document.createElement("tr");
+                 //data-secure
+                 row.setAttribute("data-secure-index", item.tagId);
+
+                 // Populate the row with specific cell data
+                 row.innerHTML = `<td><span class="color-label" style="background-color: ${item.tagColor}">&nbsp;</span></td>
+                                  <td>${item.tagName}</td>
+                                  <td>${item.tagDescription}</td>
+                                  <td><span title="Edit">📝</span></td>
+                                  <td><span title="Delete">❌</span></td>`;
+
+                 // Append the complete row to the table body
+                 tbody.appendChild(row);
+             });
+
+             const row = getPaginationRow(pagination, 5);
+             tbody.appendChild(row);
+         }
+
+
+        const doNavigation = function (event, navigationRequest, firstRequest) {
+
+            if(event){
+                event.preventDefault();
+            }
+
+            tagsPaginationJSON = firstRequest ? "" : getNewRecordStartAndEndNumber(tagsPaginationJSON, navigationRequest);  // First request values will be set at post request regardless!!!
+
+            const payload = {
+                pagination: tagsPaginationJSON,
+                firstRequest: firstRequest
+            };
+
+            fetch('/categories/tags', {
+                method: 'POST',
+                credentials: "include",
+                headers: {  "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                if (firstRequest) {
+                    tagsPaginationJSON = data.pagination;
+                }
+                // Work with your parsed data object here
+                displayTagData(data.tags, tagsPaginationJSON);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+
+        }
+
+        // Retrieve single record
+        const getTagRecord = function(tagId){
+
+            fetch('/Tag/GetTag', {
+                method: 'POST',
+                credentials: "include",
+                headers: {  "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                body: JSON.stringify({"tagId" : String(tagId)})
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                // Work with parsed data object here
+                showAddEditTagModal(data);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+        }
+
+        // Generates/Creates a new modal and shows or hide the same modal...
+        const showHideAddEditTagModal = function(show) {
+
+            const addEditTagModalElement = document.getElementById('addEditTagModal');
+
+            // Get the existing instance, or create a new one if it doesn't exist yet
+            let modalInstance = bootstrap.Modal.getInstance(addEditTagModalElement);
+
+            if (!modalInstance) {
+                modalInstance = new bootstrap.Modal(addEditTagModalElement);
+            }
+
+            if (show) {
+
+                if(tagsDataMode == 'Add'){
+                     document.getElementById('addEditTagModalLabelId').innerText = '➕ Add Tag';
+                }
+                if(tagsDataMode == 'Edit'){
+                     document.getElementById('addEditTagModalLabelId').innerText = '📝 Edit Tag';
+                }
+
+                modalInstance.show();
+
+            } else {
+
+                modalInstance.hide();
+            }
+
+        }
+
+        // Display the modal with Data
+        const showAddEditTagModal = function(record) {
+
+            const tagForm = document.getElementById('addEditTagForm');
+            setFormData(tagForm, record);
+            
+            // Open up the Bootstrap modal visually
+            showHideAddEditTagModal(true);
+        }
+
+        // Save Current Record or Add New Record!!
+        const saveTagRecord = function(){
+
+            const tagForm = document.getElementById('addEditTagForm');
+
+            var data =  getFormEntries(tagForm);
+            
+            fetch("/Tag/SaveTag", {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(data),
+                    headers: {  "Content-Type": "application/json",
+                                "RequestVerificationToken": _token
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        showHideAddEditTagModal(false);
+                        doNavigation(null, 'current');  // Refresh the page!
+                        showDbMessage("Tag saved successfully.", true);
+                    }
+                    else {
+                        console.error(result.message);
+                        showDbMessage("Error: Tag has not been saved successfully!!!", false);
+                        return;
+                    }
+                });
+            
+        }
+
+        // Delete the Tag Record!!!
+        const deleteTagRecord = function(tagId){
+
+            fetch('/Tag/DeleteTag', {
+                method: 'POST',
+                credentials: "include",
+                headers: {  "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                },
+                body: JSON.stringify({"tagId" : String(tagId)})
+            })
+            .then(response => {
+                // Check if the HTTP status code is 200-299 (Ok)
+                if (!response.ok) {
+                    // throw new Error(`HTTP error! Status: ${response.status}`);
+                      showDbMessage("Tag has not been deleted successfully!!!", true);
+                }
+                // Parse the body text as JSON
+                return response.json();
+            })
+            .then(data => {
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Tag deleted successfully.", true);
+            })
+            .catch(error => {
+                console.error("Fetch operation failed:", error);
+            });
+            
+        }
+
+
+        // Listen for clicks anywhere inside the table body
+        document.querySelector('tbody').addEventListener('click', function (event) {
+
+            // Check if the clicked element (or its parent) has a title of "Edit" or "Delete"
+            const clickedAction = event.target.closest('span[title="Edit"], span[title="Delete"]');
+
+            // If the click wasn't on one of those spans, ignore it
+            if (!clickedAction) return;
+
+            // Prevent any default browser behavior (like anchor tags jumps)
+            event.preventDefault();
+
+            // Find the closest table row containing the clicked span
+            const row = clickedAction.closest('tr');
+
+            if (row) {
+                // Grab the hidden ID from that specific row
+                const recordId = row.getAttribute('data-secure-index');
+                
+                // Get the encrypted record and display or  process!!!
+                const actionType = clickedAction.getAttribute('title');
+                tagsDataMode = actionType;    // Edit and Delete will be confirmed here
+                
+                // Execute specific logic depending on what was clicked
+                if (actionType === "Edit") {
+                    getTagRecord(recordId);
+        
+                } else if (actionType === "Delete") {
+                    if(confirm('Do you want to delete the tag?')){
+                            deleteTagRecord(recordId);
+                    }
+                }
+
+            }
+
+        });
+
+        document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+            const tagForm = document.getElementById('addEditTagForm');
+            const record = getFormEntries(tagForm);    // Retrieve a blank record!!!
+            tagsDataMode = 'Add';
+            showAddEditTagModal(record);
+        });
+
+        // Load the first time data!!!
+        doNavigation(null, 'first', true);
+
+        // Configure Unobtrusive Validations Settings On Modal and it's Form
+        setUpUnobtrusiveValidationOnModal('#addEditTagModal', '#addEditTagForm');
+
+        $(document).ready(function () {
+
+            // Check validation on Save click
+            $('#btnTagModalSaveChanges').on('click', function () {
+                const $form = $('#addEditTagForm');
+                if (!$form.valid()) {
+                    return;
+                }
+                console.log("Form is valid! Sending AJAX payload...");
+                saveTagRecord();
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Personal Finance Tracker</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PersonalFinanceTracker.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    @{
+        // Extract the current controller name from the routing pipeline
+        string currentController = ViewContext.RouteData.Values["Controller"]?.ToString() ?? "";
+        // bool isSignedIn = HttpContext.User.Identity?.IsAuthenticated ?? false;
+    }
+    
+    <!-- Top Header Panel Area -->
+    <header class="header-panel">
+        <div class="brand-logo">Personal Finance Tracker</div>
+        @{
+            if (!(currentController == "Authentication" || currentController == "ErrorHandler"))
+            {
+                <ul class="header-menu-right">
+                    <li class="header-dropdown-container">
+                        <a href="#" class="header-dropdown-trigger">
+                            <span class="side-icon" style="font-size: 1.2rem; margin-right: 6px;">👤</span>Profile
+                        </a>
+                        <div class="header-subpanel">
+                            <a href="#">Profile Settings</a>
+                            <hr style="border: 0; border-top: 1px solid #0f172a; margin: 5px 0;">
+                            <span class="header-subpanel-logout"><a asp-controller="Authentication" asp-action="Logout" style="color: red">🛑 Logout</a></span>
+                        </div>
+                    </li>
+                </ul>
+            }
+        }
+    </header>
+
+    <!-- Middle Main Content Wrap Workspace -->
+    <div class="app-workspace">
+
+        @{
+            @* User.Identity is { IsAuthenticated: true } *@
+            if (!(currentController == "Authentication" || currentController == "ErrorHandler"))
+            {
+                <aside class="left-side-panel">
+                    <nav class="side-nav-list">
+                        <a class="@(currentController == "Dashboard" ? "side-bar-active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index" title="Dashboard">
+                            <span class="side-icon">📈</span>
+                            <span class="side-label">Dashboard</span>
+                        </a>
+                        <div class="sub-menu-container">
+                            <a href="#" class="sub-trigger">
+                                <span class="side-icon" title="Transactions">🧾</span>
+                                <span class="side-label">Transactions</span>
+                                <span class="side-label arrow-icon">▼</span>
+                            </a>
+                            <div class="side-subpanel">
+                                <a href="#">Activities</a>
+                                <a href="#">Rules</a>
+                                <a href="#">Recurring Schedules</a>
+                            </div>
+                        </div>
+                        <div class="sub-menu-container">
+                            <a href="#" class="sub-trigger">
+                                <span class="side-icon" title="Categories">🔖</span>
+                                <span class="side-label">Categories</span>
+                                <span class="side-label arrow-icon">▼</span>
+                            </a>
+                            <div class="side-subpanel">
+                                <a class="@(currentController == "Category" ? "side-bar-active" : "")" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+                                <a class="@(currentController == "Tag" ? "side-bar-active" : "")" asp-area="" asp-controller="Tag" asp-action="Index">Tags</a>
+                            </div>
+                        </div>
+                        <a class="@(currentController == "Account" ? "side-bar-active" : "")" asp-area="" asp-controller="Account" asp-action="Index" title="Accounts">
+                            <span class="side-icon" title="Accounts">🏦</span>
+                            <span class="side-label">Accounts</span>
+                        </a>
+                        <a href="#">
+                            <span class="side-icon" title="Reports">📜</span>
+                            <span class="side-label">Reports</span>
+                        </a>
+                        <a class="@(currentController == "Budget" ? "side-bar-active" : "")" asp-area="" asp-controller="Budget" asp-action="Index" title="Budgets">
+                            <span class="side-icon" title="Budgets">🤑</span>
+                            <span class="side-label">Budgets</span>
+                        </a>
+                        <a class="@(currentController == "Goal" ? "side-bar-active" : "")" asp-area="" asp-controller="Goal" asp-action="Index" title="Goals">
+                            <span class="side-icon" title="Goals">💰</span>
+                            <span class="side-label">Goals</span>
+                        </a>
+                        <a class="sidebar-logout" asp-controller="Authentication" asp-action="Logout">
+                            <span class="side-icon">🛑</span>
+                            <span class="side-label">Logout</span>
+                        </a>
+                    </nav>
+                </aside>
+            }
+        }
+                <!-- Center Flexible Main Body -->
+        <main class="document-body">
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </main>
+
+    </div>
+
+    <footer class="border-top global-footer">
+        <div class="container">
+            &copy; 2026 - Personal Finance Tracker - <a asp-area="" asp-controller="Dashboard" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- AUTOMATIC USER-LOGOUT SCRIPT -->
+    <script>
+        (function () {
+            // Set a flag if the user deliberately reloads using standard hotkeys
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.metaKey && e.key === 'r')) {
+                    sessionStorage.setItem('is_reloading', 'true');
+                }
+            });
+
+            // Evaluate state only when the browser tab unloads
+            window.addEventListener('beforeunload', function () {
+                const wasReloading = sessionStorage.getItem('is_reloading') === 'true';
+
+                if (wasReloading) {
+                    sessionStorage.removeItem('is_reloading'); // Reset flag
+                    return; // Do nothing, keep them logged in
+                }
+
+                // ⭐ CRITICAL CHECK: Only log out if the page is completely hidden/invisible.
+                // When clicking normal internal links, visibilityState remains "visible".
+                // When closing the tab or browser window entirely, it switches to "hidden".
+                if (document.visibilityState === 'hidden') {
+                    const logoutUrl = '/Authentication/WindowClosedLogout';
+                    navigator.sendBeacon(logoutUrl);
+                }
+            });
+
+            // 3. Cleanup reload flags on successful load
+            if (performance.navigation && performance.navigation.type === 1) {
+                sessionStorage.removeItem('is_reloading');
+            }
+        })();
+    </script>
+
+
+
+</body>
+</html>
