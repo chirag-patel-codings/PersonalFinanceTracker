@@ -2,4 +2,9 @@ PersonalFinanceTracker/bin
 PersonalFinanceTracker/obj
 PersonalFinanceTrackerTests/bin
 PersonalFinanceTrackerTests/obj
+.vs/
+PersonalFinanceTracker/appsettings.Development.json
+PersonalFinanceTracker/appsettings.json
+PersonalFinanceTrackerTests/appsettings.test.json
+
 

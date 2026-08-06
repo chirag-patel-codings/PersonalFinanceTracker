@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Account>;
 <!-- LINK ACCOUNT IS PENDING!!! -->
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Accounts <span title='Add' class="float-end pe-2">➕</span></h3>
+<h3>Accounts <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
 
 <table class="table bg-light shadow-raised" id="accountsTable">
     <thead>
@@ -93,6 +93,7 @@
          var accountsPaginationJSON = '';
          var accountTypesJSON = '';
          var accountsDataMode = '';
+         let prevQueriedRecord = '';
 
          // Displays the data in the table in UI (<tbody id="accountsTBody">)...
          const displayAccountData = function (accountsData, pagination) {
@@ -114,8 +115,8 @@
                                   <td>${item.accountInstitutionName}</td>
                                   <td>${accountTypesJSON.find(t => t.accountTypeId == item.accountTypeId)?.accountTypeName}</td>
                                   <td>${item.accountDescription}</td>
-                                  <td><span title="Edit">📝</span></td>
-                                  <td><span title="Delete">❌</span></td>`;
+                                  <td><span title="Edit" class='material-symbols-outlined-data-icon'>edit</span></td>
+                                  <td><span title="Delete" class='material-symbols-outlined-data-icon'>delete</span></td>`;
 
                  // Append the complete row to the table body
                  tbody.appendChild(row);
@@ -211,10 +212,10 @@
             if (show) {
 
                 if(accountsDataMode == 'Add'){
-                     document.getElementById('addEditAccountModalLabelId').innerText = '➕ Add Account';
+                    document.getElementById('addEditAccountModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>add</span> Add Account";
                 }
                 if(accountsDataMode == 'Edit'){
-                     document.getElementById('addEditAccountModalLabelId').innerText = '📝 Edit Account';
+                    document.getElementById('addEditAccountModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>edit</span> Edit Account";
                 }
 
                 modalInstance.show();
@@ -228,11 +229,13 @@
 
         // Display the modal with Data
         const showAddEditAccountModal = function(record) {
+            if(record){
 
-            populateSelectFromJSON('modalAccountTypeId', accountTypesJSON, 'accountTypeId', 'accountTypeNameAndDescription', '-- Account Type--');
+                populateSelectFromJSON('modalAccountTypeId', accountTypesJSON, 'accountTypeId', 'accountTypeNameAndDescription', '-- Account Type--');
             
-            const accountForm = document.getElementById('addEditAccountForm');
-            setFormData(accountForm, record);
+                const accountForm = document.getElementById('addEditAccountForm');
+                setFormData(accountForm, record);
+            }
             
             // Open up the Bootstrap modal visually
             showHideAddEditAccountModal(true);
@@ -328,7 +331,14 @@
                 
                 // Execute specific logic depending on what was clicked
                 if (actionType === "Edit") {
-                    getAccountRecord(recordId);
+
+                    if (recordId === prevQueriedRecord){
+                        showAddEditAccountModal(null); // Show the existing details
+                    }
+                    else{
+                         getAccountRecord(recordId);
+                         prevQueriedRecord = recordId;
+                    }
         
                 } else if (actionType === "Delete") {
                     if(confirm("Do you want to delete the account?\nDeleting this account, will delete all of it's related records from transactions!")){
@@ -341,9 +351,11 @@
         });
 
         document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+            prevQueriedRecord = '';
+            accountsDataMode = 'Add';
+            clearFormData('#addEditAccountForm');
             const accountForm = document.getElementById('addEditAccountForm');
             const record = getFormEntries(accountForm);    // Retrieve a blank record!!!
-            accountsDataMode = 'Add';
             showAddEditAccountModal(record);
         });
 

@@ -4,8 +4,8 @@
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
 <div id="budgetDataFilterDiv" class="filter-div">
     <h3>Budgets 
-        <span title='Hide Filter' class="float-end pe-2" id="showHideBudgetFilters">↗</span>
-        <span title='Budget Rollover Settings' class='float-end pe-2' id='showHideBudgetRolloverSettings' onclick='javascript: getBudgetSettings();'>⚙</span>
+        <span title='Hide Filter' class="material-symbols-outlined-data-icon float-end pe-2" style='font-size: 1em !important;' id="showHideBudgetFilters">call_made</span>
+        <span title='Budget Rollover Settings' class='material-symbols-outlined-data-icon float-end pe-2' style='font-size: 1em !important;' id='showHideBudgetRolloverSettings' onclick='javascript: getBudgetSettings();'>settings</span>
      </h3>
     <form id="budgetDataFilterForm" data-val="true">
             @Html.AntiForgeryToken()
@@ -183,7 +183,7 @@
                 // Checkbox input (Bootstrap toggle)
                 const budgetToBeRolledOverSwitchInput = document.createElement('input');
                 budgetToBeRolledOverSwitchInput.type = 'checkbox';
-                budgetToBeRolledOverSwitchInput.className = 'form-check-input';
+                budgetToBeRolledOverSwitchInput.className = 'form-check-input toggle-switch';
                 budgetToBeRolledOverSwitchInput.id = 'budgetToBeRolledOverSwitch';
                 budgetToBeRolledOverSwitchInput.name = 'budgetToBeRolledOver';
                 budgetToBeRolledOverSwitchInput.checked = record.budgetToBeRolledOver == "1";
@@ -557,7 +557,7 @@
         // Save Current Record or Add New Record!!
         const saveBudgetRecord = function(record) {
 
-            record.budgetAmount = +record.budgetAmount;     // Change data type to number
+            record.budgetAmount = Number(record.budgetAmount);     // Change data type to number
 
             fetch("/Budget/SaveBudget", {
                 method: "POST",
@@ -587,7 +587,7 @@
         // Delete the Budget Record!!!
         const deleteBudgetRecord = function(record) {
 
-            record.budgetAmount = +record.budgetAmount;     // Change data type to number to match the model at middle layer
+            record.budgetAmount = Number(record.budgetAmount);     // Change data type to number to match the model at middle layer
 
             fetch('/Budget/DeleteBudget', {
                 method: 'POST',
@@ -675,16 +675,16 @@
             // Shrink & Expand Filter Region
             document.getElementById('showHideBudgetFilters').addEventListener('click', function(event) {
                 const containerDiv = document.getElementById('budgetDataFilterDiv');
-                if (this.innerText == '↙') {
+                if (this.innerText == 'call_received') {
                     filterForm.style.display = 'block';
                     containerDiv.style.height = '150px';
-                    this.innerText = '↗';
+                    this.innerText = 'call_made';
                     this.title = 'Hide Filter';
                 }
                 else {
                     filterForm.style.display = 'none';
                     containerDiv.style.height = '50px';
-                    this.innerText = '↙';
+                    this.innerText = 'call_received';
                     this.title = 'Show Filter';
                 }
             });

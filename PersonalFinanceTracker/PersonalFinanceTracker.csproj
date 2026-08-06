@@ -20,7 +20,6 @@
     <Folder Include="Models\Dashboard\" />
     <Folder Include="Models\Report\" />
     <Folder Include="Models\Profile\" />
-    <Folder Include="Models\Transaction\Activities\" />
     <Folder Include="Models\Transaction\Rules\" />
     <Folder Include="Models\Transaction\RecurringSchedules\" />
     <Folder Include="Views\Report\" />

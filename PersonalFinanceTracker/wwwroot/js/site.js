@@ -54,16 +54,6 @@ const setUpUnobtrusiveValidationOnModal = function (modalId, formId) {
         $(modalId).on('hidden.bs.modal', function () {
             const $form = $(formId);
 
-            // My Code: Clear the existing data on modal form!!!
-            $form[0].reset();
-            $form.find('input[type="hidden"]').val('');
-            
-            // Reset selects (this is the missing piece)
-            $form.find('select').each(function () {
-                $(this).val('');          // clear value
-                $(this).trigger('change'); // update UI (important for Bootstrap)
-            });
-            
             if ($form.data('validator')) {
                 $form.validate().resetForm();
             }
@@ -90,6 +80,19 @@ const setUpUnobtrusiveValidationOnModal = function (modalId, formId) {
     });
 }
 
+// Clears the existing data on the form!!!
+const clearFormData = function (formId) {
+    const $form = $(formId);
+    // My Code: Clear the existing data on modal form!!!
+    $form[0].reset();
+    $form.find('input[type="hidden"]').val('');
+
+    // Reset selects (this is the missing piece)
+    $form.find('select').each(function () {
+        $(this).val('');          // clear value
+        $(this).trigger('change'); // update UI (important for Bootstrap)
+    });
+}
 
 // Prepares and returns the row element with pagination controls enabled/disabled based upon the values of the paginationJSON object!!!
 const getPaginationRow = function (paginationJSON, noOfColumnsInTable) {

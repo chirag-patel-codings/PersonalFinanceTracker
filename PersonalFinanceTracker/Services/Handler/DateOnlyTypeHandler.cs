@@ -2,7 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace PersonalFinanceTracker.Services.Repository.Handler
+namespace PersonalFinanceTracker.Services.Handler
 {
     /// <summary>
     ///  This class tells Dapper how to convert DateOnly.

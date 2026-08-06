@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Personal Finance Tracker</title>
     <script type="importmap"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PersonalFinanceTracker.styles.css" asp-append-version="true" />
@@ -26,12 +28,12 @@
                 <ul class="header-menu-right">
                     <li class="header-dropdown-container">
                         <a href="#" class="header-dropdown-trigger">
-                            <span class="side-icon" style="font-size: 1.2rem; margin-right: 6px;">👤</span>Profile
+                            <span class="material-symbols-outlined-panel-icon">account_circle</span>Profile
                         </a>
                         <div class="header-subpanel">
                             <a href="#">Profile Settings</a>
                             <hr style="border: 0; border-top: 1px solid #0f172a; margin: 5px 0;">
-                            <span class="header-subpanel-logout"><a asp-controller="Authentication" asp-action="Logout" style="color: red">🛑 Logout</a></span>
+                            <span class="header-subpanel-logout"><a asp-controller="Authentication" asp-action="Logout" style="color: red"><span class="material-symbols-outlined-panel-icon" style="color:red; font-size: 20px;">logout</span>&nbsp;&nbsp;Logout</a></span>
                         </div>
                     </li>
                 </ul>
@@ -49,12 +51,12 @@
                 <aside class="left-side-panel">
                     <nav class="side-nav-list">
                         <a class="@(currentController == "Dashboard" ? "side-bar-active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index" title="Dashboard">
-                            <span class="side-icon">📈</span>
+                            <span class="material-symbols-outlined-panel-icon">finance_mode</span>
                             <span class="side-label">Dashboard</span>
                         </a>
                         <div class="sub-menu-container">
-                            <a href="#" class="sub-trigger">
-                                <span class="side-icon" title="Transactions">🧾</span>
+                            <a href="#" class="sub-trigger" title="Transactions">
+                                <span class="material-symbols-outlined-panel-icon">add_card</span>
                                 <span class="side-label">Transactions</span>
                                 <span class="side-label arrow-icon">▼</span>
                             </a>
@@ -65,8 +67,8 @@
                             </div>
                         </div>
                         <div class="sub-menu-container">
-                            <a href="#" class="sub-trigger">
-                                <span class="side-icon" title="Categories">🔖</span>
+                            <a href="#" class="sub-trigger" title="Categories">
+                                <span class="material-symbols-outlined-panel-icon">new_label</span>
                                 <span class="side-label">Categories</span>
                                 <span class="side-label arrow-icon">▼</span>
                             </a>
@@ -76,23 +78,23 @@
                             </div>
                         </div>
                         <a class="@(currentController == "Account" ? "side-bar-active" : "")" asp-area="" asp-controller="Account" asp-action="Index" title="Accounts">
-                            <span class="side-icon" title="Accounts">🏦</span>
+                            <span class="material-symbols-outlined-panel-icon">account_balance</span>
                             <span class="side-label">Accounts</span>
                         </a>
-                        <a href="#">
-                            <span class="side-icon" title="Reports">📜</span>
+                        <a href="#" title="Reports">
+                            <span class="material-symbols-outlined-panel-icon">article</span>
                             <span class="side-label">Reports</span>
                         </a>
                         <a class="@(currentController == "Budget" ? "side-bar-active" : "")" asp-area="" asp-controller="Budget" asp-action="Index" title="Budgets">
-                            <span class="side-icon" title="Budgets">🤑</span>
+                            <span class="material-symbols-outlined-panel-icon">money_bag</span>
                             <span class="side-label">Budgets</span>
                         </a>
                         <a class="@(currentController == "Goal" ? "side-bar-active" : "")" asp-area="" asp-controller="Goal" asp-action="Index" title="Goals">
-                            <span class="side-icon" title="Goals">💰</span>
+                            <span class="material-symbols-outlined-panel-icon">money_range</span>
                             <span class="side-label">Goals</span>
                         </a>
                         <a class="sidebar-logout" asp-controller="Authentication" asp-action="Logout">
-                            <span class="side-icon">🛑</span>
+                            <span class="material-symbols-outlined-panel-icon" style="color:red;">logout</span>
                             <span class="side-label">Logout</span>
                         </a>
                     </nav>

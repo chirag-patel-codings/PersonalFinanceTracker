@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Tag>;
 
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Tags <span title='Add' class="float-end pe-2">➕</span></h3>
+<h3>Tags <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
 
 <table class="table bg-light shadow-raised" id="tagsTable">
     <thead>
@@ -77,6 +77,7 @@
     <script>
 
          let _token = getSecurityToken('#addEditTagForm');
+         let prevQueriedRecord = '';
          var tagsPaginationJSON = '';
          var tagsDataMode = '';
 
@@ -99,8 +100,8 @@
                  row.innerHTML = `<td><span class="color-label" style="background-color: ${item.tagColor}">&nbsp;</span></td>
                                   <td>${item.tagName}</td>
                                   <td>${item.tagDescription}</td>
-                                  <td><span title="Edit">📝</span></td>
-                                  <td><span title="Delete">❌</span></td>`;
+                                  <td><span title="Edit" class="material-symbols-outlined-data-icon">edit</span></td>
+                                  <td><span title="Delete" class="material-symbols-outlined-data-icon">delete</span></td>`;
 
                  // Append the complete row to the table body
                  tbody.appendChild(row);
@@ -196,10 +197,10 @@
             if (show) {
 
                 if(tagsDataMode == 'Add'){
-                     document.getElementById('addEditTagModalLabelId').innerText = '➕ Add Tag';
+                    document.getElementById('addEditTagModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>add</span> Add Tag";
                 }
                 if(tagsDataMode == 'Edit'){
-                     document.getElementById('addEditTagModalLabelId').innerText = '📝 Edit Tag';
+                    document.getElementById('addEditTagModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>edit</span> Edit Tag";
                 }
 
                 modalInstance.show();
@@ -214,9 +215,10 @@
         // Display the modal with Data
         const showAddEditTagModal = function(record) {
 
-            const tagForm = document.getElementById('addEditTagForm');
-            setFormData(tagForm, record);
-            
+            if (record) {
+                const tagForm = document.getElementById('addEditTagForm');
+                setFormData(tagForm, record);
+            }
             // Open up the Bootstrap modal visually
             showHideAddEditTagModal(true);
         }
@@ -308,7 +310,15 @@
                 
                 // Execute specific logic depending on what was clicked
                 if (actionType === "Edit") {
-                    getTagRecord(recordId);
+
+                    if (recordId === prevQueriedRecord) {
+                        showAddEditTagModal(null); // Show the existing details
+                    }
+                    else{
+
+                        getTagRecord(recordId);
+                        prevQueriedRecord = recordId;
+                    }
         
                 } else if (actionType === "Delete") {
                     if(confirm('Do you want to delete the tag?')){
@@ -321,9 +331,11 @@
         });
 
         document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+            prevQueriedRecord = '';
+            tagsDataMode = 'Add';
+            clearFormData('#addEditTagForm');
             const tagForm = document.getElementById('addEditTagForm');
             const record = getFormEntries(tagForm);    // Retrieve a blank record!!!
-            tagsDataMode = 'Add';
             showAddEditTagModal(record);
         });
 

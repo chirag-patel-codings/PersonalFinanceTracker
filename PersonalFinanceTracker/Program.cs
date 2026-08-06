@@ -7,7 +7,7 @@ using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Services.Communications;
 using PersonalFinanceTracker.Services.Contracts;
 using PersonalFinanceTracker.Services.Repository;
-using PersonalFinanceTracker.Services.Repository.Handler;
+using PersonalFinanceTracker.Services.Handler;
 using Serilog;
 using System.Data;
 using System.Text.Json;

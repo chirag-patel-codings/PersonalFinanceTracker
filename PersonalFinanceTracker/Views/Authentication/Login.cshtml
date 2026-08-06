@@ -24,7 +24,9 @@
                     <div class="password-container">
                         <input type="password" maxlength="100" asp-for="Password" class="form-control" placeholder=" " data-val="true" data-val-required="Password is required!">
                         <label for="Password" class="input-label">* Password</label>
-                        <span id="togglePassword">👁️</span>
+                        <span id="togglePassword">
+                            <span class="material-symbols-outlined-password">visibility</span>
+                        </span>
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
@@ -56,31 +58,19 @@
 
             const passwordInput = document.getElementById('Password');
             const togglePasswordBtn = document.getElementById('togglePassword');
-            const confirmPasswordInput = document.getElementById('ConfirmPassword');
-            const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
+            
 
             togglePasswordBtn.addEventListener('click', function() {
                 // Toggle the type attribute
                 if (passwordInput.type === 'password') {
                     passwordInput.type = 'text';
-                    this.textContent = '🙈'; // Changes to monkey emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">disabled_visible</span>'; // Changes to monkey emoji
                 } else {
                     passwordInput.type = 'password';
-                    this.textContent = '👁️'; // Changes back to eye emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">visibility</span>'; // Changes back to eye emoji
                 }
             });
-
-            toggleConfirmPasswordBtn.addEventListener('click', function() {
-                // Toggle the type attribute
-                if (confirmPasswordInput.type === 'password') {
-                    confirmPasswordInput.type = 'text';
-                    this.textContent = '🙈'; // Changes to monkey emoji
-                } else {
-                    confirmPasswordInput.type = 'password';
-                    this.textContent = '👁️'; // Changes back to eye emoji
-                }
-            });
-
+            
             // Fetch the active form element
             var $form = $("form");
 

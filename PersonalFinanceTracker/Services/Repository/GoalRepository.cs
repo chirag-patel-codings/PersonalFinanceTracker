@@ -92,6 +92,7 @@ namespace PersonalFinanceTracker.Services.Repository
             {
                 goal.GoalId = _conn.ExecuteScalar("SELECT CAST(GeneratePrefixedId(7) AS CHAR)").ToString();
             }
+
             ulong goalId = ulong.Parse(goal.GoalId);
             int total_effected_records = 0;
 
@@ -155,7 +156,6 @@ namespace PersonalFinanceTracker.Services.Repository
             return total_effected_records > 0 ? true : false;
         }
 
-        
         // Deletes a Goal by supplied userId and goalId
         public bool DeleteGoal(ulong userId, string goalId, string? connString)
         {

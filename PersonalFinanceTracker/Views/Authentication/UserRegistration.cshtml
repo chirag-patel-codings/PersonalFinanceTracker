@@ -37,7 +37,9 @@
             <div class="row p-2">
                 <div class="col-sm">
                     <div class="password-container field">
-                        <span id="togglePassword">👁️</span>
+                        <span id="togglePassword">
+                            <span class="material-symbols-outlined-password">visibility</span>
+                        </span>
                         <input type="password" maxlength="100" asp-for="Password" class="form-control" placeholder=" " data-val="true">
                         <label for="Password" class="input-label">* Password</label>
                     </div>
@@ -47,7 +49,9 @@
             <div class="row p-2">
                 <div class="col-sm">
                     <div class="password-container field">
-                       <span id="toggleConfirmPassword">👁️</span>
+                       <span id="toggleConfirmPassword">
+                           <span class="material-symbols-outlined-password">visibility</span>
+                       </span>
                        <input type="password" maxlength="100" asp-for="ConfirmPassword" class="form-control" placeholder=" " data-val="true" data-val-required="Please confirm your password!">
                         <label for="ConfirmPassword" class="input-label">* Confirm Password</label>
                    </div>
@@ -100,10 +104,10 @@
                 // Toggle the type attribute
                 if (passwordInput.type === 'password') {
                     passwordInput.type = 'text';
-                    this.textContent = '🙈'; // Changes to monkey emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">disabled_visible</span>'; // Changes to monkey emoji
                 } else {
                     passwordInput.type = 'password';
-                    this.textContent = '👁️'; // Changes back to eye emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">visibility</span>'; // Changes back to eye emoji
                 }
             });
 
@@ -111,10 +115,10 @@
                 // Toggle the type attribute
                 if (confirmPasswordInput.type === 'password') {
                     confirmPasswordInput.type = 'text';
-                    this.textContent = '🙈'; // Changes to monkey emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">disabled_visible</span>'; // Changes to monkey emoji
                 } else {
                     confirmPasswordInput.type = 'password';
-                    this.textContent = '👁️'; // Changes back to eye emoji
+                    this.innerHTML = '<span class="material-symbols-outlined-password">visibility</span>'; // Changes back to eye emoji
                 }
             });
 

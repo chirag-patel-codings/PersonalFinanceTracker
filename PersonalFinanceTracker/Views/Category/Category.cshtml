@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Category>;
 
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Categories <span title='Add' class="float-end pe-2">➕</span></h3>
+<h3>Categories <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
 
 <table class="table bg-light shadow-raised" id="categoriesTable">
     <thead>
@@ -98,6 +98,7 @@
     <script>
 
          let _token = getSecurityToken('#addEditCategoryForm');
+         let prevQueriedRecord = '';
          var categoriesPaginationJSON ='';
          var standardCategoriesJSON = '';
          var categoryTypesJSON ='';
@@ -124,8 +125,8 @@
                                   <td>${item.categoryName}</td>
                                   <td>${categoryTypesJSON.find(t => t.categoryTypeId == item.categoryType)?.categoryTypeName}</td>
                                   <td>${item.categoryDescription}</td>
-                                  <td>${item.categoryType == 0 ? '<span title="Locked">🔒</span>' : '<span title="Edit">📝</span>'}</td>
-                                  <td>${item.categoryType == 0 ? '' : '<span title="Delete">❌</span>'}</td>`;
+                                  <td>${item.categoryType == 0 ? '<span title="Locked" class="material-symbols-outlined-data-icon">lock</span>' : '<span title="Edit" class="material-symbols-outlined-data-icon">edit</span>'}</td>
+                                  <td>${item.categoryType == 0 ? '' : '<span title="Delete" class="material-symbols-outlined-data-icon">delete</span>'}</td>`;
 
                  // Append the complete row to the table body
                  tbody.appendChild(row);
@@ -150,10 +151,10 @@
             if (show) {
 
                 if (categoriesDataMode == 'Add') {
-                    document.getElementById('addEditCategoryModalLabelId').innerText = '➕ Add Category';
+                    document.getElementById('addEditCategoryModalLabelId').innerHTML = '<span class="material-symbols-outlined-data-icon">add</span> Add Category';
                 }
                 if (categoriesDataMode == 'Edit') {
-                    document.getElementById('addEditCategoryModalLabelId').innerText = '📝 Edit Category';
+                    document.getElementById('addEditCategoryModalLabelId').innerHTML = '<span class="material-symbols-outlined-data-icon">edit</span> Edit Category';
                 }
 
                 modalInstance.show();
@@ -168,11 +169,13 @@
         // Display the modal with Data
         const showAddEditCategoryModal = function(record) {
 
-            populateSelectFromJSON('modalStandardizeCategory', standardCategoriesJSON, 'categoryId', 'categoryName', '-- Standard Category --');
-            populateSelectFromJSON('modalCategoryType', categoryTypesJSON.filter(ct => ct.categoryTypeId != 0), 'categoryTypeId', 'categoryTypeName', '-- Category Type --');
+            if(record){
+                populateSelectFromJSON('modalStandardizeCategory', standardCategoriesJSON, 'categoryId', 'categoryName', '-- Standard Category --');
+                populateSelectFromJSON('modalCategoryType', categoryTypesJSON.filter(ct => ct.categoryTypeId != 0), 'categoryTypeId', 'categoryTypeName', '-- Category Type --');
 
-            const categoryForm = document.getElementById('addEditCategoryForm');
-            setFormData(categoryForm, record);
+                const categoryForm = document.getElementById('addEditCategoryForm');
+                setFormData(categoryForm, record);
+            }
 
             // Open up the Bootstrap modal visually
             showHideAddEditCategoryModal(true);
@@ -334,8 +337,6 @@
         }
 
         
-
-
         // Listen for clicks anywhere inside the table body
         document.querySelector('tbody').addEventListener('click', function (event) {
 
@@ -361,7 +362,15 @@
                 
                 // Execute specific logic depending on what was clicked
                 if (actionType === "Edit") {
-                    getCategoryRecord(recordId);
+
+                    if (recordId === prevQueriedRecord) {
+                        showAddEditCategoryModal(null); // Show the existing details
+                    }
+                    else {
+                        getCategoryRecord(recordId);
+                        prevQueriedRecord = recordId;
+                    }
+                    
         
                 } else if (actionType === "Delete") {
                     if(confirm('Do you want to delete the category?')){
@@ -374,9 +383,11 @@
         });
 
         document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+            prevQueriedRecord = '';
+            categoriesDataMode = 'Add';
+            clearFormData('#addEditCategoryForm');
             const categoryForm = document.getElementById('addEditCategoryForm');
             const record = getFormEntries(categoryForm);    // Retrieve a blank record!!!
-            categoriesDataMode = 'Add';
             showAddEditCategoryModal(record);
         });
 

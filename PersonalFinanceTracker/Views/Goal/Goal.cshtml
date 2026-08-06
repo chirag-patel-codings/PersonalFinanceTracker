@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Goal>;
 
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Goals <span title='Add' class="float-end pe-2">➕</span></h3>
+<h3>Goals <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
 
 <table class="table bg-light shadow-raised" id="goalsTable">
     <thead>
@@ -61,7 +61,7 @@
                 </form>
                 <!-- GOAL DETAILS SECTION!!! -->
                 <div>
-                    <h3 id="addGoalDetailsId" name="addGoalDetailsName" title='Add Details' class="float-end pe-2" onclick="appendGoalDetailForm(null);">➕</h3>
+                    <h3 id="addGoalDetailsId" name="addGoalDetailsName" title='Add Details' class="float-end pe-2" onclick="appendGoalDetailForm(null);"><span class="material-symbols-outlined-data-icon">add</span></h3>
                 </div>
                 <div id="modalGoalDetailsContainerId" name="goalDetailsContainer" class="table-container" style="background-color: rgb(244, 246, 249);">
 
@@ -86,10 +86,11 @@
     <script>
 
          let _token = getSecurityToken('#addEditGoalFormId');
+         let prevQueriedRecord = '';
          var goalsPaginationJSON = '';
          var goalTypesJSON = '';
          var goalIntervalTypesJSON = '';
-         var goalsDataMode = '';
+         
 
          // Add the goal detail form to the 'modalGoalDetailsContainerId' div element.
         const appendGoalDetailForm = function(record){
@@ -97,16 +98,16 @@
             const form = generateGoalDetailsForm(record);
             document.getElementById('modalGoalDetailsContainerId').appendChild(form);
 
-            // Parse validation directly without waiting for modal events!
+            // Parse validation directly without waiting for modal events FOR THIS FORM!
             rebindValidation($(form));
             // $(form).validate();      // Does NOT parse dynamic fields
 
-            // Force unobtrusive parser to read all data-val-* attributes
+            // Force unobtrusive parser to read all data-val-* attributes FOR THIS FORM!
             $.validator.unobtrusive.parse($(form));
 
         }
 
-         // Generates the forms for all the budget settings records. Single form for each record!!!
+        // Generates the forms for all the budget settings records. Single form for each record!!!
         const generateGoalDetailsForm = function(record) {
                 
                 // Create the main form element
@@ -278,7 +279,7 @@
                 const col5 = document.createElement('div');
                 col5.style.width = '5%';
                 col5.className = 'd-flex justify-content-end align-items-center';
-                col5.innerHTML = '<h3 class="m-0">➖</h3>';
+                col5.innerHTML = '<h3 class="m-0"><span class="material-symbols-outlined-data-icon">remove</span></h3>';
                 col5.title = "Delete detail";
 
                 col5.addEventListener("click", (e) => {
@@ -312,8 +313,8 @@
                  row.innerHTML = `<td>${item.goalName}</td>
                                   <td>${item.goalDescription}</td>
                                   <td>${goalTypesJSON.find(t => t.goalListOptionId == item.goalType)?.goalListOptionName}</td>
-                                  <td><span title="Edit">📝</span></td>
-                                  <td><span title="Delete">❌</span></td>`;
+                                  <td><span title="Edit" class="material-symbols-outlined-data-icon">edit</span></td>
+                                  <td><span title="Delete" class="material-symbols-outlined-data-icon">delete</span></td>`;
 
                  // Append the complete row to the table body
                  tbody.appendChild(row);
@@ -338,10 +339,10 @@
             if (show) {
 
                 if (goalsDataMode == 'Add') {
-                    document.getElementById('addEditGoalModalLabelId').innerText = '➕ Add Goal';
+                    document.getElementById('addEditGoalModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>add</span> Add Goal";
                 }
                 if (goalsDataMode == 'Edit') {
-                    document.getElementById('addEditGoalModalLabelId').innerText = '📝 Edit Goal';
+                    document.getElementById('addEditGoalModalLabelId').innerHTML = "<span class='material-symbols-outlined-data-icon'>edit</span> Edit Goal";
                 }
 
                 modalInstance.show();
@@ -355,15 +356,18 @@
 
         // Display the modal with Data
         const showAddEditGoalModal = function(data) {
-            document.getElementById('modalGoalDetailsContainerId').innerHTML = '';  // remove all the exsiting DETAILS
-            populateSelectFromJSON('modalGoalTypeId', goalTypesJSON, 'goalListOptionId', 'goalListOptionName', '-- Goal Type --');
 
-            const goalForm = document.getElementById('addEditGoalFormId');
-            setFormData(goalForm, data);
+            if(data){
+                document.getElementById('modalGoalDetailsContainerId').innerHTML = '';  // remove all the exsiting DETAILS
+                populateSelectFromJSON('modalGoalTypeId', goalTypesJSON, 'goalListOptionId', 'goalListOptionName', '-- Goal Type --');
 
-            data.goalDetails?.forEach((record) => {
-                appendGoalDetailForm(record);
-            });
+                const goalForm = document.getElementById('addEditGoalFormId');
+                setFormData(goalForm, data);
+
+                data.goalDetails?.forEach((record) => {
+                    appendGoalDetailForm(record);
+                });
+            }
 
             // Open up the Bootstrap modal visually
             showHideAddEditGoalModal(true);
@@ -415,7 +419,7 @@
 
         }
 
-        // Retrieve single record
+        // Retrieve single Goal record
         const getGoalRecord = function(goalId){
 
             fetch('/Goal/GetGoal', {
@@ -435,7 +439,6 @@
                 return response.json();
             })
             .then(data => {
-                console.log('data: ', data);
                 // Work with parsed data object here
                 showAddEditGoalModal(data);
             })
@@ -444,7 +447,7 @@
             });
         }
 
-        // Data to be retrieved from every main and child forms!!!
+        // Data to be retrieved from every main and child forms (BEFORE SAVE)!!!
         const getGoalAndDetailsData = function(){
 
             const form = document.getElementById('addEditGoalFormId');
@@ -486,9 +489,7 @@
                         showDbMessage("Error: Goal has not been saved successfully!!!", false);
                         return;
                     }
-
                 });
-            
         }
 
         // Delete the Goal Record!!!
@@ -546,21 +547,33 @@
                 
                 // Execute specific logic depending on what was clicked
                 if (actionType === "Edit") {
-                    getGoalRecord(recordId);
-        
+                        
+                    if (recordId === prevQueriedRecord) {
+                        showAddEditGoalModal(null); // Show the existing details
+                    }
+                    else {
+                        getGoalRecord(recordId);
+                        prevQueriedRecord = recordId;
+                    }
+                        
+                    
                 } else if (actionType === "Delete") {
+
                     if(confirm('Do you want to delete the goal?')){
                             deleteGoalRecord(recordId);
                     }
+
                 }
 
             }
 
         });
 
+        // ADD 
         document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
-
+            prevQueriedRecord = '';
             goalsDataMode = 'Add';
+            clearFormData('#addEditGoalFormId');
             const goalForm = document.getElementById('addEditGoalFormId');
             const record = getFormEntries(goalForm);    // Retrieve a blank record!!!
             showAddEditGoalModal(record);
@@ -591,6 +604,7 @@
             return new Date(value) <= new Date(targetValue);
         }, "Start date must be less than or equal to end date.");
 
+        // ADD TO VALIDATOR
         $.validator.unobtrusive.adapters.add("lessThan", ["other"], function(options) {
             options.rules["lessThan"] = options.params.other;
             options.messages["lessThan"] = options.message;
@@ -636,8 +650,6 @@
 
             $(this).data("focused", true);
         });
-
-        
 
         $('#btnGoalModalSaveChanges').on('click', function () {
             // Select the main form AND all detail/child forms
