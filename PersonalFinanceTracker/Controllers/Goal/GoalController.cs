@@ -37,8 +37,8 @@ namespace PersonalFinanceTracker.Controllers
         {
             Pagination pagination;
             IEnumerable<Goal> goals;
-            IEnumerable<GoalListOption>? goalTypes = null;
-            IEnumerable<GoalListOption> goalIntervalTypes = null;
+            IEnumerable<ListOption>? goalTypes = null;
+            IEnumerable<ListOption> goalIntervalTypes = null;
 
             if (payload["firstRequest"]?.ToString() == "true")
             {
@@ -46,24 +46,24 @@ namespace PersonalFinanceTracker.Controllers
                 pagination.TotalNumberOfRecords = _goalRepository.GetTotalNoOfRecords(_currentUserId, connString);
 
                 // Savings = 1, Reduce Debt = 2, Investing = 3, Tax Planning = 4, Other = 5
-                goalTypes = new List<GoalListOption>()
+                goalTypes = new List<ListOption>()
                                         {
-                                            new GoalListOption(1, "Savings"),
-                                            new GoalListOption(2, "Reduce Debt"),
-                                            new GoalListOption(3, "Investing"),
-                                            new GoalListOption(4, "Tax Planning"),
-                                            new GoalListOption(5, "Other")
+                                            new ListOption(1, "Savings"),
+                                            new ListOption(2, "Reduce Debt"),
+                                            new ListOption(3, "Investing"),
+                                            new ListOption(4, "Tax Planning"),
+                                            new ListOption(5, "Other")
                                          };
 
                 // Weekly - 1, BiWeekly - 2, Monthly – 3, Quarterly – 4,  Half - Yearly – 5 , Yearly - 6
-                goalIntervalTypes = new List<GoalListOption>()
+                goalIntervalTypes = new List<ListOption>()
                                         {
-                                            new GoalListOption(1, "Weekly"),
-                                            new GoalListOption(2, "BiWeekly"),
-                                            new GoalListOption(3, "Monthly"),
-                                            new GoalListOption(4, "Quarterly"),
-                                            new GoalListOption(5, "Half - Yearly"),
-                                            new GoalListOption(6, "Yearly")
+                                            new ListOption(1, "Weekly"),
+                                            new ListOption(2, "BiWeekly"),
+                                            new ListOption(3, "Monthly"),
+                                            new ListOption(4, "Quarterly"),
+                                            new ListOption(5, "Half - Yearly"),
+                                            new ListOption(6, "Yearly")
                                         };
             }
             else

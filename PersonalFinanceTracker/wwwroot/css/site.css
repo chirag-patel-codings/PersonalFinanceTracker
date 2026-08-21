@@ -30,6 +30,7 @@ body {
     text-align: start;
 }
 
+
 /* SYMBOLS */
 
 .material-symbols-outlined-panel-icon {
@@ -57,6 +58,15 @@ body {
     line-height: 1;
     font-size: 1.5em;
     color: #634FA2;
+}
+
+.material-symbols-outlined-panel-pill {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 0.75rem !important;
+    padding: 0.1rem 0.25rem !important;
+    margin: 1em !important;
+    color: #2563eb;
 }
 
 /* Custom Page Layout - Starts Here  */
@@ -652,6 +662,10 @@ input[type="checkbox"].input-validation-error {
         padding: 0 0.25rem;
     }
 
+    .input-group label {
+        left: 2.5rem !important;
+    }
+
     /* FLOAT on focus */
     .field input:focus + label,
     .field textarea:focus + label,
@@ -899,6 +913,7 @@ input[type="number"]:focus {
     margin-bottom: 10px;
     padding: 3px;
     min-height: 50px;
+    overflow: visible;
 }
 
 /* Filter Divs - Ends Here */

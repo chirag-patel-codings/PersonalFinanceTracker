@@ -8,8 +8,8 @@
         </div>
         <div asp-validation-summary="ModelOnly" class="w-50 mx-auto text-danger field-validation-error"></div>
         <form asp-action="Register" asp-controller="Authentication" method="post" data-val="true">
-            <div class="row p-2">
-                <div class="col-sm mb-4 mb-sm-0 field">
+            <div class="row p-1">
+                <div class="col-sm mb-2 mb-sm-0 field">
                     <input type="text" maxlength="100" asp-for="FirstName" class="form-control" placeholder=" " data-val="true" data-val-required="First Name is required!">
                     <label for="FirstName" class="input-label">* First Name</label>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
@@ -20,21 +20,21 @@
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm field">
                     <input type="text" maxlength="50" asp-for="UserName" class="form-control" placeholder=" " data-val="true" data-val-required="Username is required!">
                     <label for="UserName" class="input-label">* Username</label>
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm field">
                     <input type="text" maxlength="100" asp-for="Email" class="form-control" placeholder=" ">
                     <label for="Email" class="input-label">* Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm">
                     <div class="password-container field">
                         <span id="togglePassword">
@@ -46,7 +46,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm">
                     <div class="password-container field">
                        <span id="toggleConfirmPassword">
@@ -58,7 +58,7 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm">
                     <input type="checkbox" asp-for="AgreeToTermsAndPrivacyPolicy" class="form-check-input">
                     <label asp-for="AgreeToTermsAndPrivacyPolicy" class="form-check-label">
@@ -68,13 +68,13 @@
                 </div>
 
             </div>
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm">
                     <input type="submit" class="form-control btn btn-primary" id="registerUser" value="Sign Up" />
                 </div>
             </div>
 
-            <div class="row p-2">
+            <div class="row p-1">
                 <div class="col-sm text-center">
                     <p>Already Registered? <a asp-area="" asp-controller="Authentication" asp-action="Login">Log in</a></p>
                 </div>

@@ -1,16 +1,17 @@
 ﻿using Dapper;
+using Mysqlx;
 using Org.BouncyCastle.Asn1;
 using PersonalFinanceTracker.Contracts;
 using PersonalFinanceTracker.Models;
-using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Models;
+using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Services.Communications;
 using PersonalFinanceTracker.Services.Contracts;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
-using Mysqlx;
 
 namespace PersonalFinanceTracker.Services.Repository
 {
@@ -33,7 +34,7 @@ namespace PersonalFinanceTracker.Services.Repository
             var parameters = new DynamicParameters();
             parameters.Add("user_id", userId);
             parameters.Add("start_date", budgetDetailsStartDate.ToString("yyyyMMdd"));
-            parameters.Add("end_date", budgetDetailsEndDate.ToString("yyyyMMdd")); 
+            parameters.Add("end_date", budgetDetailsEndDate.ToString("yyyyMMdd"));
 
             return _conn.Query<BudgetDetails>("sp_pft_get_budget_details",
                            parameters,

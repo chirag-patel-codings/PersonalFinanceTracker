@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Globalization;
 
 namespace PersonalFinanceTracker.Services.Handler
 {
@@ -24,6 +25,8 @@ namespace PersonalFinanceTracker.Services.Handler
         public override DateOnly Parse(object value)
         {
             if (value is DBNull) return default;
+
+            // When returned as date..
             return DateOnly.FromDateTime((DateTime)value);
         }
     }

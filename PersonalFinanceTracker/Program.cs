@@ -69,6 +69,8 @@ builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<IBudgetDetailsRepository, BudgetDetailsRepository>();
 builder.Services.AddTransient<IBudgetRepository, BudgetRepository>();
 builder.Services.AddTransient<IGoalRepository, GoalRepository>();
+builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
+builder.Services.AddTransient<IRecurringRepository, RecurringRepository>();
 
 // Custom Code ENDS -- Here...
 

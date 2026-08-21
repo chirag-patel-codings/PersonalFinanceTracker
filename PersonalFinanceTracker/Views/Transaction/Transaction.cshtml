@@ -1,0 +1,207 @@
+﻿@model IEnumerable<PersonalFinanceTracker.Models.Transaction>;
+
+<div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
+<div id="transactionDataFilterDiv" class="filter-div">
+    <h3>
+        Transactions
+        <span title='Expand Filter' class="material-symbols-outlined-data-icon float-end pe-2" style='font-size: 1.5em !important;' id="showHideTransactionFilters">call_received</span>
+        <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span>
+        <!-- <span title='Transaction Rollover Settings' class='material-symbols-outlined-data-icon float-end pe-2' style='font-size: 1em !important;' id='showHideTransactionRolloverSettings' onclick='javascript: getTransactionSettings();'>settings</span> -->
+    </h3>
+    <form id="transactionDataFilterForm-1" data-val="true">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="field" style="width: 225px;">
+                <input type="date" id="transactionFilterStartDateId" name="transactionFilterStartDate" class="form-control" placeholder=" " data-val="true"
+                    data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="transactionFilterEndDate">
+                <label for="transactionFilterStartDateId" class="input-label">* Start Date</label>
+                <span data-valmsg-for="transactionFilterStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+            </div>
+            <div class="field" style="width: 225px;">
+                <input type="date" id="transactionFilterEndDateId" name="transactionFilterEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!">
+                <label for="transactionFilterEndDateId" class="input-label">* End Date</label>
+                <span data-valmsg-for="transactionFilterEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+            </div>
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterCategoryId" name="transactionFilterCategoryId" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterCategoryId" class="input-label">Category Type</label>
+            </div>
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterAccountId" name="transactionFilterAccountId" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterAccountId" class="input-label">Account Type</label>
+            </div>
+            <div class="field" style="width: 285px;">
+                <input type="text" id="transactionFilterDescriptionId" name="transactionFilterDescription" class="form-control" placeholder=" " />
+                <label for="transactionFilterDescriptionId" class="input-label">Description</label>
+            </div>
+        </div>
+    </form>
+    <form id="transactionDataFilterForm-2" data-val="true" style="display: none;">
+        <div class="row ps-lg-2">
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterTagId" name="transactionFilterTagId" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterTagId" class="input-label">Tag Type</label>
+            </div>
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterGoalId" name="transactionFilterGoalId" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterGoalId" class="input-label">Goal Type</label>
+            </div>
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterCategorizationId" name="transactionFilterCategorization" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterCategorizationId" class="input-label">Transaction Categorization</label>
+            </div>
+            <div class="field" style="width: 225px;">
+                <select id="transactionFilterTypeId" name="transactionFilterType" class="form-control" placeholder=" "></select>
+                <label for="transactionFilterTypeId" class="input-label">Transaction Type</label>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table bg-light shadow-raised" id="transactionsTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Account</th>
+            <th>Category</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody id="transactionsTBody">
+        <!-- Contents will be added by javascript -->
+    </tbody>
+</table>
+
+<!-- REMOVED aria-hidden="true" from this line entirely -->
+<div class="modal fade" id="addEditTransactionModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addEditTransactionModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEditTransactionModalLabelId"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- DESIGN: ALL THE FORM ELEMENTS MUST HAVE A NAME AND SAME AS DATA-MODEL'S NAME & CASE -->
+                <form id="addEditTransactionForm" data-val="true">
+                    <input type="hidden" id="modalTransactionId" name="transactionId">
+                    <input type="hidden" id="modalTransactionCategorization" name="transactionCategorization">
+                    <input type="hidden" id="modalTransactionType" name="transactionType">
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <input type="date" id="modalTransactionDate" name="transactionDate"
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Please provide transaction date!"
+                                   data-val-dategte="The date must be today or greater to generate a transaction recurrings!"
+                                   data-val-lessThan="The date must be earlier than recurring end date!" data-val-lessThan-other="transactionRepeatEndDate">
+                            <label for="modalTransactionDate" class="input-label">* Transaction Date</label>
+                            <span data-valmsg-for="transactionDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <input type="text" maxlength="255" id="modalTransactionDescription" name="transactionDescription" 
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Please provide transaction description!" />
+                            <label for="modalTransactionDescription" class="input-label">* Transaction Description</label>
+                            <span data-valmsg-for="transactionDescription" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <div class="input-group">
+                                <div class="input-group-text" id="currencySymbolId"></div>
+                                <input type="number" step="0.01" id="modalTransactionAmount" name="transactionAmount"
+                                        class="form-control" placeholder=" " data-val="true"
+                                        data-val-required="Please provide transaction amount!" />
+                                <label for="modalTransactionAmount" class="input-label">* Transaction Amount</label>
+                            </div>
+                            <span data-valmsg-for="transactionAmount" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <select id="modalAccountId" name="accountId"
+                                   class="form-control" placeholder=" " data-val="true"
+                                   data-val-required="Please provide account id!">
+                            </select>
+                            <label for="modalAccountId" class="input-label">* Account</label>
+                            <span data-valmsg-for="accountId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <select id="modalCategoryId" name="categoryId"
+                                    class="form-control" placeholder=" " data-val="true"
+                                    data-val-required="Please provide category id!">
+                            </select>
+                            <label for="modalCategoryId" class="input-label">* Category</label>
+                            <span data-valmsg-for="categoryId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <select id="modalGoalId" name="goalId"
+                                    class="form-control" placeholder=" ">
+                            </select>
+                            <label for="modalGoalId" class="input-label">Goal</label>
+                        </div>
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-sm field">
+                            <select id="modalTagId" name="tagId"
+                                    class="form-control" placeholder=" ">
+                            </select>
+                            <label for="modalTagId" class="input-label">Tag</label>
+                        </div>
+                    </div>
+
+                    <div class="p-2 border border-1 rounded" id="transactionRepeatFieldsContainerDiv">
+                        <input type="hidden" id="modalTransactionRepeatId" name="transactionRepeatId">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" class="form-check-input toggle-switch" id="modalIsTransactionRepeatActive" name="isTransactionRepeatActive" value="0">
+                            <label for="modalIsTransactionRepeatActive">&nbsp;&nbsp;Repeat this transaction</label>
+                        </div>
+                        <div class="row p-0" id="transactionRepeatFieldsContainer">
+                            <div class="col-sm mb-2 mb-sm-0 field">
+                                <select id="modalTransactionRepeatInterval" name="transactionRepeatInterval"
+                                        class="form-control" placeholder=" " value="3">
+                                </select>
+                                <label for="modalTransactionRepeatInterval" class="input-label">Frequency</label>
+                            </div>
+                            <div class="col-sm field">
+                                <input type="date" id="modalTransactionRepeatEndDate" name="transactionRepeatEndDate"
+                                       class="form-control" placeholder=" " >
+                                <label for="modalTransactionRepeatEndDate" class="input-label">End Date</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnTransactionModalSaveChanges">
+                    <span style="display:flex; align-items:center; justify-content:center; width:100%;">
+                        <span class="material-symbols-outlined" style="margin-right:4px;">save</span>
+                        Save
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/app/Transaction.js"></script>
+}

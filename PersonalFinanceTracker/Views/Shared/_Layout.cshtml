@@ -61,9 +61,9 @@
                                 <span class="side-label arrow-icon">▼</span>
                             </a>
                             <div class="side-subpanel">
-                                <a href="#">Activities</a>
+                                <a class="@(currentController == "Transaction" ? "side-bar-active" : "")" asp-area="" asp-controller="Transaction" asp-action="Index">Activities</a>
                                 <a href="#">Rules</a>
-                                <a href="#">Recurring Schedules</a>
+                                <a class="@(currentController == "Recurring" ? "side-bar-active" : "")" asp-area="" asp-controller="Recurring" asp-action="Index">Recurring Schedules</a>
                             </div>
                         </div>
                         <div class="sub-menu-container">
