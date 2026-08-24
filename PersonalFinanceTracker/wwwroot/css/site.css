@@ -814,12 +814,11 @@ input[type="color"] {
     scrollbar-color: #888 #f1f1f1; /* thumb color | track color */
 }
 
-/*
-    .table-container table {
-        /* Set a larger min-width or 100% to ensure it exceeds small screen widths 
-        width: max-content;
-    }
-*/
+
+.table-container table {
+    /* Set a larger min-width or 100% to ensure it exceeds small screen widths */
+    width: max-content;
+}
 
 /* Move white-space nowrap directly to table headers and cells */
 .table-container th,

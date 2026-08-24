@@ -8,8 +8,8 @@ let transactionsPaginationJSON = '';
 let userCurrencyDetailsJSON = '';
 
 let transactionFilterJSON = {
-    transactionFilterStartDate: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0],
-    transactionFilterEndDate:  new Date(new Date().getFullYear(), 11, 31).toISOString().split('T')[0],
+    transactionFilterStartDate: formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 0, 1)),
+    transactionFilterEndDate: formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 11, 31)),
     transactionFilterCategoryId: null,
     transactionFilterAccountId: null,
     transactionFilterDescription: '',
@@ -49,17 +49,19 @@ const populateFilterSelects = function () {
 const setTransactionFilterFormValues = function () {
 
     transactionFilterForm1["transactionFilterStartDate"].value = transactionFilterJSON["transactionFilterStartDate"];
-    $("[name='transactionFilterStartDate']").data("focused", true); // To match the UI Validation
     transactionFilterForm1["transactionFilterEndDate"].value = transactionFilterJSON["transactionFilterEndDate"];
-    $("[name='transactionFilterEndDate']").data("focused", true); // To match the UI Validation
     transactionFilterForm1["transactionFilterCategoryId"].value = transactionFilterJSON["transactionFilterCategoryId"] == null ? "" : transactionFilterJSON["transactionFilterCategoryId"];
     transactionFilterForm1["transactionFilterAccountId"].value = transactionFilterJSON["transactionFilterAccountId"] == null ? "" : transactionFilterJSON["transactionFilterAccountId"];
     transactionFilterForm1["transactionFilterDescription"].value = transactionFilterJSON["transactionFilterDescription"] == null ? "" : transactionFilterJSON["transactionFilterDescription"];
-
+    
     transactionFilterForm2["transactionFilterTagId"].value = transactionFilterJSON["transactionFilterTagId"] == null ? "" : transactionFilterJSON["transactionFilterTagId"];
     transactionFilterForm2["transactionFilterGoalId"].value = transactionFilterJSON["transactionFilterGoalId"] == null ? "" : transactionFilterJSON["transactionFilterGoalId"];
     transactionFilterForm2["transactionFilterCategorization"].value = transactionFilterJSON["transactionFilterCategorization"] == null ? "" : transactionFilterJSON["transactionFilterCategorization"];
     transactionFilterForm2["transactionFilterType"].value = transactionFilterJSON["transactionFilterType"] == null ? "" : transactionFilterJSON["transactionFilterType"];
+    
+    // To match the UI Validation Behavior Consistent;
+    $("[name='transactionFilterStartDate']").data("focused", true); 
+    $("[name='transactionFilterEndDate']").data("focused", true); 
 
 }
 
@@ -96,7 +98,7 @@ const displayTransactionData = function (transactionsData, pagination) {
         row.setAttribute("data-secure-index", item.transactionId);
 
         // Populate the row with specific cell data
-        row.innerHTML = `<td>${new Date(item.transactionDate).toLocaleDateString('en-US', { timeZone: 'UTC' })}</td>
+        row.innerHTML = `<td>${formatLocal(item.transactionDate, 'en-US')}</td>
             <td style="white-space: normal; word-break: break-word; width: 30% !important;">${item.transactionDescription.trim()}${item.tagId !== null ? `&nbsp;<span class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${tagsListJSON.find(t => t.listOptionId == item.tagId)?.listOptionName}")>new_label</span>` : ''}</td>
             <td style="text-align: right;">${item.goalId !== null ? `<span style="margin-right: 0px !important;" class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${goalsListJSON.find(t => t.listOptionId == item.goalId)?.listOptionName}">money_range</span>` : ''}${userCurrencyDetailsJSON["currencySymbol"] + item.transactionAmount}</td>
             <td>${accountsListJSON.find(t => t.listOptionId == item.accountId)?.listOptionName}</td>
@@ -279,7 +281,7 @@ const saveTransactionRecord = function () {
     else{
         
         data.transactionRepeatInterval = Number(data.transactionRepeatInterval);
-        data.transactionRepeatEndDate = data.transactionRepeatEndDate || null;
+        data.transactionRepeatEndDate = data.transactionRepeatEndDate || null;      // save the date value as is from the form's input type=date or null... correct way!!!
     }
 
     fetch("/Transaction/SaveTransaction", {
@@ -472,9 +474,8 @@ $.validator.unobtrusive.adapters.addBool("dategte");
 // Start Date must be lower than End Date
 appendLessThanDateValueValidationFunctionality();
 
-// Configure Unobtrusive Validations Settings On Modal and it's Form
+// Configure Unobtrusive Validations Settings On Modal and it's Form (Must be last always)
 setUpUnobtrusiveValidationOnModal('#addEditTransactionModal', '#addEditTransactionForm');
-
 
 // Save the transaction record
 $(document).ready(function () {

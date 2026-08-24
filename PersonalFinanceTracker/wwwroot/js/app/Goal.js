@@ -57,7 +57,7 @@ const generateGoalDetailsForm = function (record) {
     goalPeriodStartDate.setAttribute("data-val-lessthan", "Start date must be earlier than end date!");
     goalPeriodStartDate.setAttribute("data-val-lessthan-other", "goalPeriodEndDate-" + elementsIdIndex);
 
-    goalPeriodStartDate.value = record ? record.goalPeriodStartDate : ""; // Populate dynamically
+    goalPeriodStartDate.value = record ? record.goalPeriodStartDate : ""; // Populate dynamically the value of the record as is. correct way!!!
 
     // Label
     const goalPeriodStartDateLabel = document.createElement('label');
@@ -90,7 +90,7 @@ const generateGoalDetailsForm = function (record) {
     goalPeriodEndDate.setAttribute('placeholder', ' ');
     goalPeriodEndDate.setAttribute("data-val", "true");
     goalPeriodEndDate.setAttribute("data-val-required", "Please provide the goal end date!");
-    goalPeriodEndDate.value = record ? record.goalPeriodEndDate : ""; // Populate dynamically
+    goalPeriodEndDate.value = record ? record.goalPeriodEndDate : ""; // Populate dynamically the value of the record as is. correct way!!!
 
     // Label
     const goalPeriodEndDateLabel = document.createElement('label');

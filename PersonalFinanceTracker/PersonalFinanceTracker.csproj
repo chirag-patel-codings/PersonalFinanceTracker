@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Transaction\Rules\" />
+    <Folder Include="Logs\" />
     <Folder Include="Models\Dashboard\" />
     <Folder Include="Models\Report\" />
     <Folder Include="Models\Profile\" />

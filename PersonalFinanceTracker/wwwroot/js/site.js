@@ -82,7 +82,6 @@ const setUpUnobtrusiveValidationOnModal = function (modalId, formId) {
 
 
 // This functionality would work for any modules where appeneded and validates if the start date is less than end date...
-
 const appendLessThanDateValueValidationFunctionality = function () {
 
     // Register globally ONCE
@@ -186,7 +185,7 @@ const getPaginationRow = function (paginationJSON, noOfColumnsInTable) {
     return row;
 }
 
-
+// Updates the paginationJSON object with new start and end record numbers based upon the navigationRequest ('first', 'prev', 'next', 'last') and returns the updated object!!!
 const getNewRecordStartAndEndNumber = function (paginationJSON, navigationRequest) {
 
     let recStartNumber = Number(paginationJSON.recordStartNumber);
@@ -227,7 +226,6 @@ const getNewRecordStartAndEndNumber = function (paginationJSON, navigationReques
            };
 }
 
-
 // Gets returns the antiforgery token and they removes the generated hidden element from form
 const getSecurityToken = function (formElementId) {
     const token = document.querySelector(formElementId + ' input[name="__RequestVerificationToken"]').value;
@@ -236,20 +234,23 @@ const getSecurityToken = function (formElementId) {
 }
 
 // Checks if it's a valid date
-function isValidDate(value) {
+// value: The date 'string' to validate (in 'YYYY-MM-DD' format) (MUST BE FOR THE BELOW FUNCTION TO WORK CORRECTLY!!!)
+const isValidDate  = function (value) {
+
     const d = new Date(value);
 
     return (
         value !== "" &&                // not empty
         !isNaN(d.getTime()) &&        // Date object is valid
         value === d.toISOString().split("T")[0] // matches YYYY-MM-DD format
+        // value === formatDateToYYYYMMDD(d)        // WRONG...WILL FAIL
     );
+
 }
 
 // Returns today's date in 'YYYY-MM-DD' format for USA
-function getTodaysUSDate() {
+const formatDateToYYYYMMDD = function (d) {
 
-    const d = new Date(); // local USA time
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
@@ -258,6 +259,17 @@ function getTodaysUSDate() {
     
 }
 
+// Get the date object from a 'YYYY-MM-DD' formatted string
+const parseLocalDate = function (yyyyMmDd) {
+    const [y, m, d] = yyyyMmDd.split("-");
+    return new Date(Number(y), Number(m) - 1, Number(d));
+}
+
+// Formats a date string to a local format (like "mm/dd/yyyy" for en-US, "dd/mm/yyyy" for en-GB, "yyyy-mm-dd" for ja-JP, etc.)
+const formatLocal = function (yyyyMmDd, locale) {
+    const d = parseLocalDate(yyyyMmDd);
+    return d.toLocaleDateString(locale);
+}
 
 // Creates a Disabled Blank Option
 const createBlankOptionForSelect = function (blankOptionText, blankOptionDisabled) {
@@ -326,7 +338,6 @@ const getFormEntries = function (form) {
     return formResults;
 }
 
-
 // This function will work if all the elements in the form has name and it is the same as Record Model Element Name & in Same Case
 const setFormData = function (form, record){
     // Iterate through each form element
@@ -339,16 +350,15 @@ const setFormData = function (form, record){
 }
 
 // Shows the material-symbols-outlined icons as oneline with the text. This is useful for buttons and other UI elements where you want to combine an icon with a label.
-function iconText(icon, text) {
+const iconText = function (icon, text) {
     return `<span style="display:flex; align-items:center; justify-content:center; width:100%;">
                 <span class="material-symbols-outlined" style="margin-right:4px;">${icon}</span>
                 ${text}
             </span>`;
 }
 
-
 // Displays the message in the 'dbMessage' div, TO BE USED FOR DATABASE OPERATION RESULT!!!
-function showDbMessage(message, isSuccess = true) {
+const showDbMessage = function (message, isSuccess = true) {
     const msgDiv = document.getElementById("dbMessage");
 
     // Set message text
@@ -369,4 +379,3 @@ function showDbMessage(message, isSuccess = true) {
         setTimeout(() => msgDiv.style.display = "none", 400);
     }, 1000);
 }
-

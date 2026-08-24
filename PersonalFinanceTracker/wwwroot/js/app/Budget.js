@@ -2,8 +2,8 @@ let _token = getSecurityToken('#budgetDataFilterForm');
 let budgetDetailsDataJSON = '';
 let budgetsMonthYearJSON = '';
 let userCurrencyDetailsJSON = '';
-let budgetStartDate = new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0];
-let budgetEndDate = new Date(new Date().getFullYear(), 11, 31).toISOString().split('T')[0];
+let budgetStartDate = formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 0, 1));       // correct way!!!
+let budgetEndDate = formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 11, 31));       // correct way!!!
 let budgetFiltersChanged = false;
 
 // Generates/Creates a new modal and shows or hide the same modal...
