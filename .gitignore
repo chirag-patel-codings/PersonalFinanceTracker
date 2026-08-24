@@ -6,5 +6,6 @@ PersonalFinanceTrackerTests/obj
 PersonalFinanceTracker/appsettings.Development.json
 PersonalFinanceTracker/appsettings.json
 PersonalFinanceTrackerTests/appsettings.test.json
+Logs/*
 
 
