@@ -15,15 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Transaction\Rules\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\Dashboard\" />
     <Folder Include="Models\Report\" />
     <Folder Include="Models\Profile\" />
-    <Folder Include="Models\Transaction\Rules\" />
+    <Folder Include="Uploads\" />
+    <Folder Include="Uploads\1001783960586327435\CSVUpload\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Transaction\Rules\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 

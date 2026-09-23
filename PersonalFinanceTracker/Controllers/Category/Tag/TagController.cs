@@ -17,8 +17,10 @@ namespace PersonalFinanceTracker.Controllers
         private readonly ulong _currentUserId;
         public TagController(IHttpContextAccessor httpContextAccessor, ITagRepository tagRepository)
         {
+
             _tagRepository = tagRepository;
             _currentUserId = ulong.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
         }
 
 
@@ -27,7 +29,9 @@ namespace PersonalFinanceTracker.Controllers
         [HttpGet("/categories/tags")]
         public ActionResult Index(string? connString)
         {
+
             return View("~/Views/Category/Tag/tag.cshtml");
+        
         }
 
 
@@ -37,6 +41,7 @@ namespace PersonalFinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
         {
+
             Pagination pagination;
             IEnumerable<Tag> tags;
             
@@ -56,6 +61,7 @@ namespace PersonalFinanceTracker.Controllers
             tags = _tagRepository.GetTags(_currentUserId, pagination.RecordStartNumber, pagination.RecordEndNumber, connString);
 
             return Ok(new { tags, pagination });
+
         }
 
 
@@ -70,6 +76,7 @@ namespace PersonalFinanceTracker.Controllers
             var tag = _tagRepository.GetTag(_currentUserId, tagId, connString);
 
             return Ok(tag);
+
         }
 
         // Update or Add New Tag!!!
@@ -95,7 +102,7 @@ namespace PersonalFinanceTracker.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "Data Validation Error." });
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }

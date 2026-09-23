@@ -37,8 +37,8 @@ const displayRecurringData = function (recurringsData, pagination) {
             <td style="text-align: right;">${item.goalId !== null ? `<span style="margin-right: 0px !important;" class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${goalsListJSON.find(t => t.listOptionId == item.goalId)?.listOptionName}">money_range</span>` : ''}${userCurrencyDetailsJSON["currencySymbol"] + item.recurringAmount}</td>
             <td>${accountsListJSON.find(t => t.listOptionId == item.accountId)?.listOptionName}${`&nbsp;<span class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${categoriesListJSON.find(t => t.listOptionId == item.categoryId)?.listOptionName}">new_label</span>`}</td>
             <td>${transactionRepeatIntervalListJSON.find(t => t.listOptionId == item.transactionRepeatInterval)?.listOptionName}</td>
-            <td>${item.recurringNextDate ? formatLocal(item.recurringNextDate, 'en-US') : ' - '}</td>
-            <td>${item.transactionRepeatEndDate ? formatLocal(item.transactionRepeatEndDate, 'en-US') : ' - '}</td>
+            <td>${item.recurringNextDate ? formatToLocalDate(item.recurringNextDate, 'en-US') : ' - '}</td>
+            <td>${item.transactionRepeatEndDate ? formatToLocalDate(item.transactionRepeatEndDate, 'en-US') : ' - '}</td>
             <td>${'<span class="badge bg-secondary">' + recurringStatus + '</span>'}</td>
             <td><span title="Edit" class="material-symbols-outlined-data-icon">edit</span></td>
             <td><span title="Delete" class="material-symbols-outlined-data-icon">delete</span></td>`;
@@ -94,15 +94,15 @@ const showAddEditRecurringModal = function (record) {
     populateSelectFromJSON('modalTagId', tagsListJSON, 'listOptionId', 'listOptionName', '-- Select Tag --',  false);
     populateSelectFromJSON('modalTransactionRepeatInterval', transactionRepeatIntervalListJSON, 'listOptionId', 'listOptionName');
     
-    const recurringForm = document.getElementById('addEditRecurringForm');
-    setFormData(recurringForm, record);
     $("[name='recurringNextDate']").data("focused", true); // To match the UI Validation Behavior Consistent;
     $("[name='transactionRepeatEndDate']").data("focused", true); // To match the UI Validation Behavior Consistent;
-
+    
     document.getElementById("modalIsTransactionRepeatActive").checked = record.isTransactionRepeatActive == 1;
     
     // Display the currency symbol in the modal
     document.getElementById('currencySymbolId').innerText = userCurrencyDetailsJSON["currencySymbol"];
+    
+    setFormData('addEditRecurringForm', record);
     
     // Open up the Bootstrap modal visually
     showHideAddEditRecurringModal(true);
@@ -181,6 +181,7 @@ const getRecurringRecord = function (recurringId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditRecurringForm"));
             // Work with parsed data object here
             data.transactionRepeatInterval = data.transactionRepeatInterval || 3; // Default to "Monthly" in 'Edit' mode. * REQUIRED FIELD
             showAddEditRecurringModal(data);
@@ -193,9 +194,7 @@ const getRecurringRecord = function (recurringId) {
 // Save Current Record or Add New Record!!
 const saveRecurringRecord = function () {
 
-    const form = document.getElementById('addEditRecurringForm');
-
-    var data = getFormEntries(form);
+    var data = getFormEntries('addEditRecurringForm');
     data.recurringAmount = Number(data.recurringAmount); // Convert String to a Number (null or '' will be converted to 0)
     data.transactionCategorization = data.transactionCategorization ? Number(data.transactionCategorization) : 1;
     data.isTransactionRepeatActive = Number(data.isTransactionRepeatActive);
@@ -320,8 +319,8 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
     recurringsDataMode = 'Add';
     clearFormData('#addEditRecurringForm');
-    const recurringForm = document.getElementById('addEditRecurringForm');
-    const record = getFormEntries(recurringForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditRecurringForm"));
+    const record = getFormEntries('addEditRecurringForm');    // Retrieve a blank record!!!
 
     record.recurringNextDate = formatDateToYYYYMMDD(new Date());   // Today's Date In YYYY-MM-DD format. * REQUIRED FIELD
     record.transactionCategorization = 1; // Manual Entry
@@ -336,6 +335,14 @@ document.getElementById("modalIsTransactionRepeatActive").addEventListener("chan
     e.target.value = e.target.checked ? 1 : 0;
 });
 
+
+//  Set the Category Type value for the hidden field to validate amount!
+document.getElementById('modalCategoryId').addEventListener("change", (e) => {
+
+    e.preventDefault();
+    document.getElementById('modalCategoryType').value = categoriesListJSON.find(c => c.listOptionId == e.target.value)?.listOptionType;
+
+});
 
 // Load the first time data!!!
 doNavigation(null, 'first', true);
@@ -361,12 +368,16 @@ $.validator.addMethod("dategte", function (value, element) {
 // Add the adapter for unobtrusive validation
 $.validator.unobtrusive.adapters.addBool("dategte");
 
+
+// Validate Amount Value for Category!!
+appendAmountValidationForCategoryType( 'categoryId' , 'recurringAmount' );
+
 // Start Date must be lower than End Date
 appendLessThanDateValueValidationFunctionality();
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form (MUST BE LAST ALWAYS)
 // Attach the unobtrusive validation to the modal form after the DOM is ready
-setUpUnobtrusiveValidationOnModal('#addEditRecurringModal', '#addEditRecurringForm');
+setUpUnobtrusiveValidationOnModal('#addEditRecurringModal');
 
 
 // Save the recurring record

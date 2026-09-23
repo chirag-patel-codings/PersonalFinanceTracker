@@ -62,7 +62,7 @@
                             </a>
                             <div class="side-subpanel">
                                 <a class="@(currentController == "Transaction" ? "side-bar-active" : "")" asp-area="" asp-controller="Transaction" asp-action="Index">Activities</a>
-                                <a href="#">Rules</a>
+                                <a class="@(currentController == "TransactionRule" ? "side-bar-active" : "")" asp-area="" asp-controller="TransactionRule" asp-action="Index">Rules</a>
                                 <a class="@(currentController == "Recurring" ? "side-bar-active" : "")" asp-area="" asp-controller="Recurring" asp-action="Index">Recurring Schedules</a>
                             </div>
                         </div>

@@ -115,8 +115,6 @@ namespace PersonalFinanceTracker.Services.Repository
             parameters.Add("is_transaction_repeat_active", transactionRecurringRecord.IsTransactionRepeatActive); 
             parameters.Add("total_effected_records", direction: ParameterDirection.Output);
 
-            
-
             _conn.Execute("sp_pft_save_transaction_recurring",
                             parameters,
                             commandType: CommandType.StoredProcedure

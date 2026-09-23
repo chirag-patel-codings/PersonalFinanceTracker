@@ -101,8 +101,8 @@ namespace PersonalFinanceTracker.Services.Repository
             goalParameters.Add("goal_id", goalId);
             goalParameters.Add("user_id", goal.UserId);
             goalParameters.Add("goal_type", goal.GoalType);
-            goalParameters.Add("goal_name", goal.GoalName);
-            goalParameters.Add("goal_description", goal.GoalDescription);
+            goalParameters.Add("goal_name", goal.GoalName.Trim());
+            goalParameters.Add("goal_description", string.IsNullOrEmpty(goal.GoalDescription) ? goal.GoalDescription : goal.GoalDescription.Trim());
             goalParameters.Add("total_effected_records", direction: ParameterDirection.Output);
 
             using (var transaction = _conn.BeginTransaction())

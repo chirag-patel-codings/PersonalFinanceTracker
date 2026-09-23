@@ -36,23 +36,28 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
         public AuthenticationController(IUserRepository userRepository, IUserRegistrationRepository userRegistrationRepository, IEmailService emailService)
         {
+
             //_factory = factory;
             _userRepository = userRepository;
             _userRegistrationRepository = userRegistrationRepository;
             _emailService = emailService;
+
         }
 
         [HttpGet("login")]
         [HttpGet("/")]  // Making this default page.
         public IActionResult Login()
         {
+
             return View();
+
         }
 
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(SessionUser userLogInDetails, string? connString)
         {
+
             if (ModelState.IsValid)
             {
                 SessionUser? requestedUserDetails = _userRepository.GetUserDetailsForLogIn(userLogInDetails.UserNameOrEmail, connString);
@@ -85,13 +90,16 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             ModelState.AddModelError("", "Invalid username or password!");
 
             return View(userLogInDetails);
+
         }
 
 
         [HttpGet("register")]
         public IActionResult Register()
         {
+
             return View("UserRegistration", (new UserRegistration()));
+
         }
 
         
@@ -119,13 +127,16 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             }
 
             return View("UserRegistration", user);
+
         }
 
         // Not implemented yet...
         [HttpGet("accessdenied")]
         public IActionResult AccessDenied()
         {
+
             return View();
+
         }
 
         /// <summary>
@@ -153,6 +164,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             }
 
             return Json(true);
+
         }
 
         /// <summary>
@@ -179,6 +191,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             }
 
             return Json(true);
+
         }
 
 
@@ -190,6 +203,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             
             await PerformSignOutAsync();
             return RedirectToAction("Login", "Authentication");
+
         }
 
         // On browser close (Works on Edge but NOT on Chrome. NOT PERFECT BUT WORKS!!!)
@@ -197,15 +211,19 @@ namespace PersonalFinanceTracker.Controllers.Authentication
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> WindowClosedLogout()
         {
+
             await PerformSignOutAsync();
             return Ok(); // Clean 200 OK response for the beacon
+
         }
 
 
         private async Task PerformSignOutAsync()
         {
+
             // Remove the tracking cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
         }
 
     }

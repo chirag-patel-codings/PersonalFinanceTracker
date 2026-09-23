@@ -32,11 +32,11 @@ namespace PersonalFinanceTracker.Services.Repository
             using IDbConnection _conn = _factory.GetDBConnection(connString);
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("user_first_name", userRegistration.FirstName);
-            parameters.Add("user_last_name", userRegistration.LastName);
-            parameters.Add("user_user_name", userRegistration.UserName);
+            parameters.Add("user_first_name", userRegistration.FirstName.Trim());
+            parameters.Add("user_last_name", userRegistration.LastName.Trim());
+            parameters.Add("user_user_name", userRegistration.UserName.Trim());
             parameters.Add("user_password_hash", userRegistration.PasswordHash);
-            parameters.Add("user_email", userRegistration.Email);
+            parameters.Add("user_email", userRegistration.Email.Trim());
             parameters.Add("user_email_verification_token_hash", userRegistration.userEmailTokenHash);
             parameters.Add("total_inserted_records", direction: ParameterDirection.Output);
 

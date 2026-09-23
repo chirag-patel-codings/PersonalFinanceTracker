@@ -98,7 +98,7 @@ const displayTransactionData = function (transactionsData, pagination) {
         row.setAttribute("data-secure-index", item.transactionId);
 
         // Populate the row with specific cell data
-        row.innerHTML = `<td>${formatLocal(item.transactionDate, 'en-US')}</td>
+        row.innerHTML = `<td>${formatToLocalDate(item.transactionDate, 'en-US')}</td>
             <td style="white-space: normal; word-break: break-word; width: 30% !important;">${item.transactionDescription.trim()}${item.tagId !== null ? `&nbsp;<span class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${tagsListJSON.find(t => t.listOptionId == item.tagId)?.listOptionName}")>new_label</span>` : ''}</td>
             <td style="text-align: right;">${item.goalId !== null ? `<span style="margin-right: 0px !important;" class="position-relative top-0 translate-middle badge rounded-pill bg-secondary material-symbols-outlined-panel-pill" title="${goalsListJSON.find(t => t.listOptionId == item.goalId)?.listOptionName}">money_range</span>` : ''}${userCurrencyDetailsJSON["currencySymbol"] + item.transactionAmount}</td>
             <td>${accountsListJSON.find(t => t.listOptionId == item.accountId)?.listOptionName}</td>
@@ -156,14 +156,13 @@ const showAddEditTransactionModal = function (record) {
     populateSelectFromJSON('modalTagId', tagsListJSON, 'listOptionId', 'listOptionName', '-- Select Tag --',  false);
     populateSelectFromJSON('modalTransactionRepeatInterval', transactionRepeatIntervalListJSON, 'listOptionId', 'listOptionName');
     
-    const transactionForm = document.getElementById('addEditTransactionForm');
-    setFormData(transactionForm, record);
-
     document.getElementById("modalIsTransactionRepeatActive").checked = record.isTransactionRepeatActive == 1;
     document.getElementById("transactionRepeatFieldsContainer").style.display = record.isTransactionRepeatActive == 0 ? "none" : "block";
     
     // Display the currency symbol in the modal
     document.getElementById('currencySymbolId').innerText = userCurrencyDetailsJSON["currencySymbol"];
+    
+    setFormData('addEditTransactionForm', record);
     
     // Open up the Bootstrap modal visually
     showHideAddEditTransactionModal(true);
@@ -253,6 +252,7 @@ const getTransactionRecord = function (transactionId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditTransactionForm"));
             // Work with parsed data object here
             data.transactionRepeatInterval = data.transactionRepeatInterval || 3; // Default to "Monthly" in 'Edit' mode. * REQUIRED FIELD
             showAddEditTransactionModal(data);
@@ -265,9 +265,7 @@ const getTransactionRecord = function (transactionId) {
 // Save Current Record or Add New Record!!
 const saveTransactionRecord = function () {
 
-    const form = document.getElementById('addEditTransactionForm');
-
-    var data = getFormEntries(form);
+    var data = getFormEntries('addEditTransactionForm');
     data.transactionAmount = Number(data.transactionAmount); // Convert String to a Number
     data.transactionCategorization = data.transactionCategorization ? Number(data.transactionCategorization) : 1;
     data.transactionType = data.transactionType ? Number(data.transactionType) : 1;
@@ -362,7 +360,6 @@ document.getElementById('showHideTransactionFilters').addEventListener('click', 
 });
 
 
-
 // Listen for clicks anywhere inside the table body
 document.querySelector('tbody').addEventListener('click', function (event) {
 
@@ -405,8 +402,8 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
     transactionsDataMode = 'Add';
     clearFormData('#addEditTransactionForm');
-    const transactionForm = document.getElementById('addEditTransactionForm');
-    const record = getFormEntries(transactionForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditTransactionForm"));
+    const record = getFormEntries('addEditTransactionForm');    // Retrieve a blank record!!!
 
     record.transactionCategorization = 1; // Manual Entry
     record.transactionType =  1;    // Regular Transaction
@@ -444,6 +441,14 @@ document.getElementById("transactionDataFilterDiv").addEventListener("keypress",
     }
 });
 
+//  Set the Category Type value for the hidden field to validate amount!
+document.getElementById('modalCategoryId').addEventListener("change", (e) => {
+
+    e.preventDefault();
+    document.getElementById('modalCategoryType').value = categoriesListJSON.find(c => c.listOptionId == e.target.value)?.listOptionType;
+
+});
+
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 
@@ -471,11 +476,14 @@ $.validator.addMethod("dategte", function (value, element) {
 // Register with Unobtrusive Validation
 $.validator.unobtrusive.adapters.addBool("dategte");
 
+// Validate Amount Value for Category!!
+appendAmountValidationForCategoryType( 'categoryId' , 'transactionAmount' );
+
 // Start Date must be lower than End Date
 appendLessThanDateValueValidationFunctionality();
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form (Must be last always)
-setUpUnobtrusiveValidationOnModal('#addEditTransactionModal', '#addEditTransactionForm');
+setUpUnobtrusiveValidationOnModal('#addEditTransactionModal');
 
 // Save the transaction record
 $(document).ready(function () {

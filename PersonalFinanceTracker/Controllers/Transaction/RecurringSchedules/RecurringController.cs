@@ -17,11 +17,13 @@ namespace PersonalFinanceTracker.Controllers
         private readonly string _userCurrencyCode, _userCurrencySymbol;
         public RecurringController(IHttpContextAccessor httpContextAccessor, IRecurringRepository recurringRepository, ITransactionRepository transactionRepository) 
         { 
+
             _recurringRepository = recurringRepository;
             _transactionRepository = transactionRepository;
             _currentUserId = ulong.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
             _userCurrencyCode = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencyCode");
             _userCurrencySymbol = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencySymbol");
+        
         }
 
 
@@ -42,6 +44,7 @@ namespace PersonalFinanceTracker.Controllers
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
         {
+
             Pagination pagination;
             IEnumerable<Recurring> recurrings;
             IEnumerable<ListOptionStringId>? categoriesList = null;
@@ -114,6 +117,7 @@ namespace PersonalFinanceTracker.Controllers
             var recurring = _recurringRepository.GetRecurring(_currentUserId, recurringId, connString);
             
             return Ok(recurring);
+
         }
 
 
@@ -140,7 +144,7 @@ namespace PersonalFinanceTracker.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "Data Validation Error." });
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }

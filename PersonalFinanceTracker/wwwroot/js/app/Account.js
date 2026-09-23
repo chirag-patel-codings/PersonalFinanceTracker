@@ -2,7 +2,7 @@ let _token = getSecurityToken('#addEditAccountForm');
 let accountsPaginationJSON = '';
 let accountTypesJSON = '';
 let accountsDataMode = '';
-let prevQueriedRecord = '';
+let prevQueriedRecordId = '';
 
 // Displays the data in the table in UI (<tbody id="accountsTBody">)...
 const displayAccountData = function (accountsData, pagination) {
@@ -100,6 +100,7 @@ const getAccountRecord = function (accountId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditAccountForm"));
             // Work with parsed data object here
             showAddEditAccountModal(data);
         })
@@ -144,8 +145,8 @@ const showAddEditAccountModal = function (record) {
 
         populateSelectFromJSON('modalAccountTypeId', accountTypesJSON, 'accountTypeId', 'accountTypeNameAndDescription', '-- Account Type--');
 
-        const accountForm = document.getElementById('addEditAccountForm');
-        setFormData(accountForm, record);
+        setFormData('addEditAccountForm', record);
+
     }
 
     // Open up the Bootstrap modal visually
@@ -155,9 +156,7 @@ const showAddEditAccountModal = function (record) {
 // Save Current Record or Add New Record!!
 const saveAccountRecord = function () {
 
-    const form = document.getElementById('addEditAccountForm');
-
-    var data = getFormEntries(form);
+    var data = getFormEntries('addEditAccountForm');
 
     data.accountTypeId = +data.accountTypeId;   // '+' urinary operator convers string to number if it's number
     data.isALinkedAccount = +data.isALinkedAccount;
@@ -246,12 +245,12 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         // Execute specific logic depending on what was clicked
         if (actionType === "Edit") {
 
-            if (recordId === prevQueriedRecord) {
+            if (recordId === prevQueriedRecordId) {
                 showAddEditAccountModal(null); // Show the existing details
             }
             else {
                 getAccountRecord(recordId);
-                prevQueriedRecord = recordId;
+                prevQueriedRecordId = recordId;
             }
 
         } else if (actionType === "Delete") {
@@ -265,11 +264,11 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 });
 
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
-    prevQueriedRecord = '';
+    prevQueriedRecordId = '';
     accountsDataMode = 'Add';
     clearFormData('#addEditAccountForm');
-    const accountForm = document.getElementById('addEditAccountForm');
-    const record = getFormEntries(accountForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditAccountForm"));
+    const record = getFormEntries('addEditAccountForm');    // Retrieve a blank record!!!
     showAddEditAccountModal(record);
 });
 
@@ -278,7 +277,7 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 doNavigation(null, 'first', true);
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form
-setUpUnobtrusiveValidationOnModal('#addEditAccountModal', '#addEditAccountForm');
+setUpUnobtrusiveValidationOnModal('#addEditAccountModal');
 
 $(document).ready(function () {
 

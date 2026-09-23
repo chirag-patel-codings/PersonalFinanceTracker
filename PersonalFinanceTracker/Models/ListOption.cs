@@ -8,10 +8,13 @@
         {
             ListOptionId = listOptionId;
             ListOptionName = listOptionName;
+            
         }
 
         public sbyte ListOptionId { get; set; }
         public string ListOptionName { get; set; }
+
+        
     }
 
 }

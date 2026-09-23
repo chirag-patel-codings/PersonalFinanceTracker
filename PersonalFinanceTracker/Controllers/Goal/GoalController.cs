@@ -15,8 +15,10 @@ namespace PersonalFinanceTracker.Controllers
         private readonly ulong _currentUserId;
         public GoalController(IHttpContextAccessor httpContextAccessor, IGoalRepository goalRepository) 
         { 
+
             _goalRepository = goalRepository;
             _currentUserId = ulong.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
         }
 
 
@@ -25,7 +27,9 @@ namespace PersonalFinanceTracker.Controllers
         // Index page!!!
         public IActionResult Index(string? connString)
         {
+
             return View("Goal");
+
         }
 
 
@@ -35,6 +39,7 @@ namespace PersonalFinanceTracker.Controllers
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...Subsequent after Index page!!1
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
         {
+
             Pagination pagination;
             IEnumerable<Goal> goals;
             IEnumerable<ListOption>? goalTypes = null;
@@ -80,6 +85,7 @@ namespace PersonalFinanceTracker.Controllers
             goals = _goalRepository.GetGoals(_currentUserId, pagination.RecordStartNumber, pagination.RecordEndNumber, connString);
 
             return Ok(new { goals, pagination, goalTypes, goalIntervalTypes });
+
         }
 
 
@@ -94,6 +100,7 @@ namespace PersonalFinanceTracker.Controllers
             var goal = _goalRepository.GetGoalWithDetails(_currentUserId, goalId, connString);
             
             return Ok(goal);
+
         }
 
 
@@ -120,7 +127,7 @@ namespace PersonalFinanceTracker.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "Data Validation Error." });
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }

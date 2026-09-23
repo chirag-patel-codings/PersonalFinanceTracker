@@ -6,11 +6,24 @@
     {
         public ListOptionStringId(string listOptionId, string listOptionName)
         {
+
             ListOptionId = listOptionId;
             ListOptionName = listOptionName;
+
         }
+
+        public ListOptionStringId (string listOptionId, string listOptionName, sbyte? listOptionType = null)
+        {
+            ListOptionId = listOptionId;
+            ListOptionName = listOptionName;
+            ListOptionType = listOptionType;
+        }
+
+
         public string ListOptionId { get; set; }
         public string ListOptionName { get; set; }
+        public sbyte? ListOptionType { get; set; } = null;      // Stores if there is any type..for example: CategoryType
+
     }
 
 }

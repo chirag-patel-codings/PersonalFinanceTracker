@@ -223,7 +223,7 @@ const generateBudgetSettingsForms = function (record, drawBorderTop) {
     saveBtn.disabled = true;
     saveBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const record = getFormEntries(form);
+        const record = getFormEntries(form.id);
         saveBudgetSettings(record);
         // console.log('record: ', record);
         // e.target.disabled = true;

@@ -1,5 +1,5 @@
 let _token = getSecurityToken('#addEditGoalFormId');
-let prevQueriedRecord = '';
+let prevQueriedRecordId = '';
 let goalsPaginationJSON = '';
 let goalTypesJSON = '';
 let goalIntervalTypesJSON = '';
@@ -274,8 +274,7 @@ const showAddEditGoalModal = function (data) {
         document.getElementById('modalGoalDetailsContainerId').innerHTML = '';  // remove all the exsiting DETAILS
         populateSelectFromJSON('modalGoalTypeId', goalTypesJSON, 'listOptionId', 'listOptionName', '-- Goal Type --');
 
-        const goalForm = document.getElementById('addEditGoalFormId');
-        setFormData(goalForm, data);
+        setFormData('addEditGoalFormId', data);
 
         data.goalDetails?.forEach((record) => {
             appendGoalDetailForm(record);
@@ -354,6 +353,7 @@ const getGoalRecord = function (goalId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditGoalFormId"));
             // Work with parsed data object here
             showAddEditGoalModal(data);
         })
@@ -365,13 +365,12 @@ const getGoalRecord = function (goalId) {
 // Data to be retrieved from every main and child forms (BEFORE SAVE)!!!
 const getGoalAndDetailsData = function () {
 
-    const form = document.getElementById('addEditGoalFormId');
-    var data = getFormEntries(form);
+    var data = getFormEntries('addEditGoalFormId');
     data.goalType = +data.goalType;     // Convert String to a Number for small numbers
 
     data.goalDetails = [];
     document.querySelectorAll('#modalGoalDetailsContainerId form').forEach((detailsForm) => {
-        var detail = getFormEntries(detailsForm);
+        var detail = getFormEntries(detailsForm.id);
         detail = changeKeyIndexes(detail);      // remove the trailing number and '-' from field name
         detail.goalInterval = Number(detail.goalInterval);
         detail.goalAmount = Number(detail.goalAmount);
@@ -466,12 +465,12 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         // Execute specific logic depending on what was clicked
         if (actionType === "Edit") {
 
-            if (recordId === prevQueriedRecord) {
+            if (recordId === prevQueriedRecordId) {
                 showAddEditGoalModal(null); // Show the existing details
             }
             else {
                 getGoalRecord(recordId);
-                prevQueriedRecord = recordId;
+                prevQueriedRecordId = recordId;
             }
 
 
@@ -489,11 +488,11 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 // ADD 
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
-    prevQueriedRecord = '';
+    prevQueriedRecordId = '';
     goalsDataMode = 'Add';
     clearFormData('#addEditGoalFormId');
-    const goalForm = document.getElementById('addEditGoalFormId');
-    const record = getFormEntries(goalForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditGoalFormId"));
+    const record = getFormEntries('addEditGoalFormId');    // Retrieve a blank record!!!
     showAddEditGoalModal(record);
 
 });
@@ -505,7 +504,7 @@ doNavigation(null, 'first', true);
 appendLessThanDateValueValidationFunctionality();
 
 // Configure Unobtrusive Validations Settings On Modal and it's MAIN Form
-setUpUnobtrusiveValidationOnModal('#addEditGoalModal', '#addEditGoalFormId');
+setUpUnobtrusiveValidationOnModal('#addEditGoalModal');
 
 $('#btnGoalModalSaveChanges').on('click', function () {
     // Select the main form AND all detail/child forms

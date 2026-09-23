@@ -1,5 +1,5 @@
 let _token = getSecurityToken('#addEditTagForm');
-let prevQueriedRecord = '';
+let prevQueriedRecordId = '';
 let tagsPaginationJSON = '';
 let tagsDataMode = '';
 
@@ -98,6 +98,7 @@ const getTagRecord = function (tagId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditTagForm"));
             // Work with parsed data object here
             showAddEditTagModal(data);
         })
@@ -140,8 +141,7 @@ const showHideAddEditTagModal = function (show) {
 const showAddEditTagModal = function (record) {
 
     if (record) {
-        const tagForm = document.getElementById('addEditTagForm');
-        setFormData(tagForm, record);
+        setFormData('addEditTagForm', record);
     }
     // Open up the Bootstrap modal visually
     showHideAddEditTagModal(true);
@@ -150,9 +150,7 @@ const showAddEditTagModal = function (record) {
 // Save Current Record or Add New Record!!
 const saveTagRecord = function () {
 
-    const tagForm = document.getElementById('addEditTagForm');
-
-    var data = getFormEntries(tagForm);
+    var data = getFormEntries('addEditTagForm');
 
     fetch("/Tag/SaveTag", {
         method: "POST",
@@ -237,13 +235,13 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         // Execute specific logic depending on what was clicked
         if (actionType === "Edit") {
 
-            if (recordId === prevQueriedRecord) {
+            if (recordId === prevQueriedRecordId) {
                 showAddEditTagModal(null); // Show the existing details
             }
             else {
 
                 getTagRecord(recordId);
-                prevQueriedRecord = recordId;
+                prevQueriedRecordId = recordId;
             }
 
         } else if (actionType === "Delete") {
@@ -257,11 +255,11 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 });
 
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
-    prevQueriedRecord = '';
+    prevQueriedRecordId = '';
     tagsDataMode = 'Add';
     clearFormData('#addEditTagForm');
-    const tagForm = document.getElementById('addEditTagForm');
-    const record = getFormEntries(tagForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditTagForm"));
+    const record = getFormEntries('addEditTagForm');    // Retrieve a blank record!!!
     showAddEditTagModal(record);
 });
 
@@ -269,7 +267,7 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 doNavigation(null, 'first', true);
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form
-setUpUnobtrusiveValidationOnModal('#addEditTagModal', '#addEditTagForm');
+setUpUnobtrusiveValidationOnModal('#addEditTagModal');
 
 $(document).ready(function () {
 

@@ -13,17 +13,22 @@ namespace PersonalFinanceTracker.Controllers
         IUserRegistrationRepository _userRegistrationRepository;
         public DashboardController(IUserRegistrationRepository userRegistrationRepository)
         {
+
             _userRegistrationRepository = userRegistrationRepository;
+
         }
         public IActionResult Index()
         {
+
             return View();
+
         }
 
         [AllowAnonymous]
         [Route("VerifyEmail")]
         public IActionResult VerifyEmail([FromQuery] string? token)
         {
+
             if(token != null)
             {
                 int totalRecordsUpdated = _userRegistrationRepository.UpdateUserEmailVarification(token, null);
@@ -32,6 +37,7 @@ namespace PersonalFinanceTracker.Controllers
                     return RedirectToAction("Index");
                 }
             }
+
             return RedirectToAction("Error/" + HttpStatusCode.InternalServerError, "Error");
 
         }
@@ -39,7 +45,9 @@ namespace PersonalFinanceTracker.Controllers
         [AllowAnonymous]
         public IActionResult Privacy()
         {
+
             return View();
+
         }
 
 

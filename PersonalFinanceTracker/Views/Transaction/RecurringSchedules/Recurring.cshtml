@@ -1,7 +1,25 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Recurring>;
 
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Recurring Schedules <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
+<h3>
+    Recurring Schedules <span id="recurringInfo"
+                              class="material-symbols-outlined-password"
+                              data-bs-toggle="popover"
+                              data-bs-trigger="hover"
+                              data-bs-html="true"
+                              data-bs-placement="bottom"
+                              title="Recurring Transactions"
+                              data-bs-content="Recurring schuduled transactions will automatically move to the Transactions on the Due Date!
+                                                <ul>
+                                                    <li>For Amount: Use negative (-) sign for expenses, positive/un-signed for income.</li>
+                                               </ul>"
+                               style="cursor:pointer;">
+                            info
+                        </span>
+    
+    <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span>
+    
+</h3>
 
 <table class="table bg-light shadow-raised" id="recurringsTable">
     <thead>
@@ -24,7 +42,7 @@
 
 <!-- REMOVED aria-hidden="true" from this line entirely -->
 <div class="modal fade" id="addEditRecurringModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addEditRecurringModalLabel">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addEditRecurringModalLabelId"></h5>
@@ -38,6 +56,8 @@
                     <input type="hidden" id="modalRecurringId" name="recurringId">
                     <input type="hidden" id="modalTransactionCategorization" name="transactionCategorization">
                     <input type="hidden" id="modalTransactionRepeatId" name="transactionRepeatId">
+                    <input type="hidden" id="modalCategoryType" name="categoryType" value="" />  <!-- To validate amount -->
+
                     <div class="row p-0">
                         <div class="d-flex align-items-center">
                             <input type="checkbox" class="form-check-input toggle-switch" id="modalIsTransactionRepeatActive" name="isTransactionRepeatActive" value="0">
@@ -82,11 +102,12 @@
 
                     <div class="row p-0">
                         <div class="col-sm field">
-                            <div class="input-group">
+                            <div class="input-group" title="Use negative (-) sign for expenses, positive/un-signed for income">
                                 <div class="input-group-text" id="currencySymbolId"></div>
                                 <input type="number" step="0.01" id="modalRecurringAmount" name="recurringAmount"
                                        class="form-control" placeholder=" " data-val="true"
-                                       data-val-required="Please provide recurring amount!" />
+                                       data-val-required="Please provide recurring amount!" 
+                                       data-val-isvalidforcategorytype="For expense type of category, amount should be negative(-) otherwise positive(+)." data-val-isvalidforcategorytype-other="categoryType" />
                                 <label for="modalRecurringAmount" class="input-label">* Recurring Amount</label>
                             </div>
                             <span data-valmsg-for="recurringAmount" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
@@ -97,7 +118,7 @@
                         <div class="col-sm field">
                             <select id="modalAccountId" name="accountId"
                                     class="form-control" placeholder=" " data-val="true"
-                                    data-val-required="Please provide account id!">
+                                    data-val-required="Please provide account!">
                             </select>
                             <label for="modalAccountId" class="input-label">* Account</label>
                             <span data-valmsg-for="accountId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
@@ -108,7 +129,7 @@
                         <div class="col-sm field">
                             <select id="modalCategoryId" name="categoryId"
                                     class="form-control" placeholder=" " data-val="true"
-                                    data-val-required="Please provide category id!">
+                                    data-val-required="Please provide category!">
                             </select>
                             <label for="modalCategoryId" class="input-label">* Category</label>
                             <span data-valmsg-for="categoryId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>

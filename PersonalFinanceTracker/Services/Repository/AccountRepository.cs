@@ -82,10 +82,10 @@ namespace PersonalFinanceTracker.Services.Repository
             var parameters = new DynamicParameters();
             parameters.Add("account_id", account.AccountId == "" ? 0 : ulong.Parse(account.AccountId));
             parameters.Add("user_id", account.UserId);
-            parameters.Add("account_name", account.AccountName);
+            parameters.Add("account_name", account.AccountName.Trim());
             parameters.Add("account_institution_name", account.AccountInstitutionName);
             parameters.Add("account_type_id", account.AccountTypeId);
-            parameters.Add("account_description", account.AccountDescription);
+            parameters.Add("account_description", string.IsNullOrEmpty(account.AccountDescription) ? account.AccountDescription : account.AccountDescription.Trim());
             parameters.Add("is_a_linked_account", account.IsALinkedAccount);
             parameters.Add("total_effected_records", direction: ParameterDirection.Output);
 

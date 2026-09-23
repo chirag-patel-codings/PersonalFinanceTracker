@@ -9,14 +9,16 @@ namespace PersonalFinanceTracker.Controllers.Errors
 {
     public class ErrorHandlerController : Controller
     {
-        // 1. Declare the private field for logging.
+        // Declare the private field for logging.
         private readonly ILogger<ErrorHandlerController> _logger;
 
-        // 2. Inject it through the constructor
+        // Inject it through the constructor
         public ErrorHandlerController(ILogger<ErrorHandlerController> logger)
         {
-            // 3. Assign it to the field
+
+            // Assign it to the field
             _logger = logger;
+
         }
         
 
@@ -24,14 +26,15 @@ namespace PersonalFinanceTracker.Controllers.Errors
         [Route("/Error/{statusCode?}")]
         public IActionResult Error(int? statusCode = null)
         {
-            // 1. Initialize the view model with the request tracking ID
+
+            // Initialize the view model with the request tracking ID
             var model = new ErrorViewModel
             {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                 StatusCode = statusCode ?? 500 // Default to 500 if no code is passed
             };
 
-            // 2. Customize the message depending on the HTTP status code
+            // Customize the message depending on the HTTP status code
             if (model.StatusCode == 404)
             {
                 model.ErrorMessage = "The page or resource you requested could not be found.";
@@ -49,7 +52,7 @@ namespace PersonalFinanceTracker.Controllers.Errors
                 return View("AccessDenied", model);
             }
 
-            // 3. Handle general 500 system/database crashes
+            // Handle general 500 system/database crashes
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             if (exceptionDetails != null)
@@ -60,6 +63,7 @@ namespace PersonalFinanceTracker.Controllers.Errors
             model.ErrorMessage = "An unexpected server error occurred while processing your request. Please try again later.";
 
             return View("Error", model);
+
         }
     }
 }

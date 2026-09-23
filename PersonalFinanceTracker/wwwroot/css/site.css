@@ -772,7 +772,7 @@ input[type="color"] {
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    max-width: 750px;
+    /* max-width: 750px; */
     top: 100px;
     width: 90%;
 }
@@ -804,7 +804,7 @@ input[type="color"] {
 /* Set a height limit so it scrolls vertically too */
 .table-container {
     width: 100%;
-    max-height: 650px;
+    max-height: 550px;
     min-height: 250px;
     overflow-x: auto;
     overflow-y: auto;
@@ -956,5 +956,71 @@ input[type="number"]:focus {
         transform: translateX(37px);
     }
 
-
 /* Budget Rollover Settings - Toggle button - End */
+
+/* Rule Description Div - Starts here */
+.description-div {
+    padding: 5px;
+    background-color: rgba(128, 128, 128, 0.05); /* transparent grey */
+    border: 1px dashed rgba(128, 128, 128, 0.5);
+    height: auto;
+    min-height: 70px;
+    white-space: normal;    /* allows wrapping */
+    word-break: break-word; /* wraps long words */
+    border-radius: 5px;
+}
+
+
+/* Rule Description Div - Ends here */
+
+/* CSV Upload - Start Here */
+#csvFileUploadModal:has(.nav-link.active) .nav-link.active {
+    background-color: #007bff !important;
+    color: #f8fafc !important;
+}
+
+#csvFileUploadModal .uploadFileTab{
+    height: max-content;
+}
+
+/* drag & drop zone styling */
+.dropzone {
+    border: 2px dashed #6c757d;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    color: #6c757d;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.dropzone:hover {
+    background: rgba(128, 128, 128, 0.1);
+}
+
+/* CSV Data Table(s) */
+#csvFileUploadModal table{
+    table-layout: fixed;
+    font-size: 12px;
+    width: 100%;
+    /*border-collapse: collapse;*/
+}
+
+#csvFileUploadModal th{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#csvFileUploadModal td,
+#csvFileUploadModal th{
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    padding: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dynamic-width {
+    width: var(--w) !important;
+}
+
+/* CSV Upload - Ends Here */

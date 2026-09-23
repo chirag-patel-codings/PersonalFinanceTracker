@@ -8,7 +8,7 @@ namespace PersonalFinanceTracker.Models
     {
         
         public string? TransactionId { get; set; }  // will be generated in the database
-        public ulong? UserId { get; set; }  // to be provided at the time of record insertion
+        public ulong? UserId { get; set; }          // to be provided at the time of record insertion
 
         [DateGteTodayIfRepeatActive("IsTransactionRepeatActive", ErrorMessage = "The date must be today or greater to generate a transaction recurrings!")]
         [LessThan("TransactionRepeatEndDate", ErrorMessage = "The date must be earlier than recurring end date!")]
@@ -19,6 +19,7 @@ namespace PersonalFinanceTracker.Models
         [Required(ErrorMessage = "Please provide transaction description!")]
         public string TransactionDescription { get; set; }
 
+        [IsValidForCategoryType("CategoryType",ErrorMessage = "For expense type of category, amount should be negative(-) otherwise positive(+).")]
         [Required(ErrorMessage = "Please provide transaction amount!")]
         public double TransactionAmount { get; set; }    
 
@@ -30,13 +31,15 @@ namespace PersonalFinanceTracker.Models
 
         public string? GoalId { get; set; }
         public string? TagId { get; set; }
-        public byte TransactionCategorization { get; set; } = 1; // 1 = manual, 2 = CSV upload , 3 = auto (Bank); TO BE SET FOR MANUAL TRANSACTION ENTRY!!!
-        public byte TransactionType { get; set; } = 1; // 1 = Regular, 2 - Recurring
-        
+        public byte TransactionCategorization { get; set; } = 1;    // 1 = manual, 2 = CSV upload , 3 = auto (Bank); TO BE SET FOR MANUAL TRANSACTION ENTRY!!!
+        public byte TransactionType { get; set; } = 1;              // 1 = Regular, 2 - Recurring
+
+        public string? CategoryType { get; set; } = "";             // To validate amount value against the category!!!
+
         // FOR TRANSACTION REPEAT:
         public int? TransactionRepeatId { get; set; }
-        public byte? IsTransactionRepeatActive { get; set; } = 0;    // 1 = true, 0 = false.
-        public byte? TransactionRepeatInterval { get; set; }    //  Weekly - 1, BiWeekly - 2, Monthly – 3,  BiMonthly – 4,  Quarterly – 5,  Half-Yearly – 6 , Yearly - 7
+        public byte? IsTransactionRepeatActive { get; set; } = 0;   // 1 = true, 0 = false.
+        public byte? TransactionRepeatInterval { get; set; }        //  Weekly - 1, BiWeekly - 2, Monthly – 3,  BiMonthly – 4,  Quarterly – 5,  Half-Yearly – 6 , Yearly - 7
         public DateOnly? TransactionRepeatEndDate { get; set; }
 
 

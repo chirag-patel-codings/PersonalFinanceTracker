@@ -12,6 +12,8 @@ using Serilog;
 using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using PersonalFinanceTracker.Services.TransactionRules;
+using PersonalFinanceTracker.Services.CSVUpload;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +73,10 @@ builder.Services.AddTransient<IBudgetRepository, BudgetRepository>();
 builder.Services.AddTransient<IGoalRepository, GoalRepository>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddTransient<IRecurringRepository, RecurringRepository>();
+builder.Services.AddTransient<ITransactionRuleRepository, TransactionRuleRepository>();
+builder.Services.AddTransient<ITransactionRuleService, TransactionRuleService>();
+builder.Services.AddTransient<IBulkImportTemplateRepository, BulkImportTemplateRepository>();
+
 
 // Custom Code ENDS -- Here...
 
@@ -122,5 +128,7 @@ app.MapControllerRoute(
 
  */
 
+// Assign ContentRootPath instead of WebRootPath
+CSVFileService.FolderContentRootPath = app.Services.GetRequiredService<IWebHostEnvironment>().ContentRootPath;
 
 app.Run();

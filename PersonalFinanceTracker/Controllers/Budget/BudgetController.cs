@@ -18,11 +18,13 @@ namespace PersonalFinanceTracker.Controllers
         private readonly string _userCurrencyCode, _userCurrencySymbol;
         public BudgetController(IHttpContextAccessor httpContextAccessor, IBudgetDetailsRepository budgetDetailsRepository, IBudgetRepository budgetRepository)
         {
+
             _budgetDetailsRepository = budgetDetailsRepository;
             _budgetRepository = budgetRepository;
             _currentUserId = ulong.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
             _userCurrencyCode = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencyCode");
             _userCurrencySymbol = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencySymbol");
+        
         }
 
 
@@ -31,11 +33,13 @@ namespace PersonalFinanceTracker.Controllers
         // Index page!!!
         public ActionResult Index(string? connString)
         {
+
             var budgetDetailsFilter = new BudgetDetailsFilter();
             
             var budgets = _budgetDetailsRepository.GetBudgetDetails(_currentUserId, budgetDetailsFilter.BudgetDetailsStartDate, budgetDetailsFilter.BudgetDetailsEndDate, connString);
             
             return View("Budget", budgets);
+
         }
 
 
@@ -51,6 +55,7 @@ namespace PersonalFinanceTracker.Controllers
             var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
 
             return Ok(new { budgetDetails, budgetsMonthYear, userCurrencyDetails });
+
         }
 
 
@@ -77,7 +82,7 @@ namespace PersonalFinanceTracker.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "Data Validation Error." });
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }
@@ -134,7 +139,7 @@ namespace PersonalFinanceTracker.Controllers
             }
             else
             {
-                return BadRequest(new { success = false, message = "Data Validation Error." });
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }

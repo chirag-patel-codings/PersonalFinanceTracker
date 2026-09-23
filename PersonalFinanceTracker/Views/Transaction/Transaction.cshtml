@@ -3,30 +3,55 @@
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
 <div id="transactionDataFilterDiv" class="filter-div">
     <h3>
-        Transactions
+        Transactions <span id="transactionInfo"
+                       class="material-symbols-outlined-password"
+                       data-bs-toggle="popover"
+                       data-bs-trigger="hover"
+                       data-bs-html="true"
+                       data-bs-placement="bottom"
+                       title="Transactions"
+                       data-bs-content="<ul>
+                                            <li>For Amount: Use negative (-) sign for expenses, positive/un-signed for income.</li>
+                                            <li>Recurring series transactions cannot generated old dated!.</li>
+                                            <li>'Investment' Account Type with 'Uncategorized' Category will be considered an ASSET (Not Income/Expense)! and will not be displayed in Income/Expense Report.</li>
+                                        </ul>
+                                        <hr>
+                                        <b>CSV Upload:</b> 
+                                        <ul>
+                                            <li>File must be in comma(',') separated values (CSV) format.</li>
+                                            <li>File data cannot have more than 8 columns.</li>
+                                            <li>File must have: Date, Description and Amount (Debit/Outflow and/or Credit/Inflow) in data.</li>
+                                            <li>Date values must be supplied as mm/dd/YYYY format.</li>
+                                            <li>If Debit/Outflow: then must be (-ve) negative signed values.</li>
+                                            <li>If Credit/Inflow: then must be un-signed or (+ve) positive signed values.</li>
+                                        </ul>"
+                       style="cursor:pointer;">
+                        info
+                     </span>
+
         <span title='Expand Filter' class="material-symbols-outlined-data-icon float-end pe-2" style='font-size: 1.5em !important;' id="showHideTransactionFilters">call_received</span>
         <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span>
-        <!-- <span title='Transaction Rollover Settings' class='material-symbols-outlined-data-icon float-end pe-2' style='font-size: 1em !important;' id='showHideTransactionRolloverSettings' onclick='javascript: getTransactionSettings();'>settings</span> -->
+        <span title='CSV File Upload' class="material-symbols-outlined-data-icon float-end pe-2" style='font-size: 1.5em !important;' id="showCSVUploadModal">upload_file</span>
     </h3>
     <form id="transactionDataFilterForm-1" data-val="true">
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <input type="date" id="transactionFilterStartDateId" name="transactionFilterStartDate" class="form-control" placeholder=" " data-val="true"
                     data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="transactionFilterEndDate">
                 <label for="transactionFilterStartDateId" class="input-label">* Start Date</label>
                 <span data-valmsg-for="transactionFilterStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <input type="date" id="transactionFilterEndDateId" name="transactionFilterEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!">
                 <label for="transactionFilterEndDateId" class="input-label">* End Date</label>
                 <span data-valmsg-for="transactionFilterEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterCategoryId" name="transactionFilterCategoryId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterCategoryId" class="input-label">Category Type</label>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterAccountId" name="transactionFilterAccountId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterAccountId" class="input-label">Account Type</label>
             </div>
@@ -38,19 +63,19 @@
     </form>
     <form id="transactionDataFilterForm-2" data-val="true" style="display: none;">
         <div class="row ps-lg-2">
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterTagId" name="transactionFilterTagId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterTagId" class="input-label">Tag Type</label>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterGoalId" name="transactionFilterGoalId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterGoalId" class="input-label">Goal Type</label>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterCategorizationId" name="transactionFilterCategorization" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterCategorizationId" class="input-label">Transaction Categorization</label>
             </div>
-            <div class="field" style="width: 225px;">
+            <div class="field" style="width: 210px;">
                 <select id="transactionFilterTypeId" name="transactionFilterType" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterTypeId" class="input-label">Transaction Type</label>
             </div>
@@ -78,7 +103,7 @@
 
 <!-- REMOVED aria-hidden="true" from this line entirely -->
 <div class="modal fade" id="addEditTransactionModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addEditTransactionModalLabel">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addEditTransactionModalLabelId"></h5>
@@ -91,6 +116,8 @@
                     <input type="hidden" id="modalTransactionId" name="transactionId">
                     <input type="hidden" id="modalTransactionCategorization" name="transactionCategorization">
                     <input type="hidden" id="modalTransactionType" name="transactionType">
+                    <input type="hidden" id="modalCategoryType" name="categoryType" value="" />  <!-- To validate amount -->
+
                     <div class="row p-0">
                         <div class="col-sm field">
                             <input type="date" id="modalTransactionDate" name="transactionDate"
@@ -113,11 +140,12 @@
                     </div>
                     <div class="row p-0">
                         <div class="col-sm field">
-                            <div class="input-group">
+                            <div class="input-group" title="Use negative (-) sign for expenses, positive/un-signed for income">
                                 <div class="input-group-text" id="currencySymbolId"></div>
                                 <input type="number" step="0.01" id="modalTransactionAmount" name="transactionAmount"
                                         class="form-control" placeholder=" " data-val="true"
-                                        data-val-required="Please provide transaction amount!" />
+                                        data-val-required="Please provide transaction amount!" 
+                                        data-val-isvalidforcategorytype="For expense type of category, amount should be negative(-) otherwise positive(+)." data-val-isvalidforcategorytype-other="categoryType" />
                                 <label for="modalTransactionAmount" class="input-label">* Transaction Amount</label>
                             </div>
                             <span data-valmsg-for="transactionAmount" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
@@ -127,7 +155,7 @@
                         <div class="col-sm field">
                             <select id="modalAccountId" name="accountId"
                                    class="form-control" placeholder=" " data-val="true"
-                                   data-val-required="Please provide account id!">
+                                   data-val-required="Please provide account!">
                             </select>
                             <label for="modalAccountId" class="input-label">* Account</label>
                             <span data-valmsg-for="accountId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
@@ -137,7 +165,7 @@
                         <div class="col-sm field">
                             <select id="modalCategoryId" name="categoryId"
                                     class="form-control" placeholder=" " data-val="true"
-                                    data-val-required="Please provide category id!">
+                                    data-val-required="Please provide category!">
                             </select>
                             <label for="modalCategoryId" class="input-label">* Category</label>
                             <span data-valmsg-for="categoryId" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
@@ -197,6 +225,136 @@
 </div>
 
 
+<!-- Modal: CSV UPLOAD -->
+<div class="modal fade" id="csvFileUploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Import CSV Data</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <span id="csvFileValidationErrors" class="text-danger field-validation-valid p-5"></span>
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs nav-fill" id="modalTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="uploadFile" data-bs-toggle="tab" data-bs-target="#uploadFileTab" type="button" role="tab" aria-controls="uploadFileTab" aria-selected="true">
+                            Upload File
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="mapFields" data-bs-toggle="tab" data-bs-target="#mapFieldsTab" type="button" role="tab" aria-controls="mapFieldsTab" aria-selected="false" disabled>
+                            Map Fields
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="previewData" data-bs-toggle="tab" data-bs-target="#previewDataTab" type="button" role="tab" aria-controls="previewDataTab" aria-selected="false" disabled>
+                            Preview & Upload
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content Panes -->
+                <div class="tab-content pt-3" id="modalTabContent">
+                    <div class="tab-pane fade show active" id="uploadFileTab" role="tabpanel" aria-labelledby="uploadFile">
+                        <p class="text-center"><b>Choose an account and upload your CSV.</b></p>
+                        <div class="row border-1 p-3">
+                            <div class="col-sm field">
+                                <select id="csvUploadAccountId" name="csvUploadAccountName"
+                                        class="form-control" placeholder=" " data-val="true"
+                                        data-val-required="Please provide account id!">
+                                </select>
+                                <label for="csvUploadAccountId" class="input-label">* Account</label>
+                                <span data-valmsg-for="csvUploadAccountName" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                            </div>
+                            
+                            <form id="csvUploadForm" name="csvUploadForm" method="post" enctype="multipart/form-data">
+                                <div id="dropzone" class="dropzone">
+                                    <span class="material-symbols-outlined-data-icon">file_upload</span>
+                                    <p class="mt-2">Drag & drop CSV here or click to browse</p>
+                                    <input type="file" name="csvUploadFileInput" id="csvUploadFileInput" accept=".csv,text/csv" hidden>
+                                    <p id="fileNameDisplay" class="ms-2 text-muted"></p>
+                                </div>
+                                <button type="button" id="btnStep1Next" class="btn btn-primary float-end mt-5" disabled>Next >></button> 
+                            </form>
+                            
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="mapFieldsTab" role="tabpanel" aria-labelledby="mapFields">
+                       <div class="filter-div" style="padding:20px !important;">
+                           <p><b>TEMPLATE</b></p>
+                            <div class="row filter-div" style="box-sizing: border-box; width: 100%; margin-left: auto; margin-right:auto;">
+                                <div class="col-sm field pe-5">
+                                    <input id="csvImportSavedTemplatesSelect" name="csvImportSavedTemplatesSelect" list="csvImportSavedTemplatesList" class="form-control" placeholder=" " maxlength="100">
+                                    <label for="csvImportSavedTemplatesSelect" class="input-label">Saved Templates</label>
+                                    <datalist id="csvImportSavedTemplatesList"></datalist>
+                                </div>
+                                <div class="col-sm field pe-5">
+                                    <select id="headerRow" name="headerRow"
+                                            class="form-control" placeholder=" ">
+                                            <option id="headerRow1" value="0">1</option>
+                                            <option id="headerRow2" value="1">2</option>
+                                            <option id="headerRow3" value="2">3</option>
+                                            <option id="headerRow4" value="3">4</option>
+                                            <option id="headerRow5" value="4">5</option>
+                                            <option id="headerRow6" value="5">6</option>
+                                            <option id="headerRow7" value="6">7</option>
+                                            <option id="headerRow8" value="7">8</option>
+                                            <option id="headerRow9" value="8">9</option>
+                                            <option id="headerRow10" value="9">10</option>
+                                            <option id="headerRow11" value="10">11</option>
+                                            <option id="headerRow12" value="11">12</option>
+                                    </select>
+                                    <label for="headerRow" class="input-label">* Header Row</label>
+                                </div>
+                                <div class="col-sm flex-grow-1 field pe-5">
+                                    <button type="button" class="btn btn-outline-primary btn-sm float-left" style="min-height: 50px; width: 75px !important;" id="saveCSVImportTemplate" name="saveCSVImportTemplate" disabled>Save Template</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm float-end" style="min-height: 50px; width: 75px !important;" id="deleteCSVImportTemplate" name="deleteCSVImportTemplate" disabled>Delete Template</button>
+                                </div>
+                           </div>
+                       </div>
+                        <div class="table-container p-1" id="csvDataTableContainer" style="max-height: 375px !important;">
+                            <table id="csvDataColumnMappingTable" class="white-space: wrap !important;">
+                                <thead id="csvDataColumnMappingHeader">
+                                </thead>
+                                <tbody id="csvDataColumnMappingBody">
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <button type="button" id="btnStep2Next" class="btn btn-primary float-end mt-5" title="Data preview only available after validations!">Next >></button>
+                    </div>
+                    <div class="tab-pane fade" id="previewDataTab" role="tabpanel" aria-labelledby="previewData">
+                        <p><b>PREVIEW DATA</b></p>
+                        <div class="table-container p-1" id="csvPreviewDataTableContainer" style="max-height: 375px !important;">
+                            <table id="csvPreviewDataTable" class="white-space: wrap !important;">
+                                <thead id="csvPreviewDataTableHeader">
+                                </thead>
+                                <tbody id="csvPreviewDataTableBody">
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <button type="button" class="btn btn-primary float-end mt-5" id="btnImportCSVData">Import Data</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 
     
@@ -204,4 +362,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script src="~/js/app/Transaction.js"></script>
+    <script src="~/js/app/TransactionCSVUpload.js"></script>
 }

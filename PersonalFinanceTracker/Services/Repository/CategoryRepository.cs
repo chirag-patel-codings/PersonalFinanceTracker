@@ -84,8 +84,8 @@ namespace PersonalFinanceTracker.Services.Repository
             parameters.Add("user_id", category.UserId);
             parameters.Add("standard_category_id", ulong.Parse(category.StandardCategoryId));
             parameters.Add("category_type", category.CategoryType);
-            parameters.Add("category_name", category.CategoryName);
-            parameters.Add("category_description", category.CategoryDescription);
+            parameters.Add("category_name", category.CategoryName.Trim());
+            parameters.Add("category_description", string.IsNullOrEmpty(category.CategoryDescription) ? category.CategoryDescription : category.CategoryDescription.Trim());
             parameters.Add("category_color", category.CategoryColor);
             parameters.Add("total_effected_records", direction: ParameterDirection.Output);
 

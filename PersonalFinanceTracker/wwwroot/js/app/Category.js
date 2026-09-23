@@ -1,5 +1,5 @@
 let _token = getSecurityToken('#addEditCategoryForm');
-let prevQueriedRecord = '';
+let prevQueriedRecordId = '';
 let categoriesPaginationJSON = '';
 let standardCategoriesJSON = '';
 let categoryTypesJSON = '';
@@ -74,8 +74,8 @@ const showAddEditCategoryModal = function (record) {
         populateSelectFromJSON('modalStandardizeCategory', standardCategoriesJSON, 'categoryId', 'categoryName', '-- Standard Category --');
         populateSelectFromJSON('modalCategoryType', categoryTypesJSON.filter(ct => ct.categoryTypeId != 0), 'categoryTypeId', 'categoryTypeName', '-- Category Type --');
 
-        const categoryForm = document.getElementById('addEditCategoryForm');
-        setFormData(categoryForm, record);
+        setFormData('addEditCategoryForm', record);
+
     }
 
     // Open up the Bootstrap modal visually
@@ -151,6 +151,7 @@ const getCategoryRecord = function (categoryId) {
             return response.json();
         })
         .then(data => {
+            rebindValidation($("#addEditCategoryForm"));
             // Work with parsed data object here
             showAddEditCategoryModal(data);
         })
@@ -177,9 +178,7 @@ const updateStandardCategoriesJSON = function (record) {
 // Save Current Record or Add New Record!!
 const saveCategoryRecord = function () {
 
-    const form = document.getElementById('addEditCategoryForm');
-
-    var data = getFormEntries(form);
+    var data = getFormEntries('addEditCategoryForm');
     data.categoryDisplayOrder = +data.categoryDisplayOrder; // Convert String to a Number for small numbers
     data.categoryType = +data.categoryType;
 
@@ -269,12 +268,12 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         // Execute specific logic depending on what was clicked
         if (actionType === "Edit") {
 
-            if (recordId === prevQueriedRecord) {
+            if (recordId === prevQueriedRecordId) {
                 showAddEditCategoryModal(null); // Show the existing details
             }
             else {
                 getCategoryRecord(recordId);
-                prevQueriedRecord = recordId;
+                prevQueriedRecordId = recordId;
             }
 
 
@@ -289,11 +288,11 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 });
 
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
-    prevQueriedRecord = '';
+    prevQueriedRecordId = '';
     categoriesDataMode = 'Add';
     clearFormData('#addEditCategoryForm');
-    const categoryForm = document.getElementById('addEditCategoryForm');
-    const record = getFormEntries(categoryForm);    // Retrieve a blank record!!!
+    rebindValidation($("#addEditCategoryForm"));
+    const record = getFormEntries('addEditCategoryForm');    // Retrieve a blank record!!!
     showAddEditCategoryModal(record);
 });
 
@@ -302,7 +301,7 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 doNavigation(null, 'first', true);
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form
-setUpUnobtrusiveValidationOnModal('#addEditCategoryModal', '#addEditCategoryForm');
+setUpUnobtrusiveValidationOnModal('#addEditCategoryModal');
 
 $(document).ready(function () {
 
