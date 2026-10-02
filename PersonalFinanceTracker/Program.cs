@@ -76,7 +76,7 @@ builder.Services.AddTransient<IRecurringRepository, RecurringRepository>();
 builder.Services.AddTransient<ITransactionRuleRepository, TransactionRuleRepository>();
 builder.Services.AddTransient<ITransactionRuleService, TransactionRuleService>();
 builder.Services.AddTransient<IBulkImportTemplateRepository, BulkImportTemplateRepository>();
-
+builder.Services.AddTransient<IReportRepository, ReportRepository>();
 
 // Custom Code ENDS -- Here...
 

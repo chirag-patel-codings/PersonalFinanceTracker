@@ -1,0 +1,75 @@
+﻿@model IEnumerable<PersonalFinanceTracker.Models.Report>;
+
+<!-- LINK ACCOUNT IS PENDING!!! -->
+<div id="reportDataFilterDiv" class="filter-div">
+    <h3>Reports</h3>
+    <form id="reportDataFilterForm" data-val="true">
+            @Html.AntiForgeryToken()
+            <div class="row p-2">
+                <div class="col-sm-2 mb-4 mb-sm-0 field">
+                    <input type="date" id="reportStartDate" name="reportStartDate" class="form-control" placeholder=" " data-val="true" 
+                    data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="reportEndDate">
+                    <label for="reportStartDate" class="input-label">* Start Date</label>
+                    <span data-valmsg-for="reportStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                </div>
+                <div class="col-sm-2 field">
+                    <input type="date" id="reportEndDate" name="reportEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!" >
+                    <label for="reportEndDate" class="input-label">* End Date</label>
+                    <span data-valmsg-for="reportEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                </div>
+
+                <div class="btn-group col-sm-3" role="group" aria-label="Basic radio toggle button group">
+                  <input type="radio" class="btn-check" name="btnradio" id="btnRadioIncomeExpense" autocomplete="off" value="IncomeExpense" checked>
+                  <label class="btn btn-outline-secondary" for="btnRadioIncomeExpense" style="width: 31% !important;">Income Expense Vs Budget</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnRadioNetWorth" value="NetWorth" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="btnRadioNetWorth" style="width: 30% !important;">Net Worth</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnRadioGoal" value="Goal" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="btnRadioGoal" style="width: 30% !important;">Goal</label>
+                </div>
+
+                <div class="btn-group col-sm-2" role="group" aria-label="Basic radio2 toggle button group">
+                  <input type="radio" class="btn-check" name="btnradio2" id="btnRadioMonthly" autocomplete="off" value="1" checked>
+                  <label class="btn btn-outline-secondary" for="btnRadioMonthly" style="width: 50% !important;">Monthly</label>
+
+                  <input type="radio" class="btn-check" name="btnradio2" id="btnRadioWholePeriod" value="2" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="btnRadioWholePeriod" style="width: 50% !important;">Whole Period</label>
+                  
+                </div>
+
+                <div class="col-sm-2 field">
+                    <div id="tagSelectContainer">
+                        <select id="reportTagId" name="reportTagId"
+                                class="form-control" placeholder=" ">
+                        </select>
+                        <label for="reportTagId" class="input-label">Filter By Tag</label>
+                    </div>
+                </div>
+                <div class="col-sm-1 field">
+                <input type="submit" id="viewReport" name="viewReport" value="View Report" class="btn btn-primary">
+                </div>
+            </div>
+    </form>
+</div>
+
+<div class="table-container shadow-raised">
+    <table class="table table-responsive bg-light" id="reportsTable">
+        <thead id="reportsTHead">
+                <!-- Contents will be added by javascript -->
+        </thead>
+        <tbody id="reportsTBody">
+            <!-- Contents will be added by javascript -->
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/app/Report.js"></script>
+
+    
+}

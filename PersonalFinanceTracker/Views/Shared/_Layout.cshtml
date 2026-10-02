@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Personal Finance Tracker</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PersonalFinanceTracker.styles.css" asp-append-version="true" />
@@ -81,7 +81,7 @@
                             <span class="material-symbols-outlined-panel-icon">account_balance</span>
                             <span class="side-label">Accounts</span>
                         </a>
-                        <a href="#" title="Reports">
+                        <a class="@(currentController == "Report" ? "side-bar-active" : "")" asp-area="" asp-controller="Report" asp-action="Index" title="Reports">
                             <span class="material-symbols-outlined-panel-icon">article</span>
                             <span class="side-label">Reports</span>
                         </a>

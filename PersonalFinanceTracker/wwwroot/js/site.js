@@ -275,6 +275,12 @@ const getSecurityToken = function (formElementId) {
 
 }
 
+const isValidForm = function (formId) {
+
+    const $form = $('#' + formId);
+    return $form.valid();
+}
+
 // BULK IMPORT VALIDATIONS - START HERE...
 
 // Checks if the amount is valid and in 2 digits!!!
