@@ -35,7 +35,7 @@ namespace PersonalFinanceTracker.Controllers
         public ActionResult Index(string? connString)
         {
             
-            return View();
+            return View("Report");
         }
 
         [Authorize]

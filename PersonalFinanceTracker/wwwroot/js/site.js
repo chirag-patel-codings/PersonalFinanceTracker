@@ -275,6 +275,7 @@ const getSecurityToken = function (formElementId) {
 
 }
 
+// Valiates the form and returns true if valid, otherwise false. It uses jQuery Validation plugin to check the validity of the form with the given formId.
 const isValidForm = function (formId) {
 
     const $form = $('#' + formId);

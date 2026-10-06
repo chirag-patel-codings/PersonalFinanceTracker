@@ -1,8 +1,25 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Report>;
 
-<!-- LINK ACCOUNT IS PENDING!!! -->
 <div id="reportDataFilterDiv" class="filter-div">
-    <h3>Reports</h3>
+    <h3>Reports <span id="reportInfo"
+                       class="material-symbols-outlined-password"
+                       data-bs-toggle="popover"
+                       data-bs-trigger="hover"
+                       data-bs-html="true"
+                       data-bs-placement="bottom"
+                       title="Reports"
+                       data-bs-content="<ul>
+                                            <li>Displays the &quot;Income &amp; Expense&quot;, &quot;Net Worth&quot;, &amp; &quot;Goal&quot; reports for the monthly and requested period between start &amp; end dates inclusive!</li>
+                                        </ul>
+                                        <hr>
+                                        <ul>
+                                            <li>Budget details for expense categories in &quot;Income &amp; Expense Reports&quot; would be -ve even though the entry in the budget screen has been +ve! When this entry has a +ve value in reports, means that the expenses has passed the budget limit for that category!</li>
+                                            <li>Goal details will only display the transaction details of goal period for the requested time period for comparision. The transaction data for the requested period are excluded if they are out of goal period!</li>
+                                        </ul>"
+                       style="cursor:pointer;">
+                        info
+                     </span>
+    </h3>
     <form id="reportDataFilterForm" data-val="true">
             @Html.AntiForgeryToken()
             <div class="row p-2">
@@ -47,10 +64,19 @@
                     </div>
                 </div>
                 <div class="col-sm-1 field">
-                <input type="submit" id="viewReport" name="viewReport" value="View Report" class="btn btn-primary">
+                    <input type="submit" id="viewReport" name="viewReport" value="View Report" class="btn btn-primary">
                 </div>
             </div>
     </form>
+</div>
+
+<div id="exportToExcelContainer" style="display:flex; align-items:center; justify-content:center; width:100%;">
+    <h2 id="reportHeading"></h2>
+    <h1>
+        <span id="spanExportToExcel" title="Export To Excel">
+            <span class="material-symbols-outlined-data-icon" style="margin-right:4px; font-size: 1em !important; color: dimgray !important;">file_save</span>
+        </span>
+    </h1>
 </div>
 
 <div class="table-container shadow-raised">
@@ -69,7 +95,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
     <script src="~/js/app/Report.js"></script>
-
     
 }

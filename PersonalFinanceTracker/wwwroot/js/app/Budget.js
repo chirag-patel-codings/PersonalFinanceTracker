@@ -623,6 +623,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
+    // Refresh the budget data - Start
     filterStartDate.addEventListener('change', function () {
         budgetStartDate = this.value;
         budgetFiltersChanged = true;
@@ -646,6 +648,15 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshBudgetData();
         }
     });
+
+    document.getElementById('viewBudgetData').addEventListener('click', (event) => {
+
+        event.preventDefault();
+        refreshBudgetData();
+
+    });
+
+    // Refresh the budget data - End
 
 });
 

@@ -36,26 +36,26 @@
     <form id="transactionDataFilterForm-1" data-val="true">
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <input type="date" id="transactionFilterStartDateId" name="transactionFilterStartDate" class="form-control" placeholder=" " data-val="true"
                     data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="transactionFilterEndDate">
                 <label for="transactionFilterStartDateId" class="input-label">* Start Date</label>
                 <span data-valmsg-for="transactionFilterStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
             </div>
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <input type="date" id="transactionFilterEndDateId" name="transactionFilterEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!">
                 <label for="transactionFilterEndDateId" class="input-label">* End Date</label>
                 <span data-valmsg-for="transactionFilterEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
             </div>
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <select id="transactionFilterCategoryId" name="transactionFilterCategoryId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterCategoryId" class="input-label">Category Type</label>
             </div>
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <select id="transactionFilterAccountId" name="transactionFilterAccountId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterAccountId" class="input-label">Account Type</label>
             </div>
-            <div class="field" style="width: 285px;">
+            <div class="col-sm-3 field" style="min-width: 285px !important;">
                 <input type="text" id="transactionFilterDescriptionId" name="transactionFilterDescription" class="form-control" placeholder=" " />
                 <label for="transactionFilterDescriptionId" class="input-label">Description</label>
             </div>
@@ -63,21 +63,24 @@
     </form>
     <form id="transactionDataFilterForm-2" data-val="true" style="display: none;">
         <div class="row ps-lg-2">
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <select id="transactionFilterTagId" name="transactionFilterTagId" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterTagId" class="input-label">Tag Type</label>
             </div>
-            <div class="field" style="width: 210px;">
-                <select id="transactionFilterGoalId" name="transactionFilterGoalId" class="form-control" placeholder=" "></select>
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
+                <select id="transactionFilterGoalId" name="transactionFilterGoalId" class="form-control w-100" placeholder=" "></select>
                 <label for="transactionFilterGoalId" class="input-label">Goal Type</label>
             </div>
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <select id="transactionFilterCategorizationId" name="transactionFilterCategorization" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterCategorizationId" class="input-label">Transaction Categorization</label>
             </div>
-            <div class="field" style="width: 210px;">
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
                 <select id="transactionFilterTypeId" name="transactionFilterType" class="form-control" placeholder=" "></select>
                 <label for="transactionFilterTypeId" class="input-label">Transaction Type</label>
+            </div>
+            <div class="col-sm-2 field" style="min-width: 210px !important;">
+                <input type="submit" id="viewTransactionData" name="viewTransactionData" value="View Data" class="btn btn-primary">
             </div>
         </div>
     </form>

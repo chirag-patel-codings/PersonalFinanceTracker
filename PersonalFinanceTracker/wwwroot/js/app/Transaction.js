@@ -427,19 +427,32 @@ document.getElementById("modalIsTransactionRepeatActive").addEventListener("chan
     document.getElementById("transactionRepeatFieldsContainer").style.display = isChecked ? "block" : "none";
 });
 
-// Requery transaction data
-document.getElementById("transactionDataFilterDiv").addEventListener("keypress", (e) => {
-    if ((e.target.tagName === "INPUT" || e.target.tagName === "SELECT") && e.key === "Enter") {
-        e.preventDefault();
-        setTransactionFilterJSONValues();       // Filter values are changed only here!!!
-        const $form = $('#transactionDataFilterForm-1');
-        if (!$form.valid()) {
-            return;
-        }
+// Requery transaction data - Start
+const refreshTransactionData = function(formId) {
 
+    setTransactionFilterJSONValues();       // Filter values are changed only here!!!
+    if (isValidForm(formId)) {
         doNavigation(null, 'first', true);
     }
+    
+}
+
+document.getElementById("viewTransactionData").addEventListener("click", (e) => {
+    
+    e.preventDefault();
+    refreshTransactionData('transactionDataFilterForm-1');
+    
 });
+
+document.getElementById("transactionDataFilterDiv").addEventListener("keypress", (e) => {
+
+    if ((e.target.tagName === "INPUT" || e.target.tagName === "SELECT") && e.key === "Enter") {
+        e.preventDefault();
+        refreshTransactionData('transactionDataFilterForm-1');
+    }
+});
+
+// Requery transaction data - End
 
 //  Set the Category Type value for the hidden field to validate amount!
 document.getElementById('modalCategoryId').addEventListener("change", (e) => {

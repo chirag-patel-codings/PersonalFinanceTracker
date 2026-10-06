@@ -7,7 +7,6 @@ let reportParametersJSON = {
     tagId: ""
 }
 let reportDataJSON = null;
-let reportsMonthYearJSON = null;
 let userCurrencyDetailsJSON = '';
 let reportFiltersChanged = false;
 
@@ -39,10 +38,10 @@ const setReportParameters = function () {
 
     const tagSelectContainer = document.getElementById('tagSelectContainer');
     // Depends upon visibility.
-    if(tagSelectContainer && tagSelectContainer.style.display === 'none') {
+    if (tagSelectContainer && tagSelectContainer.style.display === 'none') {
         reportParametersJSON.tagId = null;
     }
-    else{
+    else {
 
         const tagId = document.getElementById('reportTagId');
         reportParametersJSON.tagId = (tagId.value == "" || tagId.value == null) ? null : tagId.value;
@@ -255,7 +254,7 @@ const displayReportData = function (data) {
             // Monthly Report (If data has 'reportMonthYear') 
             if (headerRow0.childElementCount == 0) {
                 let header0RowCol0 = generateTHTDElement('th', headerRow0Col0Content, 1, true, 'left', 5, headingBackgroundColor, true);
-                if (reportParametersJSON.reportName == 'NetWorth'){
+                if (reportParametersJSON.reportName == 'NetWorth') {
 
                     header0RowCol0.style.setProperty('border-bottom', '1px solid #000', 'important');
                 }
@@ -349,101 +348,121 @@ const displayReportData = function (data) {
     }
 
 }
-    // Gets all the report data from start date to end date...
-    const getReport = function () {
+// Gets all the report data from start date to end date...
+const getReport = function () {
 
-        // Set the values of 'reportParametersJSON' object
-        setReportParameters();  
+    let reportHeading = document.getElementById('reportHeading');
+    
+    // Set the values of 'reportParametersJSON' object
+    setReportParameters();
 
-        // add a return before fetch and pass the data through the final link of the chain and extract using 'then';
-        fetch('Report/GetReport', {
-            method: 'POST',
-            headers: {
-                "credentials": "include",
-                "Content-Type": "application/json",
-                "RequestVerificationToken": _token
-            },
-            body: JSON.stringify(reportParametersJSON)
+    // add a return before fetch and pass the data through the final link of the chain and extract using 'then';
+    fetch('Report/GetReport', {
+        method: 'POST',
+        headers: {
+            "credentials": "include",
+            "Content-Type": "application/json",
+            "RequestVerificationToken": _token
+        },
+        body: JSON.stringify(reportParametersJSON)
+    })
+        .then(response => {
+            // Check if the HTTP status code is 200-299 (Ok)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the body text as JSON
+            return response.json();
         })
-            .then(response => {
-                // Check if the HTTP status code is 200-299 (Ok)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                // Parse the body text as JSON
-                return response.json();
-            })
-            .then(data => {
-                reportDataJSON = data.report;
-                reportsMonthYearJSON = data.reportMonthYear;
-                // Work with parsed data object here
-                // console.log('data:', data)
-                displayReportData(reportDataJSON);
+        .then(data => {
+            reportDataJSON = data.report;
+            switch (reportParametersJSON.reportName) {
+                case 'IncomeExpense':
+                    reportHeading.innerHTML = 'Income & Expense Report&nbsp;&nbsp;';
+                    break;
+                case 'NetWorth':
+                    reportHeading.innerHTML = 'Net Worth Report&nbsp;&nbsp;';
+                    break;
+                case 'Goal':
+                    reportHeading.innerHTML = 'Goal Report&nbsp;&nbsp;';
+                    break;
+            }
+            // Work with parsed data object here
+            displayReportData(reportDataJSON);
 
-            })
-            .catch(error => {
-                console.error("Fetch operation failed:", error);
-            });
+        })
+        .catch(error => {
+            console.error("Fetch operation failed:", error);
+        });
 
+}
+
+// At first time load.
+getTagsAndCurrencyDetails();
+getReport();
+
+// show/hide the tag selection based on the report type selected
+document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
+    radio.addEventListener("change", function () {
+        let tagElement = document.getElementById('tagSelectContainer');
+        if (this.id == 'btnRadioIncomeExpense' && this.checked) {
+            tagElement.style.display = 'block';
+        }
+        else {
+            tagElement.style.display = 'none';
+        }
+    });
+});
+
+// Get the report on click of the 'getReport' button
+document.getElementById('viewReport').addEventListener('click', (event) => {
+
+    event.preventDefault();
+
+    if (isValidForm('reportDataFilterForm')) {
+        getReport();    // Parameter values are set by other function
     }
 
+});
 
-    getTagsAndCurrencyDetails();
-    getReport();
+// Requery report data
+document.getElementById("reportDataFilterDiv").addEventListener("keypress", (e) => {
 
+    if ((e.target.tagName === "INPUT" || e.target.tagName === "SELECT") && e.key === "Enter") {
 
-    // show/hide the tag selection based on the report type selected
-    document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
-        radio.addEventListener("change", function () {
-            let tagElement = document.getElementById('tagSelectContainer');
-            if (this.id == 'btnRadioIncomeExpense' && this.checked) {
-                tagElement.style.display = 'block';
-            }
-            else {
-                tagElement.style.display = 'none';
-            }
-        });
-    });
-
-    // Get the report on click of the 'getReport' button
-    document.getElementById('viewReport').addEventListener('click', (event) => {
-
-        event.preventDefault();
+        e.preventDefault();
 
         if (isValidForm('reportDataFilterForm')) {
-            getReport();    // Parameter values are set by other elements
+            getReport();    // Parameter values are set by other function
         }
 
+    }
+});
+
+// Export to Excel - Start
+
+// Export the currently displayed HTML table to Excel using TableToExcel library
+const exportToExcel = function () {
+
+    let table = document.getElementById("reportsTable");
+
+    TableToExcel.convert(table, {
+      name: reportParametersJSON.reportName + '.xlsx',
+      sheet: {
+        name: "Sheet1"
+      }
     });
 
-    // Requery report data
-    document.getElementById("reportDataFilterDiv").addEventListener("keypress", (e) => {
+  }
 
-        if ((e.target.tagName === "INPUT" || e.target.tagName === "SELECT") && e.key === "Enter") {
+// Event handler for the 'Export to Excel' click
+document.getElementById('spanExportToExcel').addEventListener('click', (event) => {
 
-            e.preventDefault();
-            
-            if (isValidForm('reportDataFilterForm')) {
-                getReport();    // Parameter values are set by other elements
-            }
-            
-        }
-    });
+    event.preventDefault();
+    exportToExcel();
 
-    appendLessThanDateValueValidationFunctionality();
+});
 
-    $(document).ready(function () {
+// Export to Excel - End
 
-        // Check validation on Save click
-        $('#btnTransactionModalSaveChanges').on('click', function () {
-            const $form = $('#addEditTransactionForm');
-            if (!$form.valid()) {
-                return;
-            }
-            console.log("Form is valid! Sending AJAX payload...");
-            saveTransactionRecord();
-
-        });
-
-    });
-
+appendLessThanDateValueValidationFunctionality();

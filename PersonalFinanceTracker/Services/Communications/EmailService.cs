@@ -41,7 +41,7 @@ namespace PersonalFinanceTracker.Services.Communications
 
                 // Create the email message
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("chiragpatel.android@gmai.com", "Chirag");
+                mail.From = new MailAddress("chiragpatel.android@gmail.com", "Chirag");
                 mail.To.Add(recipientEmail);
                 mail.Subject = emailSubjectAndMessage.emailSubject;
                 mail.Body = emailSubjectAndMessage.emailBody.Replace("{userName}", userName).Replace("{verificationLink}", verificationLink) + "<p>Personal Finance Tracker Team.</p>";
