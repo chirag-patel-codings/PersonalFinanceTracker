@@ -43,6 +43,10 @@ namespace PersonalFinanceTracker.Services.Repository
             {
                 stored_proc_name = reportInterval == 1 ? "sp_pft_report_monthly_goal_vs_actual" : "sp_pft_report_total_goal_vs_actual";
             }
+            else if ((reportName == "CATEGORYWISESUMMARY")) // For Dashboard Charts only!!!
+            {
+                stored_proc_name = "sp_pft_dashboard_categorywise_expenses";
+            }
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

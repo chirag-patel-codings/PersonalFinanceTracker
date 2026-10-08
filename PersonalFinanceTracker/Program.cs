@@ -90,12 +90,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();    // required for ClaimsPrincipal authentication!
 
-// Syncfusion License Key Registration
+// Syncfusion Registration
 IConfiguration _config = builder.Configuration;
-string licenseKey = _config["LicenseKeys:SyncFusion"];
-
-// Optional: Register your free Community License Key
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(_config["LicenseKeys:SyncFusion"]);
 
 var app = builder.Build();
 

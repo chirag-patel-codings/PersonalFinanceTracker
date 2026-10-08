@@ -1,24 +1,23 @@
-﻿@page
-@using Syncfusion.EJ2
+﻿
 @{
-    // ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div id="reportDataFilterDiv" class="filter-div">
+<div id="dashboardDataFilterDiv" class="filter-div">
     <h3>Dashboard</h3>
-    <form id="reportDataFilterForm" data-val="true">
+    <form id="dashboardDataFilterForm" data-val="true">
             @Html.AntiForgeryToken()
             <div class="row p-2">
                 <div class="col-sm-2 mb-4 mb-sm-0 field">
-                    <input type="date" id="reportStartDate" name="reportStartDate" class="form-control" placeholder=" " data-val="true" 
-                    data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="reportEndDate">
-                    <label for="reportStartDate" class="input-label">* Start Date</label>
-                    <span data-valmsg-for="reportStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                    <input type="date" id="dashboardStartDate" name="dashboardStartDate" class="form-control" placeholder=" " data-val="true" 
+                    data-val-required="Start date is required!" data-val-lessThan="Start date must be earlier than end date!" data-val-lessThan-other="dashboardEndDate">
+                    <label for="dashboardStartDate" class="input-label">* Start Date</label>
+                    <span data-valmsg-for="dashboardStartDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
                 </div>
                 <div class="col-sm-2 field">
-                    <input type="date" id="reportEndDate" name="reportEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!" >
-                    <label for="reportEndDate" class="input-label">* End Date</label>
-                    <span data-valmsg-for="reportEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
+                    <input type="date" id="dashboardEndDate" name="dashboardEndDate" class="form-control" placeholder=" " data-val="true" data-val-required="End date is required!" >
+                    <label for="dashboardEndDate" class="input-label">* End Date</label>
+                    <span data-valmsg-for="dashboardEndDate" data-valmsg-replace="true" class="text-danger field-validation-valid"></span>
                 </div>
                 <div class="col-sm-2 field">
                     <input type="submit" id="refreshView" name="refreshView" value="Refresh View" class="btn btn-primary">
@@ -29,18 +28,55 @@
 <div class="container-fluid shadow-raised">
   <div class="row">
     <!-- Stack on mobile (100% width), 50% width on medium screens and up -->
-    <div class="col-12 col-md-6 bg-primary text-white p-3 mt-3">
-      First Div
+    <div class="col-12 col-md-6 p-1 mt-3">
+        <div class="container my-4" style="width: 100%; height: 100%;">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Category-wise Income/Expense Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div id="categoryWiseReportChartDiv" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-12 col-md-6 bg-secondary text-white p-3 mt-3">
-      Second Div
+    <div class="col-12 col-md-6 p-1 mt-3">
+        <div class="container my-4" style="width: 100%; height: 100%;">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Monthly Income/Expense Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div id="monthlyIncomeExpenseReportChartDiv" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-12 col-md-6 bg-primary text-white p-3 mt-3">
-      Third Div
+    <div class="col-12 col-md-6 p-1 mt-3">
+      <div class="container my-4" style="width: 100%; height: 100%;">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Net Worth Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div id="netWorthReportChartDiv" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-12 col-md-6 bg-secondary text-white p-3 mt-3">
-      Fourth Div
+    <div class="col-12 col-md-6 p-1 mt-3">
+      <div class="container my-4" style="width: 100%; height: 100%;">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Net Income Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div id="netIncomeReportChartDiv" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    
   </div>
 </div>
 
@@ -49,6 +85,10 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
+    <!-- Single bundle containing all Essential JS 2 controls -->
+    <script src="https://cdn.syncfusion.com/ej2/25.1.35/dist/ej2.min.js"></script>
+
     <script src="~/js/app/Dashboard.js"></script>
     
 }

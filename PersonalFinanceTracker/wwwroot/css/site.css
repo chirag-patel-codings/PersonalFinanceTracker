@@ -1041,7 +1041,8 @@ input[type="number"]:focus {
 
 #reportDataFilterDiv .btn-primary,
 #transactionDataFilterForm-2 .btn-primary,
-#budgetDataFilterForm .btn-primary {
+#budgetDataFilterForm .btn-primary,
+#dashboardDataFilterForm .btn-primary {
     font-size: 11pt !important;
     padding-left: 0px !important;
     padding-right: 0px !important;

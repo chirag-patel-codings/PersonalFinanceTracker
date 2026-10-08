@@ -38,10 +38,10 @@ namespace PersonalFinanceTracker.Controllers
             return View("Report");
         }
 
+        // Returns the User's Currency Details and Tags lists!!!
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...
         public IActionResult GetTagsAndCurrencyDetails([FromBody] string? connString = null)
         {
 
