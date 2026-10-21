@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Testing.Platform.Extensions;
 using Moq;
 using MySql.Data.MySqlClient;
@@ -26,22 +29,10 @@ using System.Data.Common;
 using System.Security.Claims;
 using System.Text;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-using DataValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
+
 
 namespace PersonalFinanceTrackerTests
 {
-
-    // To get the Attribute Validation Errors for the Model Classes
-    public static class ModelValidationHelper
-    {
-        public static IList<DataValidationResult> ValidateModel(object model)
-        {
-            var results = new List<DataValidationResult>();
-            var ctx = new ValidationContext(model, null, null);
-            Validator.TryValidateObject(model, ctx, results, true);
-            return results;
-        }
-    }
 
     [TestFixture]
     public class AuthenticationControllerTests
@@ -76,7 +67,7 @@ namespace PersonalFinanceTrackerTests
             var services = new ServiceCollection();
             services.AddSingleton(configuration);
 
-            // ⭐⭐ THIS IS THE FIX ⭐⭐
+            // THIS IS THE FIX
             services.AddLogging(builder =>
             {
                 builder.ClearProviders();
@@ -102,7 +93,7 @@ namespace PersonalFinanceTrackerTests
             _userRegistrationRepository = provider.GetRequiredService<IUserRegistrationRepository>();
             _emailService = provider.GetRequiredService<IEmailService>();
             _controller = provider.GetRequiredService<AuthenticationController>();
-            
+
         }
 
         // Runs in-between every single test
@@ -117,16 +108,66 @@ namespace PersonalFinanceTrackerTests
             {
                 HttpContext = new DefaultHttpContext()
             };
+        
         }
 
         // Runs once at the END of all the tests
         [OneTimeTearDown]
         public void OneTimeTeardown()
         {
+
             _controller.Dispose();
             _testScope.Dispose();
 
         }
+
+
+        // THIS TEST MUST RUN BEFORE ANY OTHER TESTS
+        [Test]
+        [TestCase("PFT_Test", "User123", "PFT_Test_User_123", "PassWord43@^", "PassWord43@^", "test@test.tt", true, "", "Login", 0, 1)]
+        public void Authentication_UserRegistration_ShouldPassForNewRecordInsertion
+            (string firstName, string lastName, string userName, string password, string confirmPassword, string? email, bool termsAndConditionAccepted, string expectedErrorMessage, string expectedViewName, int totalValidationErrors, int expectedRecordCountInDB = 0)
+        {
+
+            // Arrange:
+            int actRecordCountInDB = 0;
+            var model = new UserRegistration
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = userName,
+                Password = password,
+                ConfirmPassword = confirmPassword,
+                Email = email,
+                AgreeToTermsAndPrivacyPolicy = termsAndConditionAccepted
+            };
+
+            // Check here if the user is inserted into the database!!!
+            IDbConnection _connection = _factory.GetDBConnection("pft_con_str_testenv");
+            DatabaseHelperForTests.DeleteNewUserByUserNameAndEmail(userName, email, _connection);       // DELETE IF ANY EXSITING USER WITH THE SAME NAME...
+
+            // Act
+            var response = _controller.Register(model, "pft_con_str_testenv") as RedirectToActionResult;
+
+            if (_connection.State == ConnectionState.Closed)    // closed by client app
+            {
+                _connection = _factory.GetDBConnection("pft_con_str_testenv");
+            }
+            actRecordCountInDB = DatabaseHelperForTests.GetUserCountsByUserNameAndEmail(userName, email, _connection);  // Keep this user for to run all the tests!!!
+
+            // Assert
+            Assert.That(_controller.ModelState.IsValid, Is.True);
+            Assert.That(                                                    // Confirm the error message...
+                     _controller.ModelState.Values
+                    .SelectMany(v => v.Errors).Count, Is.EqualTo(totalValidationErrors));
+            Assert.That(response.ActionName, Is.EqualTo(expectedViewName));
+            Assert.That(actRecordCountInDB, Is.EqualTo(expectedRecordCountInDB));
+
+            _connection.Close();
+            _connection.Dispose();
+
+        }
+
 
         [Test]
         // spaces are ignored by attributes as values...these tests passes...
@@ -220,7 +261,7 @@ namespace PersonalFinanceTrackerTests
         // should not get the validation errors for other than 'termsAndConditionAccepted' as it is intentionally 'false' to check other values validation errors!!!Should Pass!!!
         [TestCase("John", "Doe", "JohnDUser123", "PassWord43@^", "PassWord43@^", "test@test.tt", false, "Please accept the terms and conditions!", "UserRegistration", 1)]
         [TestCase("John", "Doe", "JohnDUser123", "PassWord43@^", "PassWord43@^", "chiragpatel.android@gmail.com", false, "Please accept the terms and conditions!", "UserRegistration", 1)]
-        public void AuthenticationUserRegistration_ShouldPassWithModelValidationErrorMessages
+        public void Authentication_UserRegistration_ShouldPassForModelValidationErrorMessages
             (string firstName, string lastName, string userName, string password, string confirmPassword, string? email, bool termsAndConditionAccepted, string expectedErrorMessage, string expectedViewName, int totalValidationErrors)
         {
 
@@ -263,47 +304,148 @@ namespace PersonalFinanceTrackerTests
                     .Any(e => e.ErrorMessage == expectedErrorMessage)
             );
             Assert.That(validationResults.Count(), Is.EqualTo(totalValidationErrors));
+
+        }
+
+        
+
+        [Test]
+        [TestCase("", "PassWord43@^", "Username or Email is required!", null, 1)]
+        [TestCase(null, "PassWord43@^", "Username or Email is required!", null, 1)]
+        [TestCase("PFT_Test_User_123", "", "Password is required!", null, 1)]
+        [TestCase("PFT_Test_User_123", null, "Password is required!", null, 1)]
+        public async Task Authentication_SessionUser_ShouldPassForModelValidationErrorMessages
+            (string? userNameOrEmail, string? password, string expectedErrorMessage, string? expectedViewName, int totalValidationErrors)
+        {
             
+            // Arrange
+            var model = new SessionUser
+            {
+                UserNameOrEmail = userNameOrEmail,
+                Password = password
+            };
+
+
+            // Act
+
+            // Run DataAnnotation validation - to get the Validation Errors from the ValidationAttributes of the 'UserRegistration' class.
+            var validationResults = ModelValidationHelper.ValidateModel(model);
+
+            // Copy validation errors into ModelState of the Controller
+            foreach (var result in validationResults)
+            {
+                foreach (var member in result.MemberNames)
+                {
+                    _controller.ModelState.AddModelError(member, result.ErrorMessage);
+                }
+            }
+
+            // Get the returned view name
+            var response = await _controller.Login(model, "pft_con_str_testenv") as ViewResult;
+
+            // Assert
+            Assert.That(_controller.ModelState.IsValid, Is.False);          // Confirm the state of Controller's Model
+            
+            Assert.That(response.ViewName, Is.EqualTo(expectedViewName));   // Confirm if the returned view is correct
+            Assert.That(                                                    // Confirm the error message...
+                _controller.ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Any(e => e.ErrorMessage == expectedErrorMessage)
+            );
+            Assert.That(                                                    // Confirm the error message...
+                _controller.ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Any(e => e.ErrorMessage == "Invalid username or password!")
+            );
+            Assert.That(validationResults.Count(), Is.EqualTo(totalValidationErrors));
+            Assert.That(_controller.ModelState.Count, Is.EqualTo(totalValidationErrors + 1));   // One more error added!!!
+
         }
 
 
-        [TestCase("John", "Doe", "JohnDUser123", "PassWord43@^", "PassWord43@^", "test@test.tt", true, "", "Login", 0, 1)]
-        public void AuthenticationUserRegistration_ShouldPassForNewRecordInsertion
-            (string firstName, string lastName, string userName, string password, string confirmPassword, string? email, bool termsAndConditionAccepted, string expectedErrorMessage, string expectedViewName, int totalValidationErrors, int expectedRecordCountInDB = 0)
+        [Test]
+        [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", "Authentication", "Login")]
+        public async Task Authentication_LoginAndLogOutActions_ShouldPassWithSuccess
+            (string? userNameOrEmail, string? password, string expectedLoginControllerName, string expectedLoginActionName, string expectedLogOutControllerName, string expectedLogOutActionName)
         {
-            // Arrange:
-            int actRecordCountInDB = 0;
-            var model = new UserRegistration
+
+            AuthenticationController controller = GetAuthenticationControllerWithDifferentHttpContext();
+
+            // Arrange Model
+            var model = new SessionUser
             {
-                FirstName = firstName,
-                LastName = lastName,
-                UserName = userName,
-                Password = password,
-                ConfirmPassword = confirmPassword,
-                Email = email,
-                AgreeToTermsAndPrivacyPolicy = termsAndConditionAccepted
+                UserNameOrEmail = userNameOrEmail,
+                Password = password
             };
 
-            // Act
-            var response = _controller.Register(model, "pft_con_str_testenv") as RedirectToActionResult;
+            // Act (Run Validation & Call Login)
+            var validationResults = ModelValidationHelper.ValidateModel(model);
 
-            // Check here if the user is inserted into the database!!!
-            
-            IDbConnection _connection = _factory.GetDBConnection("pft_con_str_testenv");
-            actRecordCountInDB = DatabaseHelperForTests.GetUserCountsByUserNameAndEmail(userName, email, _connection);
-            DatabaseHelperForTests.DeleteNewUserByUserNameAndEmail(userName, email, _connection);
+            foreach (var result in validationResults)
+            {
+                foreach (var member in result.MemberNames)
+                {
+                    controller.ModelState.AddModelError(member, result.ErrorMessage);
+                }
+            }
 
-            
-            _connection.Close();
-            _connection.Dispose();
+            var responseLogin = await controller.Login(model, "pft_con_str_testenv") as RedirectToActionResult;
+            var reponseLogOut = await controller.Logout() as RedirectToActionResult;
 
             // Assert
-            Assert.That(_controller.ModelState.IsValid, Is.True);
-            Assert.That(                                                    // Confirm the error message...
-                     _controller.ModelState.Values
-                    .SelectMany(v => v.Errors).Count, Is.EqualTo(totalValidationErrors));
-            Assert.That(response.ActionName, Is.EqualTo(expectedViewName));
-            Assert.That(actRecordCountInDB, Is.EqualTo(expectedRecordCountInDB));
+            // Login
+            Assert.That(responseLogin, Is.Not.Null);
+            Assert.That(controller.ModelState.IsValid, Is.True);
+            Assert.That(responseLogin.ControllerName, Is.EqualTo(expectedLoginControllerName));
+            Assert.That(responseLogin.ActionName, Is.EqualTo(expectedLoginActionName));
+
+            // Logout
+            Assert.That(reponseLogOut.ControllerName, Is.EqualTo(expectedLogOutControllerName));
+            Assert.That(reponseLogOut.ActionName, Is.EqualTo(expectedLogOutActionName));
+
+        }
+
+
+        [Test]
+        [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", 200)]
+        public async Task Authentication_LoginAndWindowClosedLogoutActions_ShouldPassWithSuccess
+            (string? userNameOrEmail, string? password, string expectedLoginControllerName, string expectedLoginActionName, int windowClosedLogoutStatusCode)
+        {
+
+            AuthenticationController controller = GetAuthenticationControllerWithDifferentHttpContext();
+
+            // Arrange Model
+            var model = new SessionUser
+            {
+                UserNameOrEmail = userNameOrEmail,
+                Password = password
+            };
+
+            // Act (Run Validation & Call Login)
+            var validationResults = ModelValidationHelper.ValidateModel(model);
+
+            foreach (var result in validationResults)
+            {
+                foreach (var member in result.MemberNames)
+                {
+                    controller.ModelState.AddModelError(member, result.ErrorMessage);
+                }
+            }
+
+            var responseLogin = await controller.Login(model, "pft_con_str_testenv") as RedirectToActionResult;
+            var reponseWindowClosedLogout = await controller.WindowClosedLogout() as OkResult;
+
+            // Assert
+            // Login
+            Assert.That(responseLogin, Is.Not.Null);
+            Assert.That(controller.ModelState.IsValid, Is.True);
+            Assert.That(responseLogin.ControllerName, Is.EqualTo(expectedLoginControllerName));
+            Assert.That(responseLogin.ActionName, Is.EqualTo(expectedLoginActionName));
+
+            // Logout
+            Assert.That(reponseWindowClosedLogout.StatusCode, Is.EqualTo(windowClosedLogoutStatusCode));
+            
+
         }
 
 
@@ -311,7 +453,7 @@ namespace PersonalFinanceTrackerTests
         [TestCase("invalidEmail@form", "False")]        // Not a valid email
         [TestCase("chiragpatel.android@gmail.com", "User with this Email already exists!")]
         [TestCase("not_existing_email@gmail.com", "True")]
-        public void AuthenticationUserWithEmailAlreadyExists_ShouldPassWithResponseMessages
+        public void Authentication_UserWithEmailAlreadyExists_ShouldPassWithResponseMessages
             (string? existingEmail, string expectedErrorMessage)
         {
 
@@ -324,11 +466,12 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+
         // User with this Name already exists!
         [TestCase("ChiragPatel", "False")]       // When Username length is less than 12 characters!!!
-        [TestCase("ChiragPatelTestUser", "User with this Username already exists!")]
+        [TestCase("pft_pft_admin", "User with this Username already exists!")]
         [TestCase("NotAnExistingUser", "True")]
-        public void AuthenticationUserWithSameUserNameExists_ShouldPassWithResponseMessages
+        public void Authentication_UserWithSameUserNameExists_ShouldPassWithResponseMessages
             (string? existingEmail, string expectedErrorMessage)
         {
 
@@ -343,10 +486,9 @@ namespace PersonalFinanceTrackerTests
 
 
         [TestCase("Login", "Login")]
-        
         [TestCase("Register", "UserRegistration")]
         [TestCase("AccessDenied", "AccessDenied")]
-        public void AuthenticationGetActions_ShouldPassReturnedViewNames(string actionToCall, string expectedViewName)
+        public void Authentication_GetActions_ShouldPassReturnedViewNames(string actionToCall, string expectedViewName)
         {
             ViewResult response = new ViewResult();
             switch (actionToCall)
@@ -375,28 +517,57 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        // TODO: PENDING
-        [TestCase("Logout", "Login")]
-        public async Task AuthenticationGetAyncActions_ShouldPassReturnedViewNames(string actionToCall, string expectedViewName)
+
+        // Returns the 'Authentication Controller' with 'AddControllers', 'AddCookie' AND 'DefaultHttpContext' to make an http request. 
+        private AuthenticationController GetAuthenticationControllerWithDifferentHttpContext()
         {
-            RedirectToActionResult response = new RedirectToActionResult(null, null, null);
-            switch (actionToCall)
+            // Load test configuration
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(TestContext.CurrentContext.TestDirectory)
+                .AddJsonFile("appsettings.test.json", optional: false)
+                .Build();
+
+            // Build the Service Provider for this test run (includes Authentication & your dependencies)
+            var services = new ServiceCollection();
+            services.AddSingleton(configuration); // Your configuration instance
+
+            services.AddControllers();
+
+            // Required for Cookie Authentication inside unit tests
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie();
+
+            services.AddLogging();
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRegistrationRepository, UserRegistrationRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Create a DefaultHttpContext and assign the ServiceProvider to RequestServices
+            var httpContext = new DefaultHttpContext
             {
-                case "Logout":
-                    response = await _controller.Logout() as RedirectToActionResult;
-                    break;
-                default:
-                    throw new ArgumentException($"Unknown action: {actionToCall}");
+                RequestServices = serviceProvider
+            };
 
-            }
+            // Instantiate the controller directly (passing its dependencies from the container)
+            // This avoids sharing a dirty/cached controller instance across tests.
+            var controller = new AuthenticationController(
+                serviceProvider.GetRequiredService<IUserRepository>(),
+                serviceProvider.GetRequiredService<IUserRegistrationRepository>(),
+                serviceProvider.GetRequiredService<IEmailService>() // adjust if your logger is different
+            )
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext,
+                    RouteData = new RouteData(),
+                    ActionDescriptor = new ControllerActionDescriptor()
+                }
+            };
 
-            // Assert
-            Assert.That(response, Is.Not.Null, $"The action '{actionToCall}' did not return a ViewResult.");
-
-            // Fallback to the action name if the ViewName property is null
-            string actualViewName = response.ActionName ?? actionToCall;
-
-            Assert.That(actualViewName, Is.EqualTo(expectedViewName));
+            return controller;
 
         }
 

@@ -140,7 +140,11 @@ const showAddEditTransactionRulesModal = function (record) {
 
 }
 
-// Retrives the data AFTER 1st ever request 
+// Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
+// First request retrieves the common data like user currency details, categories list, accounts list, tags list, goals list, 
+// transaction text match comparison list, transaction amount match comparison list and pagination values from server, 
+// subsequent requests will not retrieve these common data from server.
+// firstRequest is true for the first time request, false for subsequent requests.  
 const doNavigation = function (event, navigationRequest, firstRequest) {
 
     if (event) {

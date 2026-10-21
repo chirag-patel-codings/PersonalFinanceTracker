@@ -35,6 +35,9 @@ const displayAccountData = function (accountsData, pagination) {
     tbody.appendChild(row);
 }
 
+// Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
+// First request retrieves the common data like account types and pagination values from server, subsequent requests will not retrieve these common data from server.
+// firstRequest is true for the first time request, false for subsequent requests. 
 const doNavigation = function (event, navigationRequest, firstRequest) {
 
     if (event) {
@@ -56,6 +59,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
             "RequestVerificationToken": _token
         },
         body: JSON.stringify(payload)
+
     })
         .then(response => {
             // Check if the HTTP status code is 200-299 (Ok)

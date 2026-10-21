@@ -29,6 +29,8 @@ namespace PersonalFinanceTracker.Controllers
             _userCurrencySymbol = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencySymbol");
 
         }
+        
+        [Authorize]
         public IActionResult Index()
         {
 
@@ -196,8 +198,6 @@ namespace PersonalFinanceTracker.Controllers
             return View();
 
         }
-
-
         
     }
 }

@@ -31,8 +31,6 @@
                             <span class="material-symbols-outlined-panel-icon">account_circle</span>Profile
                         </a>
                         <div class="header-subpanel">
-                            <a href="#">Profile Settings</a>
-                            <hr style="border: 0; border-top: 1px solid #0f172a; margin: 5px 0;">
                             <span class="header-subpanel-logout"><a asp-controller="Authentication" asp-action="Logout" style="color: red"><span class="material-symbols-outlined-panel-icon" style="color:red; font-size: 20px;">logout</span>&nbsp;&nbsp;Logout</a></span>
                         </div>
                     </li>
@@ -142,7 +140,7 @@
                     return; // Do nothing, keep them logged in
                 }
 
-                // ⭐ CRITICAL CHECK: Only log out if the page is completely hidden/invisible.
+                // Only log out if the page is completely hidden/invisible.
                 // When clicking normal internal links, visibilityState remains "visible".
                 // When closing the tab or browser window entirely, it switches to "hidden".
                 if (document.visibilityState === 'hidden') {

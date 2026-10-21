@@ -46,7 +46,7 @@ namespace PersonalFinanceTracker.Controllers
 
 
         [Authorize]
-        [HttpPost("transactions")]
+        [HttpPost("/transactions")]
         [ValidateAntiForgeryToken]
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
@@ -152,10 +152,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
-            transaction.UserId = _currentUserId;
-
             if (ModelState.IsValid)
             {
+
+                transaction.UserId = _currentUserId;
+
                 if (_transactionRepository.SaveTransaction(transaction, connString))
                 {
                     return Ok(new { success = true });
@@ -294,10 +295,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
-            bulkImportTemplate.UserId = _currentUserId;
-
             if (ModelState.IsValid)
             {
+
+                bulkImportTemplate.UserId = _currentUserId;
+
                 if (_bulkImportTemplateRepository.SaveBulkImportTemplate(bulkImportTemplate, connString))
                 {
                     return Ok(new { success = true });

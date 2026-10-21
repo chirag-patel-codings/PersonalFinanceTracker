@@ -87,10 +87,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
-            tag.UserId = _currentUserId;
-
             if (ModelState.IsValid)
             {
+
+                tag.UserId = _currentUserId;
+
                 if (_tagRepository.SaveTag(tag, connString))
                 {
                     return Ok(new { success = true });

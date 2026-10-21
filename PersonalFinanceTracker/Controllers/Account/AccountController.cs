@@ -35,7 +35,7 @@ namespace PersonalFinanceTracker.Controllers
 
 
         [Authorize]
-        [HttpPost("accounts")]
+        [HttpPost("/accounts")]
         [ValidateAntiForgeryToken]
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...Subsequent after Index page!!1
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
@@ -90,12 +90,11 @@ namespace PersonalFinanceTracker.Controllers
         // Update or Add New Account!!!
         public IActionResult SaveAccount([FromBody] Account account, string? connString = null)
         {
+            
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
-
-            account.UserId = _currentUserId;
-
             if (ModelState.IsValid)
             {
+                account.UserId = _currentUserId;
                 if (_accountRepository.SaveAccount(account, connString))
                 {
                     return Ok(new { success = true });
@@ -117,6 +116,7 @@ namespace PersonalFinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteAccount([FromBody] dynamic deleteAccountDataFor, string? connString = null)
         {
+            
             string accountId = deleteAccountDataFor.GetProperty("accountId").GetString();
 
             if (_accountRepository.DeleteAccount(_currentUserId, accountId, connString))

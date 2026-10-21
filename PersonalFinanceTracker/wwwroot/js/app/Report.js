@@ -81,6 +81,8 @@ const getTagsAndCurrencyDetails = function () {
         });
 }
 
+getTagsAndCurrencyDetails();
+
 // Returns the sum of items' property
 const getSum = function (items, propName) {
     return items.reduce((total, item) => total + (Number(item[propName]) || 0), 0);
@@ -397,9 +399,6 @@ const getReport = function () {
 
 }
 
-// At first time load.
-getTagsAndCurrencyDetails();
-getReport();
 
 // show/hide the tag selection based on the report type selected
 document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
@@ -459,10 +458,19 @@ const exportToExcel = function () {
 document.getElementById('spanExportToExcel').addEventListener('click', (event) => {
 
     event.preventDefault();
-    exportToExcel();
+    
+    if (reportDataJSON.length > 0) {
+        exportToExcel();
+    }
 
 });
 
 // Export to Excel - End
 
 appendLessThanDateValueValidationFunctionality();
+
+// At first time load.
+// only after every image and asset has completely finished downloading
+window.addEventListener('load', (event) => {
+    getReport();
+});

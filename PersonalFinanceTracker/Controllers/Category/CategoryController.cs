@@ -34,7 +34,7 @@ namespace PersonalFinanceTracker.Controllers
 
 
         [Authorize]
-        [HttpPost("categories")]
+        [HttpPost("/categories")]
         [ValidateAntiForgeryToken]
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...Subsequent after Index page!!1
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
@@ -99,10 +99,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
             
-            category.UserId = _currentUserId;
-            
             if (ModelState.IsValid)
             {
+
+                category.UserId = _currentUserId;
+
                 if(_categoryRepository.SaveCategory(category, connString))
                 {
                     return Ok(new { success = true });

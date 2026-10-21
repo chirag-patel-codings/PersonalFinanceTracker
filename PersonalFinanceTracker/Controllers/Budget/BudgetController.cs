@@ -44,7 +44,7 @@ namespace PersonalFinanceTracker.Controllers
 
 
         [Authorize]
-        [HttpPost("budgets")]
+        [HttpPost("/budgets")]
         [ValidateAntiForgeryToken]
         // Returns the records between the BudgetDetailsStartDate and BudgetDetailsEndDate from a 'Post' request...Subsequent after Index page!!
         public IActionResult Index([FromBody] BudgetDetailsFilter budgetDetailsFilter, string? connString)
@@ -67,10 +67,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
-            budgetDetails.userId = _currentUserId;
-
             if (ModelState.IsValid)
             {
+
+                budgetDetails.userId = _currentUserId;
+
                 if (_budgetDetailsRepository.SaveBudgetDetails(budgetDetails, connString))
                 {
                     return Ok(new { success = true });
@@ -124,10 +125,13 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
-            budget.UserId = _currentUserId;
+            
 
             if (ModelState.IsValid)
             {
+
+                budget.UserId = _currentUserId;
+
                 if (_budgetRepository.SaveBudgetSettings(budget, connString))
                 {
                     return Ok(new { success = true });

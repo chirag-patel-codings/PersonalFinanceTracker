@@ -139,7 +139,7 @@ namespace PersonalFinanceTracker.Controllers
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
             
             TransactionRule transactionRule = JsonSerializer.Deserialize<TransactionRule>(payload["data"]?.ToString(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            transactionRule.UserId = _currentUserId;
+            
 
             bool applyRule = payload["applyRule"]?.ToString() == "1";
 
@@ -148,6 +148,9 @@ namespace PersonalFinanceTracker.Controllers
 
             if (ModelState.IsValid)
             {
+
+                transactionRule.UserId = _currentUserId;
+                
                 if(_transactionRuleRepository.SaveTransactionRule(transactionRule, connString))
                 {
                     if (applyRule)

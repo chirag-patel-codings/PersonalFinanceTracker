@@ -129,10 +129,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
             
-            recurring.UserId = _currentUserId;
-            
             if (ModelState.IsValid)
             {
+
+                recurring.UserId = _currentUserId;
+
                 if(_recurringRepository.SaveRecurring(recurring, connString))
                 {
                     return Ok(new { success = true });

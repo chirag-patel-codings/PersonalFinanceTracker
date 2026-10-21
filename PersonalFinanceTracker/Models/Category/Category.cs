@@ -9,11 +9,11 @@ namespace PersonalFinanceTracker.Models
         public ulong? UserId { get; set; }  // to be provided at the time of record insertion
 
 
-        [Required(ErrorMessage = "Please select standard category!")]
+        [Required(ErrorMessage = "Please provide standard category!")]
         public string? StandardCategoryId { get; set; }
 
 
-        [Required(ErrorMessage = "Please provide the type of category!")]
+        [Required(ErrorMessage = "Please provide the type of category!")]       // Kept for front-end consistency, but not required for the database
         public sbyte CategoryType { get; set; }  // Income = 1, Expense = -1, Permanent = 0
 
         [Required(ErrorMessage = "Category name is required!")]

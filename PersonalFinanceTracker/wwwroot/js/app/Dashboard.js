@@ -12,7 +12,7 @@ document.getElementById('dashboardEndDate').value = dashboardParametersJSON.dash
 
 
 // Retrieve Currency Details and License Key for the current user
-const getCurrencyDetailsAndLicenseKey = function () {
+const getCurrencyDetailsAndRegisterLicenseKey = function () {
 
     fetch('/Dashboard/GetUserCurrencyDetailsAndLicenseKey', {
         method: 'POST',
@@ -40,6 +40,9 @@ const getCurrencyDetailsAndLicenseKey = function () {
             console.error("Fetch operation failed:", error);
         });
 }
+
+// Initialize upon page load
+getCurrencyDetailsAndRegisterLicenseKey();
 
 // PIE CHART: Function to render the Category-wise Expense chart
 const renderCategoryWiseExpenseChart = function (rawData) {
@@ -287,22 +290,30 @@ const getReportsData = function () {
         });
 }
 
-// Initialize upon page load
-getCurrencyDetailsAndLicenseKey();
-getReportsData();
 
-// Requery report data
-document.getElementById("dashboardDataFilterDiv").addEventListener("keypress", (e) => {
 
-    if (e.target.tagName === "INPUT" && e.key === "Enter") {
+const events = ['keypress', 'click'];
+events.forEach(eventType => {
 
-        e.preventDefault();
-
-        if (isValidForm('dashboardDataFilterForm')) {
-            getReportsData();    // Parameter values are set by other function
+    // Requery report data
+    document.getElementById("dashboardDataFilterDiv").addEventListener(eventType, (e) => {
+    
+        if ((e.target.type === "date" && e.key === "Enter") || e.target.type === "submit") {
+    
+            e.preventDefault();
+            
+            if (isValidForm('dashboardDataFilterForm')) {
+                getReportsData();    // Parameter values are set by other function
+            }
+    
         }
+    });
 
-    }
 });
 
 appendLessThanDateValueValidationFunctionality();
+
+// only after every image and asset has completely finished downloading
+window.addEventListener('load', (event) => {
+    getReportsData();
+});

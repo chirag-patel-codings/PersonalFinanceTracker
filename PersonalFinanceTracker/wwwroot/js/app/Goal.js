@@ -285,7 +285,9 @@ const showAddEditGoalModal = function (data) {
     showHideAddEditGoalModal(true);
 }
 
-// Retrives the data
+// Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
+// First request retrieves the common data like goal types, goal interval types and pagination values from server, subsequent requests will not retrieve these common data from server.
+// firstRequest is true for the first time request, false for subsequent requests. 
 const doNavigation = function (event, navigationRequest, firstRequest) {
 
     if (event) {

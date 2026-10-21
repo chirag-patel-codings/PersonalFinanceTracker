@@ -34,7 +34,7 @@ namespace PersonalFinanceTracker.Controllers
 
 
         [Authorize]
-        [HttpPost("goals")]
+        [HttpPost("/goals")]
         [ValidateAntiForgeryToken]
         // Returns the records between the RecordStartNumber and RecordEndNumber from a 'Post' request...Subsequent after Index page!!1
         public IActionResult Index([FromBody] JsonObject payload, string? connString)
@@ -43,7 +43,7 @@ namespace PersonalFinanceTracker.Controllers
             Pagination pagination;
             IEnumerable<Goal> goals;
             IEnumerable<ListOption>? goalTypes = null;
-            IEnumerable<ListOption> goalIntervalTypes = null;
+            IEnumerable<ListOption>? goalIntervalTypes = null;
 
             if (payload["firstRequest"]?.ToString() == "true")
             {
@@ -112,10 +112,11 @@ namespace PersonalFinanceTracker.Controllers
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
             
-            goal.UserId = _currentUserId;
-            
             if (ModelState.IsValid)
             {
+
+                goal.UserId = _currentUserId;
+
                 if(_goalRepository.SaveGoalWithDetails(goal, connString))
                 {
                     return Ok(new { success = true });

@@ -196,7 +196,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
 
         // on logout button click!!!
-        [HttpGet]
+        [HttpGet("/Authentication/Logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
@@ -220,7 +220,6 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
         private async Task PerformSignOutAsync()
         {
-
             // Remove the tracking cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

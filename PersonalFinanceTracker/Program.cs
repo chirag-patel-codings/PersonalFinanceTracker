@@ -136,3 +136,8 @@ app.MapControllerRoute(
 CSVFileService.FolderContentRootPath = app.Services.GetRequiredService<IWebHostEnvironment>().ContentRootPath;
 
 app.Run();
+
+
+
+// To let WebApplicationFactory<Program> access it from your test project (as 'Program' class is partial internally from .net version 6 onwards!!!)
+public partial class Program { }

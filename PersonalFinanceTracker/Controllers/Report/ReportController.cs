@@ -31,7 +31,7 @@ namespace PersonalFinanceTracker.Controllers
 
         // Index page!!!
         [Authorize]
-        [HttpGet("reports")]
+        [HttpGet("/reports")]
         public ActionResult Index(string? connString)
         {
             

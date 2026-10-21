@@ -17,10 +17,8 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="Models\Profile\" />
     <Folder Include="Uploads\" />
     <Folder Include="Uploads\1001783960586327435\CSVUpload\" />
-    <Folder Include="Views\Profile\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 

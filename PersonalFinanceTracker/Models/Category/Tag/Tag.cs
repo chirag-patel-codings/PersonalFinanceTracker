@@ -18,8 +18,7 @@ namespace PersonalFinanceTracker.Models
         [MaxLength(50, ErrorMessage = "Tag color should not be more than 50 characters long!")]
         public string? TagColor { get; set; } = "#ffffff";
 
-        public sbyte? IsTagActive { get; set; } = 1;
-
+        public sbyte? IsTagActive { get; set; } = 1;     // Value & member is provided when element is not present. If member is present with incorrect value, model fails. 
 
     }
 }
