@@ -41,7 +41,6 @@ namespace PersonalFinanceTrackerTests
         // DECLARE FIELDS ONCE HERE (added null-forgiving ! to prevent null warnings)
         private AuthenticationController _controller = null!;
         private IServiceScope _testScope = null!;
-        // private IDbConnection _connection = null!;
         private IDbConnectionFactory _factory = null!;
         private IUserRegistrationRepository _userRegistrationRepository = null!;
         private IUserRepository _userRepository = null!;
@@ -50,6 +49,7 @@ namespace PersonalFinanceTrackerTests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
+
             // Configure Serilog for test environment
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -92,7 +92,7 @@ namespace PersonalFinanceTrackerTests
             _userRepository = provider.GetRequiredService<IUserRepository>();
             _userRegistrationRepository = provider.GetRequiredService<IUserRegistrationRepository>();
             _emailService = provider.GetRequiredService<IEmailService>();
-            _controller = provider.GetRequiredService<AuthenticationController>();
+            _controller = provider.GetRequiredService<AuthenticationController>();      // NO HttpContext Services added to this controller instance
 
         }
 
@@ -485,14 +485,18 @@ namespace PersonalFinanceTrackerTests
         }
 
 
+        [TestCase("/", "/")]    
         [TestCase("Login", "Login")]
         [TestCase("Register", "UserRegistration")]
         [TestCase("AccessDenied", "AccessDenied")]
         public void Authentication_GetActions_ShouldPassReturnedViewNames(string actionToCall, string expectedViewName)
         {
+
             ViewResult response = new ViewResult();
+
             switch (actionToCall)
             {
+                case "/":
                 case "Login":
                     response = _controller.Login() as ViewResult;
                     break;
@@ -521,6 +525,7 @@ namespace PersonalFinanceTrackerTests
         // Returns the 'Authentication Controller' with 'AddControllers', 'AddCookie' AND 'DefaultHttpContext' to make an http request. 
         private AuthenticationController GetAuthenticationControllerWithDifferentHttpContext()
         {
+
             // Load test configuration
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(TestContext.CurrentContext.TestDirectory)

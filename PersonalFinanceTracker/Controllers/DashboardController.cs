@@ -59,13 +59,21 @@ namespace PersonalFinanceTracker.Controllers
         public IActionResult GetReportsData([FromBody] DashboardFilter dashboardFilter, string? connString)
         {
 
-            var categoryWiseSummaryChartData = GetCategoryWiseSummaryData(dashboardFilter, connString);
-            var monthlyIncomeExpenseChartData = GetMonthlyIncomeExpenseData(dashboardFilter, connString);
-            var monthlyNetIncomeChartData = GetNetIncomeData(dashboardFilter, connString);
-            var monthlyNetWorthChartData = GetNetWorthData(dashboardFilter, connString);
-            
+            if (ModelState.IsValid)
+            {
+                
+                var categoryWiseSummaryChartData = GetCategoryWiseSummaryData(dashboardFilter, connString);
+                var monthlyIncomeExpenseChartData = GetMonthlyIncomeExpenseData(dashboardFilter, connString);
+                var monthlyNetIncomeChartData = GetNetIncomeData(dashboardFilter, connString);
+                var monthlyNetWorthChartData = GetNetWorthData(dashboardFilter, connString);
+                
+                return Ok(new { categoryWiseSummaryChartData, monthlyIncomeExpenseChartData, monthlyNetIncomeChartData, monthlyNetWorthChartData });
 
-            return Ok(new { categoryWiseSummaryChartData, monthlyIncomeExpenseChartData, monthlyNetIncomeChartData, monthlyNetWorthChartData });
+            }
+            else
+            {
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
+            }
 
         }
 
@@ -175,12 +183,12 @@ namespace PersonalFinanceTracker.Controllers
 
         [AllowAnonymous]
         [Route("VerifyEmail")]
-        public IActionResult VerifyEmail([FromQuery] string? token)
+        public IActionResult VerifyEmail([FromQuery] string? token, string? connString)
         {
 
             if(token != null)
             {
-                int totalRecordsUpdated = _userRegistrationRepository.UpdateUserEmailVarification(token, null);
+                int totalRecordsUpdated = _userRegistrationRepository.UpdateUserEmailVarification(token, connString);
                 if(totalRecordsUpdated > 0)
                 {
                     return RedirectToAction("Index");

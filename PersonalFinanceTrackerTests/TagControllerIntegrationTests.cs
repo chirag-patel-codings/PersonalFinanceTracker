@@ -40,8 +40,7 @@ namespace PersonalFinanceTrackerTests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            // Query the test database for the user ID using your existing helper
-            // (You can instantiate a standalone connection factory just for this lookup)
+            // (Instantiate a standalone connection factory just for this lookup)
 
             // Load the test configuration
             IConfiguration configuration = new ConfigurationBuilder()
@@ -52,6 +51,7 @@ namespace PersonalFinanceTrackerTests
             var tempConnectionFactory = new DbConnectionFactory(configuration);
             _tempConnection = tempConnectionFactory.GetDBConnection("pft_con_str_testenv");
             
+            // Query the test database for the user ID using your existing helper
             _userId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(
                 "PFT_Test_User_123", "test@test.tt", _tempConnection).ToString();
 
@@ -279,7 +279,7 @@ namespace PersonalFinanceTrackerTests
 
         [Test]
         
-        // TagName: "" / null;
+        // TagName:
         [TestCase("", null, null, "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name is required!")]
         [TestCase("", null, "", "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name is required!")]
         [TestCase("", null, "     ", "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name is required!")]
@@ -289,7 +289,7 @@ namespace PersonalFinanceTrackerTests
         [TestCase("", null, "This Tag Name is more than 100 characters long to test the max length for the tag name value.........", "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name should not be more than 100 characters long!")]
         [TestCase(null, null, "This Tag Name is more than 100 characters long to test the max length for the tag name value.........", "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name should not be more than 100 characters long!")]
         
-        // TagDescription: "" / null;
+        // TagDescription:
         [TestCase("", null, "From_Test_Tag_Name", "This Tag Description is more than 255 characters long to test the max length for the tag description...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...", "#ffffff", (sbyte)1, 400, "TagDescription", "Tag description should not be more than 255 characters long!")]
         [TestCase(null, null, "From_Test_Tag_Name", "This Tag Description is more than 255 characters long to test the max length for the tag description...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...", "#ffffff", (sbyte)1, 400, "TagDescription", "Tag description should not be more than 255 characters long!")]
 
@@ -543,6 +543,7 @@ namespace PersonalFinanceTrackerTests
         // This helper method simulates that exact browser behavior programmatically.
         protected async Task<(string? token, string? cookieHeader)> GetAntiforgeryTokensAsync(bool generateAntiforgeryToken = true)
         {
+
             using var scope = _factory.Services.CreateScope();
             var antiforgery = scope.ServiceProvider.GetRequiredService<IAntiforgery>();
 

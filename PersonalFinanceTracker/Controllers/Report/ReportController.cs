@@ -36,6 +36,7 @@ namespace PersonalFinanceTracker.Controllers
         {
             
             return View("Report");
+
         }
 
         // Returns the User's Currency Details and Tags lists!!!
@@ -59,19 +60,16 @@ namespace PersonalFinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult GetReport([FromBody] ReportFilter reportFilter, string? connString = null)
         {
-
-            IEnumerable<string> reportMonthYear = null;
-
-            var report = _reportRepository.GetReport(_currentUserId, reportFilter.ReportName, reportFilter.ReportStartDate, reportFilter.ReportEndDate, reportFilter.ReportInterval, reportFilter.TagId, connString);
-
-            /*
-            if (report.Any(r => !string.IsNullOrEmpty(r.ReportMonthYear)))
+            
+            if (ModelState.IsValid)
             {
-                reportMonthYear = report.Select(r => r.ReportMonthYear).Distinct();
+                var report = _reportRepository.GetReport(_currentUserId, reportFilter.ReportName, reportFilter.ReportStartDate, reportFilter.ReportEndDate, reportFilter.ReportInterval, reportFilter.TagId, connString);
+                return Ok(new { report });
             }
-            */
-
-            return Ok(new { report });
+            else
+            {
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) } );
+            }
 
         }
 

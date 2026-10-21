@@ -388,7 +388,33 @@ namespace PersonalFinanceTrackerTests
         }
 
         // INSERT DUMMY RECORD IN RELATED TABLES - END
+        
+        // User's email varification - Start
 
+        // Token Hash: "UrBHEdT5W+xAgWbcyy9VUXnOJVmeI3kADb2ITqkhuhA="
+        // Token: "LneO3S8w325fcNYNei0hkgEw0md-vR1YKOL4UlP2Ay1Pckp5oU5whtNCwhD6hDrUyEyOQAMfNosdsWunkLj60ZwaGUTqmYYZrDZSLAqBLGaPdUZvCNfV46f89OTZbDVq48vwUg-77wyt9c7Sp-c12bt-vA1xwkyjaQX4vDl8zxFnblK_3USlROAO6zGfsxRdDfhNe5cAHBg0eC66oconm7tVUs06pjkzs1KijnPo7PVaDbx2TYJ7dAi-LQxF6mAmM28FkmUa6xvEcTckDamTR5Y1Y8C0YBhRk8vxudCxwg2nqOhKxTHxY7250gWTwtzLdI8Zs2AsY38Z2Kqrou75"
+        // 
+        // RESET fields related to email varification in "pft_user_tokens" and "pft_users" tables. 
+        // token_hash is updated to a matched Token Value so that test can send the Token which will be matched with token hash...
+        public static void ResetEmailVarificationFieldValuesForUser(string userId, IDbConnection _conn)
+        {
+
+            string sql = $"UPDATE pft_user_tokens ut JOIN pft_users u ON u.user_id = ut.user_id SET u.is_user_email_verified = '0', ut.token_hash = 'UrBHEdT5W+xAgWbcyy9VUXnOJVmeI3kADb2ITqkhuhA=', ut.is_used = '0' WHERE u.user_id = '{userId}';";
+
+            _conn.Execute(sql);
+
+        }
+
+        // Gets the flag values for the Email Varification Related Database Fields
+        public static (int isUserEmailVarified, int isUsed) GetEmailVarificationFieldValuesForUser(string userId, IDbConnection _conn)
+        {
+            string sql = $"SELECT u.is_user_email_verified AS IsUserEmailVarified, ut.is_used AS IsUsed FROM pft_user_tokens ut JOIN pft_users u ON u.user_id = ut.user_id WHERE u.user_id = '{userId}';";
+
+            return  _conn.QueryFirst<(int isUserEmailVarified, int isUsed)>(sql);
+
+        }
+
+        // User's email varification - End
 
         // Gets the record_id of a record in test by table name, field name, search field name, search value and user_id
         public static ulong GetRecIdByName(string queryTableName, string queryFieldName, string searchFieldName, string searchValue, string userId, IDbConnection _conn)
