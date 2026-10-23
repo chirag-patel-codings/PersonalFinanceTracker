@@ -106,93 +106,76 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task CategorysAllActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/categories")]
+        public async Task CategoriesAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/categories");
-
-            var requestIndexPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/categories");
-            var requestIndexPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/categories");
-
-            var requestGetCategoryPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Category/GetCategory");
-            var requestGetCategoryPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Category/GetCategory");
-
-            var requestSaveCategoryPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory");
-            var requestSaveCategoryPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory");
-
-            var requestDeleteCategoryPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Category/DeleteCategory");
-            var requestDeleteCategoryPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Category/DeleteCategory");
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // requestIndexPostInValidAuthorize
-            requestIndexPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestIndexPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            requestIndexPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
-            requestIndexPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // requestGetCategoryPostInValidAuthorize
-            requestGetCategoryPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetCategoryPostInValidAuthorize.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
-
-            // requestGetCategoryPostInValidAntiforgeryToken
-            requestGetCategoryPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetCategoryPostInValidAntiforgeryToken.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
-
-            // requestSaveCategoryPostInValidAuthorize
-            requestSaveCategoryPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestSaveCategoryPostInValidAuthorize.Content = JsonContent.Create(new { _categoryRecord });
-
-            // requestSaveCategoryPostInValidAntiforgeryToken
-            requestSaveCategoryPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestSaveCategoryPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _categoryRecord });
-
-            // requestDeleteCategoryPostInValidAuthorize
-            requestDeleteCategoryPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestDeleteCategoryPostInValidAuthorize.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
-
-            // requestDeleteCategoryPostInValidAntiforgeryToken
-            requestDeleteCategoryPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestDeleteCategoryPostInValidAntiforgeryToken.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseIndexPostInValidAuthorize = await _client.SendAsync(requestIndexPostInValidAuthorize);
-            var responseIndexPostInValidAntiforgeryToken = await _client.SendAsync(requestIndexPostInValidAntiforgeryToken);
-
-            var responseGetCategoryPostInValidAuthorize = await _client.SendAsync(requestGetCategoryPostInValidAuthorize);
-            var responseGetCategoryPostInValidAntiforgeryToken = await _client.SendAsync(requestGetCategoryPostInValidAntiforgeryToken);
-
-            var responseSaveCategoryPostInValidAuthorize = await _client.SendAsync(requestSaveCategoryPostInValidAuthorize);
-            var responseSaveCategoryPostInValidAntiforgeryToken = await _client.SendAsync(requestSaveCategoryPostInValidAntiforgeryToken);
-
-            var responseDeleteCategoryPostInValidAuthorize = await _client.SendAsync(requestDeleteCategoryPostInValidAuthorize);
-            var responseDeleteCategoryPostInValidAntiforgeryToken = await _client.SendAsync(requestDeleteCategoryPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseIndexPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseIndexPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetCategoryPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetCategoryPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
-            Assert.That(responseSaveCategoryPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseSaveCategoryPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        [Test]
+        [TestCase("/categories")]
+        [TestCase("/Category/GetCategory")]
+        [TestCase("/Category/SaveCategory")]
+        [TestCase("/Category/DeleteCategory")]
+        public async Task CategoriesAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
 
-            Assert.That(responseDeleteCategoryPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseDeleteCategoryPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // requestIndexPostInValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+
+                case "/categories":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    break;
+
+                case "/Category/GetCategory":
+                case "/Category/DeleteCategory":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
+                    break;
+
+                case "/Category/SaveCategory":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { _categoryRecord });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _categoryRecord });
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
 
@@ -215,79 +198,67 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task CategorysIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task CategorysIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
+            (bool isFirstRequest)
         {
 
             // ARRANGE
             var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var firstRequest = new HttpRequestMessage(HttpMethod.Post, "/categories?connString=pft_con_str_testenv");
-            var consecutiveRequests = new HttpRequestMessage(HttpMethod.Post, "/categories?connString=pft_con_str_testenv");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/categories?connString=pft_con_str_testenv");
 
-
-            firstRequest.Headers.Add("Request-Verification-Token", token);
-            firstRequest.Headers.Add("Cookie", cookie);
-            firstRequest.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            consecutiveRequests.Headers.Add("Request-Verification-Token", token);
-            consecutiveRequests.Headers.Add("Cookie", cookie);
-            consecutiveRequests.Content = JsonContent.Create(new { firstRequest = "false", pagination = new { } });
+            request.Headers.Add("Request-Verification-Token", token);
+            request.Headers.Add("Cookie", cookie);
+            request.Content = JsonContent.Create(new { firstRequest = isFirstRequest.ToString().ToLower(), pagination = new { } });
 
             // ACT
-            var responseFirstRequest = await _client.SendAsync(firstRequest);
-            var jsonResponseFirstRequest = await responseFirstRequest.Content.ReadAsStringAsync();
-
-            var responseConsecutiveRequests = await _client.SendAsync(consecutiveRequests);
-            var jsonResponseConsecutiveRequests = await responseConsecutiveRequests.Content.ReadAsStringAsync();
+            var response = await _client.SendAsync(request);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             // ASSERT
-            Assert.That(responseFirstRequest.IsSuccessStatusCode, Is.True);
-            Assert.That(responseConsecutiveRequests.IsSuccessStatusCode, Is.True);
+            Assert.That(response.IsSuccessStatusCode, Is.True);
 
             /*
              * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
              * or worry about deserialization exceptions if a property happens to be null (like categoryTypes when firstRequest is false).
              */
-            using var docFirstRequest = JsonDocument.Parse(jsonResponseFirstRequest);
-            var rootFirstRequest = docFirstRequest.RootElement;
+            using var doc = JsonDocument.Parse(jsonResponse);
+            var root = doc.RootElement;
 
-            using var docConsecutiveRequests = JsonDocument.Parse(jsonResponseConsecutiveRequests);
-            var rootConsecutiveRequests = docConsecutiveRequests.RootElement;
 
             // Verify all three root properties exist in the first request's response   (categories, pagination, standardCategories, categoryTypes)
-            Assert.That(rootFirstRequest.TryGetProperty("categories", out var categoriesElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("pagination", out var paginationElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("standardCategories", out var standardCategoriesElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("categoryTypes", out var categoryTypesElementFirstRequest), Is.True);
+            Assert.That(root.TryGetProperty("categories", out var categoriesElement), Is.True);
+            Assert.That(root.TryGetProperty("pagination", out var paginationElement), Is.True);
+            Assert.That(root.TryGetProperty("standardCategories", out var standardCategoriesElement), Is.True);
+            Assert.That(root.TryGetProperty("categoryTypes", out var categoryTypesElement), Is.True);
             
-            // Verify all three root properties exist in the consecutive request's response
-            Assert.That(rootConsecutiveRequests.TryGetProperty("categories", out var categoriesElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("pagination", out var paginationElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("standardCategories", out var standardCategoriesElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("categoryTypes", out var categoryTypesElementConsecutiveRequests), Is.True);
 
             // Assert on specific values inside pagination or categories
-            var totalRecordsFirstRequest = int.Parse(paginationElementFirstRequest.GetProperty("totalNumberOfRecords").GetString());
-            var totalRecordsConsecutiveRequest = int.Parse(paginationElementConsecutiveRequests.GetProperty("totalNumberOfRecords").GetString());
+            var totalRecords = int.Parse(paginationElement.GetProperty("totalNumberOfRecords").GetString());
 
-            Assert.That(totalRecordsFirstRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that categories has no data...
-            Assert.That(totalRecordsConsecutiveRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that categories has no data...
+            Assert.That(totalRecords, Is.GreaterThanOrEqualTo(0));  // there is a possibility that categories has no data...
 
+            Assert.That(categoriesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+            Assert.That(categoriesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
 
-            // First Request: Check if categories & category types are arrays and has data (if expected)
-            Assert.That(categoriesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(categoriesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(standardCategoriesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(standardCategoriesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(categoryTypesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(categoryTypesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            if (isFirstRequest)
+            {
+                // First Request: Check if categories & category types are arrays and has data (if expected)
+                Assert.That(standardCategoriesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+                Assert.That(standardCategoriesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(categoryTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+                Assert.That(categoryTypesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            }
+            else
+            {
+                // Consecutive Requests: Check if categories is an array and has data (if expected)
+                Assert.That(standardCategoriesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
+                Assert.That(categoryTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
+            }
 
-            // Consicutive Requests: Check if categories is an array and has data (if expected)
-            Assert.That(categoriesElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(categoriesElementConsecutiveRequests.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(standardCategoriesElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Null));
-            Assert.That(categoryTypesElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Null));
 
         }
 
@@ -538,6 +509,9 @@ namespace PersonalFinanceTrackerTests
             request.Content = JsonContent.Create(new { categoryId = _categoryRecord.CategoryId });
             request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+            // Cleanup Dummy Data in Related Tables:
+            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("categories", _tempConnection);
+
             // Generate dummy data in related tables...pft_transactions, pft_recurring_schedules
             DatabaseHelperForTests.GenerateDummyDataInRelatedTablesForUser("categories", _userId, _tempConnection, _categoryRecord.CategoryId, null);
 
@@ -597,9 +571,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(uncategorizedCategoryRecordsCountsInTransactionsAfterDelete, Is.GreaterThanOrEqualTo(1));
             Assert.That(uncategorizedCategoryRecordsCountsInRecurringSchedulesAfterDelete, Is.GreaterThanOrEqualTo(1));
             Assert.That(uncategorizedCategoryRecordsCountsInTransactionsRuleAfterDelete, Is.GreaterThanOrEqualTo(1));
-
-            // Cleanup Dummy Data in Related Tables:
-            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("categories", _tempConnection);
 
         }
 

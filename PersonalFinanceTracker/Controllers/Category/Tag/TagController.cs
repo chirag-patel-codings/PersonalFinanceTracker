@@ -45,7 +45,7 @@ namespace PersonalFinanceTracker.Controllers
             Pagination pagination;
             IEnumerable<Tag> tags;
             
-            if (payload["firstRequest"]?.ToString() == "true")
+            if (payload["firstRequest"]?.ToString().ToLower() == "true")
             {
                 pagination = new Pagination();
                 pagination.TotalNumberOfRecords = _tagRepository.GetTotalNoOfRecords(_currentUserId, connString);

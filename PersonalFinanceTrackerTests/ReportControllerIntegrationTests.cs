@@ -91,65 +91,72 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task ReportsAllActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/reports")]
+        public async Task ReportsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/reports");
-
-            var requestGetTagsAndCurrencyDetailsPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Report/GetTagsAndCurrencyDetails");
-            var requestGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Report/GetTagsAndCurrencyDetails");
-
-            var requestGetReportPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Report/GetReport");
-            var requestGetReportPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Report/GetReport");
-
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            // requestGetTagsAndCurrencyDetailsPostInValidAuthorize
-            requestGetTagsAndCurrencyDetailsPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetTagsAndCurrencyDetailsPostInValidAuthorize.Content = JsonContent.Create(new {  });
-
-            // requestGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken
-            requestGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
-
-            // requestGetReportPostInValidAuthorize
-            requestGetReportPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetReportPostInValidAuthorize.Content = JsonContent.Create(new { });
-
-            // requestGetReportPostInValidAntiforgeryToken
-            requestGetReportPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetReportPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _reportFilter });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseGetTagsAndCurrencyDetailsPostInValidAuthorize = await _client.SendAsync(requestGetTagsAndCurrencyDetailsPostInValidAuthorize);
-            var responseGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken = await _client.SendAsync(requestGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken);
-
-            var responseGetReportPostInValidAuthorize = await _client.SendAsync(requestGetReportPostInValidAuthorize);
-            var responseGetReportPostInValidAntiforgeryToken = await _client.SendAsync(requestGetReportPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseGetTagsAndCurrencyDetailsPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetTagsAndCurrencyDetailsPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetReportPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetReportPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+
+        [Test]
+        [TestCase("/Report/GetTagsAndCurrencyDetails")]
+        [TestCase("/Report/GetReport")]
+        public async Task ReportsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
+
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // InValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+
+                case "/Report/GetTagsAndCurrencyDetails":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
+                    break;
+
+                case "/Report/GetReport":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { _reportFilter });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _reportFilter });
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
 
-        
+
         [Test]
         public async Task ReportsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
@@ -190,7 +197,7 @@ namespace PersonalFinanceTrackerTests
 
             /*
              * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
              * or worry about deserialization exceptions if a property happens to be null (like reportTypes when firstRequest is false).
              */
             using var doc = JsonDocument.Parse(jsonResponse);
@@ -221,7 +228,6 @@ namespace PersonalFinanceTrackerTests
 
         // ReportEndDate
         // [TestCase("2026-01-01", "", "IncomeExpense", (byte)1, null, 400, "ReportEndDate", "End date is required!")]
-        
         public async Task ReportsGetReport_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
             (DateOnly reportStartDate, DateOnly reportEndDate, string reportName, byte reportInterval, string? tagId, int expectedStatusCode, string failedValidationPropertyName, string? expectedErrorMessage)
         {

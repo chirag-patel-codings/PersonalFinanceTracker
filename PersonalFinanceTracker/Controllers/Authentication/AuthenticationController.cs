@@ -29,15 +29,15 @@ namespace PersonalFinanceTracker.Controllers.Authentication
     [Route("auth")]
     public class AuthenticationController : Controller
     {
-        // IDbConnectionFactory _factory;
+        IDbConnectionFactory _factory;
         IUserRegistrationRepository _userRegistrationRepository;
         IUserRepository _userRepository;
         IEmailService _emailService;
 
-        public AuthenticationController(IUserRepository userRepository, IUserRegistrationRepository userRegistrationRepository, IEmailService emailService)
+        public AuthenticationController(IDbConnectionFactory factory, IUserRepository userRepository, IUserRegistrationRepository userRegistrationRepository, IEmailService emailService)
         {
 
-            //_factory = factory;
+            _factory = factory;
             _userRepository = userRepository;
             _userRegistrationRepository = userRegistrationRepository;
             _emailService = emailService;

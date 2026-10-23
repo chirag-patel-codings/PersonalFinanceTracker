@@ -61,7 +61,7 @@ namespace PersonalFinanceTracker.Controllers
             // Get the inner string from the JSON node, or default to an empty object string
             var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
 
-            bool isFirstRequest = payload["firstRequest"]?.ToString() == "true";
+            bool isFirstRequest = payload["firstRequest"]?.ToString().ToLower() == "true";
 
             if (isFirstRequest)
             {

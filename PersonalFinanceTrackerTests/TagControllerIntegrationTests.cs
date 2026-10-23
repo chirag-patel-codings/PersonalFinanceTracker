@@ -98,95 +98,77 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-
         [Test]
-        public async Task TagsAllActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/categories/tags")]
+        public async Task TagsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/categories/tags");
-
-            var requestIndexPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/categories/tags");
-            var requestIndexPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/categories/tags");
-
-            var requestGetTagPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Tag/GetTag");
-            var requestGetTagPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Tag/GetTag");
-
-            var requestSaveTagPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Tag/SaveTag");
-            var requestSaveTagPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Tag/SaveTag");
-
-            var requestDeleteTagPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Tag/DeleteTag");
-            var requestDeleteTagPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Tag/DeleteTag");
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // requestIndexPostInValidAuthorize
-            requestIndexPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestIndexPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            requestIndexPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
-            requestIndexPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // requestGetTagPostInValidAuthorize
-            requestGetTagPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetTagPostInValidAuthorize.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
-
-            // requestGetTagPostInValidAntiforgeryToken
-            requestGetTagPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetTagPostInValidAntiforgeryToken.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
-
-            // requestSaveTagPostInValidAuthorize
-            requestSaveTagPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestSaveTagPostInValidAuthorize.Content = JsonContent.Create(new { _tagRecord });
-
-            // requestSaveTagPostInValidAntiforgeryToken
-            requestSaveTagPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestSaveTagPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _tagRecord });
-
-            // requestDeleteTagPostInValidAuthorize
-            requestDeleteTagPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestDeleteTagPostInValidAuthorize.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
-
-            // requestDeleteTagPostInValidAntiforgeryToken
-            requestDeleteTagPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestDeleteTagPostInValidAntiforgeryToken.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseIndexPostInValidAuthorize = await _client.SendAsync(requestIndexPostInValidAuthorize);
-            var responseIndexPostInValidAntiforgeryToken = await _client.SendAsync(requestIndexPostInValidAntiforgeryToken);
-
-            var responseGetTagPostInValidAuthorize = await _client.SendAsync(requestGetTagPostInValidAuthorize);
-            var responseGetTagPostInValidAntiforgeryToken = await _client.SendAsync(requestGetTagPostInValidAntiforgeryToken);
-
-            var responseSaveTagPostInValidAuthorize = await _client.SendAsync(requestSaveTagPostInValidAuthorize);
-            var responseSaveTagPostInValidAntiforgeryToken = await _client.SendAsync(requestSaveTagPostInValidAntiforgeryToken);
-
-            var responseDeleteTagPostInValidAuthorize = await _client.SendAsync(requestDeleteTagPostInValidAuthorize);
-            var responseDeleteTagPostInValidAntiforgeryToken = await _client.SendAsync(requestDeleteTagPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseIndexPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseIndexPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetTagPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetTagPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
-            Assert.That(responseSaveTagPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseSaveTagPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        [Test]
+        [TestCase("/categories/tags")]
+        [TestCase("/Tag/GetTag")]
+        [TestCase("/Tag/SaveTag")]
+        [TestCase("/Tag/DeleteTag")]
+        public async Task AccountsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
 
-            Assert.That(responseDeleteTagPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseDeleteTagPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // InValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+
+                case "/categories/tags":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    break;
+
+                case "/Tag/GetTag":
+                case "/Tag/DeleteTag":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { tagId = _tagRecord == null ? "8888888888888888888" : _tagRecord.TagId });
+                    break;
+
+                case "/Tag/SaveTag":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { _tagRecord });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _tagRecord });
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
 
@@ -209,71 +191,49 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task TagsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task TagsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
+            (bool isFirstRequest)
         {
 
             // ARRANGE
             var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var firstRequest = new HttpRequestMessage(HttpMethod.Post, "/categories/tags?connString=pft_con_str_testenv");
-            var consecutiveRequests = new HttpRequestMessage(HttpMethod.Post, "/categories/tags?connString=pft_con_str_testenv");
-
-
-            firstRequest.Headers.Add("Request-Verification-Token", token);
-            firstRequest.Headers.Add("Cookie", cookie);
-            firstRequest.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            consecutiveRequests.Headers.Add("Request-Verification-Token", token);
-            consecutiveRequests.Headers.Add("Cookie", cookie);
-            consecutiveRequests.Content = JsonContent.Create(new { firstRequest = "false", pagination = new { } });
+            var request = new HttpRequestMessage(HttpMethod.Post, "/categories/tags?connString=pft_con_str_testenv");
+            
+            request.Headers.Add("Request-Verification-Token", token);
+            request.Headers.Add("Cookie", cookie);
+            request.Content = JsonContent.Create(new { firstRequest = isFirstRequest.ToString().ToLower(), pagination = new { } });
 
             // ACT
-            var responseFirstRequest = await _client.SendAsync(firstRequest);
-            var jsonResponseFirstRequest = await responseFirstRequest.Content.ReadAsStringAsync();
-
-            var responseConsecutiveRequests = await _client.SendAsync(consecutiveRequests);
-            var jsonResponseConsecutiveRequests = await responseConsecutiveRequests.Content.ReadAsStringAsync();
+            var response = await _client.SendAsync(request);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             // ASSERT
-            Assert.That(responseFirstRequest.IsSuccessStatusCode, Is.True);
-            Assert.That(responseConsecutiveRequests.IsSuccessStatusCode, Is.True);
+            Assert.That(response.IsSuccessStatusCode, Is.True);
 
             /*
              * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
              * or worry about deserialization exceptions if a property happens to be null (like tagTypes when firstRequest is false).
              */
-            using var docFirstRequest = JsonDocument.Parse(jsonResponseFirstRequest);
-            var rootFirstRequest = docFirstRequest.RootElement;
-
-            using var docConsecutiveRequests = JsonDocument.Parse(jsonResponseConsecutiveRequests);
-            var rootConsecutiveRequests = docConsecutiveRequests.RootElement;
+            using var doc = JsonDocument.Parse(jsonResponse);
+            var root = doc.RootElement;
 
             // Verify all three root properties exist in the first request's response
-            Assert.That(rootFirstRequest.TryGetProperty("tags", out var tagsElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("pagination", out var paginationElementFirstRequest), Is.True);
-            
-            // Verify all three root properties exist in the consecutive request's response
-            Assert.That(rootConsecutiveRequests.TryGetProperty("tags", out var tagsElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("pagination", out var paginationElementConsecutiveRequests), Is.True);
+            Assert.That(root.TryGetProperty("tags", out var tagsElement), Is.True);
+            Assert.That(root.TryGetProperty("pagination", out var paginationElement), Is.True);
             
             // Assert on specific values inside pagination or tags
-            var totalRecordsFirstRequest = int.Parse(paginationElementFirstRequest.GetProperty("totalNumberOfRecords").GetString());
-            var totalRecordsConsecutiveRequest = int.Parse(paginationElementConsecutiveRequests.GetProperty("totalNumberOfRecords").GetString());
+            var totalRecords = int.Parse(paginationElement.GetProperty("totalNumberOfRecords").GetString());
 
-
-            Assert.That(totalRecordsFirstRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that tags has no data...
-            Assert.That(totalRecordsConsecutiveRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that tags has no data...
-
+            Assert.That(totalRecords, Is.GreaterThanOrEqualTo(0));  // there is a possibility that tags has no data...
 
             // Check if tags & tag types are arrays and has data (if expected)
-            Assert.That(tagsElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(tagsElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            Assert.That(tagsElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+            Assert.That(tagsElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
             
-            // Check if tags is an array and has data (if expected) & tag types is null
-            Assert.That(tagsElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(tagsElementConsecutiveRequests.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-
         }
 
 
@@ -435,7 +395,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(_tagRecord.TagColor, Is.EqualTo(updatedTag.TagColor));
             Assert.That(_tagRecord.IsTagActive, Is.EqualTo(updatedTag.IsTagActive));
 
-
         }
 
         [Test]
@@ -502,8 +461,12 @@ namespace PersonalFinanceTrackerTests
             request.Content = JsonContent.Create(new { tagId = _tagRecord.TagId });
             request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+            // Cleanup Dummy Data in Related Tables:
+            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("tags", _tempConnection);
+
             // Generate dummy data in related tables...pft_transactions, pft_recurring_schedules
             DatabaseHelperForTests.GenerateDummyDataInRelatedTablesForUser("tags", _userId, _tempConnection, _tagRecord.TagId, null);
+
 
             // ACT
             int transactionsRecordsCountsBeforeDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(_userId, "pft_transactions", "tag_id", _tagRecord.TagId, _tempConnection);
@@ -531,10 +494,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(transactionsRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(recurringSchedulesRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(transactionsRepeatRecordsCountsAfterDelete, Is.EqualTo(0));
-
-
-            // Cleanup Dummy Data in Related Tables:
-            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("tags", _tempConnection);
 
         }
 

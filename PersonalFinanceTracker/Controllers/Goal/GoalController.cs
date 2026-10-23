@@ -45,7 +45,7 @@ namespace PersonalFinanceTracker.Controllers
             IEnumerable<ListOption>? goalTypes = null;
             IEnumerable<ListOption>? goalIntervalTypes = null;
 
-            if (payload["firstRequest"]?.ToString() == "true")
+            if (payload["firstRequest"]?.ToString().ToLower() == "true")
             {
                 pagination = new Pagination();
                 pagination.TotalNumberOfRecords = _goalRepository.GetTotalNoOfRecords(_currentUserId, connString);

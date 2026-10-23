@@ -45,7 +45,7 @@ namespace PersonalFinanceTracker.Controllers
             IEnumerable<StandardCategories>? standardCategories = null;
             IEnumerable<CategoryType>? categoryTypes = null;
 
-            if (payload["firstRequest"]?.ToString() == "true")
+            if (payload["firstRequest"]?.ToString().ToLower() == "true")
             {
                 pagination = new Pagination();
                 pagination.TotalNumberOfRecords = _categoryRepository.GetTotalNoOfRecords(_currentUserId, connString);

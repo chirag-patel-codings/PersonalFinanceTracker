@@ -117,93 +117,76 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task GoalsAllActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/goals")]
+        public async Task GoalsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/goals");
-
-            var requestIndexPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/goals");
-            var requestIndexPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/goals");
-
-            var requestGetGoalPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Goal/GetGoal");
-            var requestGetGoalPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Goal/GetGoal");
-
-            var requestSaveGoalPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Goal/SaveGoal");
-            var requestSaveGoalPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Goal/SaveGoal");
-
-            var requestDeleteGoalPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Goal/DeleteGoal");
-            var requestDeleteGoalPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Goal/DeleteGoal");
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // requestIndexPostInValidAuthorize
-            requestIndexPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestIndexPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            requestIndexPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
-            requestIndexPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // requestGetGoalPostInValidAuthorize
-            requestGetGoalPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetGoalPostInValidAuthorize.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
-
-            // requestGetGoalPostInValidAntiforgeryToken
-            requestGetGoalPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetGoalPostInValidAntiforgeryToken.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
-
-            // requestSaveGoalPostInValidAuthorize
-            requestSaveGoalPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestSaveGoalPostInValidAuthorize.Content = JsonContent.Create(new { _goalRecord });
-
-            // requestSaveGoalPostInValidAntiforgeryToken
-            requestSaveGoalPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestSaveGoalPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _goalRecord });
-
-            // requestDeleteGoalPostInValidAuthorize
-            requestDeleteGoalPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestDeleteGoalPostInValidAuthorize.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
-
-            // requestDeleteGoalPostInValidAntiforgeryToken
-            requestDeleteGoalPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestDeleteGoalPostInValidAntiforgeryToken.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseIndexPostInValidAuthorize = await _client.SendAsync(requestIndexPostInValidAuthorize);
-            var responseIndexPostInValidAntiforgeryToken = await _client.SendAsync(requestIndexPostInValidAntiforgeryToken);
-
-            var responseGetGoalPostInValidAuthorize = await _client.SendAsync(requestGetGoalPostInValidAuthorize);
-            var responseGetGoalPostInValidAntiforgeryToken = await _client.SendAsync(requestGetGoalPostInValidAntiforgeryToken);
-
-            var responseSaveGoalPostInValidAuthorize = await _client.SendAsync(requestSaveGoalPostInValidAuthorize);
-            var responseSaveGoalPostInValidAntiforgeryToken = await _client.SendAsync(requestSaveGoalPostInValidAntiforgeryToken);
-
-            var responseDeleteGoalPostInValidAuthorize = await _client.SendAsync(requestDeleteGoalPostInValidAuthorize);
-            var responseDeleteGoalPostInValidAntiforgeryToken = await _client.SendAsync(requestDeleteGoalPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseIndexPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseIndexPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetGoalPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetGoalPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
-            Assert.That(responseSaveGoalPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseSaveGoalPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        [Test]
+        [TestCase("/goals")]
+        [TestCase("/Goal/GetGoal")]
+        [TestCase("/Goal/SaveGoal")]
+        [TestCase("/Goal/DeleteGoal")]
+        public async Task GoalsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
 
-            Assert.That(responseDeleteGoalPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseDeleteGoalPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // InValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+
+                case "/goals":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    break;
+
+                case "/Goal/GetGoal":
+                case "/Goal/DeleteGoal":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
+                    break;
+
+                case "/Goal/SaveGoal":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { _goalRecord });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _goalRecord });
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
 
@@ -226,80 +209,65 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task GoalsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task GoalsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
+            (bool isFirstRequest)
         {
 
             // ARRANGE
             var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var firstRequest = new HttpRequestMessage(HttpMethod.Post, "/goals?connString=pft_con_str_testenv");
-            var consecutiveRequests = new HttpRequestMessage(HttpMethod.Post, "/goals?connString=pft_con_str_testenv");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/goals?connString=pft_con_str_testenv");
+            
+            request.Headers.Add("Request-Verification-Token", token);
+            request.Headers.Add("Cookie", cookie);
+            request.Content = JsonContent.Create(new { firstRequest = isFirstRequest.ToString().ToLower(), pagination = new { } });
 
-
-            firstRequest.Headers.Add("Request-Verification-Token", token);
-            firstRequest.Headers.Add("Cookie", cookie);
-            firstRequest.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            consecutiveRequests.Headers.Add("Request-Verification-Token", token);
-            consecutiveRequests.Headers.Add("Cookie", cookie);
-            consecutiveRequests.Content = JsonContent.Create(new { firstRequest = "false", pagination = new { } });
-
+            
             // ACT
-            var responseFirstRequest = await _client.SendAsync(firstRequest);
-            var jsonResponseFirstRequest = await responseFirstRequest.Content.ReadAsStringAsync();
+            var response = await _client.SendAsync(request);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
-            var responseConsecutiveRequests = await _client.SendAsync(consecutiveRequests);
-            var jsonResponseConsecutiveRequests = await responseConsecutiveRequests.Content.ReadAsStringAsync();
-
+            
             // ASSERT
-            Assert.That(responseFirstRequest.IsSuccessStatusCode, Is.True);
-            Assert.That(responseConsecutiveRequests.IsSuccessStatusCode, Is.True);
+            Assert.That(response.IsSuccessStatusCode, Is.True);
 
             /*
              * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
              * or worry about deserialization exceptions if a property happens to be null (like goalTypes when firstRequest is false).
              */
-            using var docFirstRequest = JsonDocument.Parse(jsonResponseFirstRequest);
-            var rootFirstRequest = docFirstRequest.RootElement;
-
-            using var docConsecutiveRequests = JsonDocument.Parse(jsonResponseConsecutiveRequests);
-            var rootConsecutiveRequests = docConsecutiveRequests.RootElement;
+            using var doc = JsonDocument.Parse(jsonResponse);
+            var root = doc.RootElement;
 
             // Verify all three root properties exist in the first request's response
-            Assert.That(rootFirstRequest.TryGetProperty("goals", out var goalsElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("pagination", out var paginationElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("goalTypes", out var goalTypesElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("goalIntervalTypes", out var goalIntervalTypesElementFirstRequest), Is.True);
-
-            // Verify all three root properties exist in the consecutive request's response
-            Assert.That(rootConsecutiveRequests.TryGetProperty("goals", out var goalsElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("pagination", out var paginationElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("goalTypes", out var goalTypesElementConsecutiveRequest), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("goalIntervalTypes", out var goalIntervalTypesElementConsecutiveRequest), Is.True);
+            Assert.That(root.TryGetProperty("goals", out var goalsElement), Is.True);
+            Assert.That(root.TryGetProperty("pagination", out var paginationElement), Is.True);
+            Assert.That(root.TryGetProperty("goalTypes", out var goalTypesElement), Is.True);
+            Assert.That(root.TryGetProperty("goalIntervalTypes", out var goalIntervalTypesElement), Is.True);
 
             // Assert on specific values inside pagination or goals
-            var totalRecordsFirstRequest = int.Parse(paginationElementFirstRequest.GetProperty("totalNumberOfRecords").GetString());
-            var totalRecordsConsecutiveRequest = int.Parse(paginationElementConsecutiveRequests.GetProperty("totalNumberOfRecords").GetString());
+            var totalRecords = int.Parse(paginationElement.GetProperty("totalNumberOfRecords").GetString());
 
-
-            Assert.That(totalRecordsFirstRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that goals has no data...
-            Assert.That(totalRecordsConsecutiveRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that goals has no data...
-
+            Assert.That(totalRecords, Is.GreaterThanOrEqualTo(0));  // there is a possibility that goals has no data...
 
             // Check if goals & goal types are arrays and has data (if expected)
-            Assert.That(goalsElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(goalsElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(goalTypesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(goalTypesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(goalIntervalTypesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(goalIntervalTypesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            Assert.That(goalsElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+            Assert.That(goalsElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
 
-            // Check if goals is an array and has data (if expected) & goal types is null
-            Assert.That(goalsElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(goalsElementConsecutiveRequests.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-            Assert.That(goalTypesElementConsecutiveRequest.ValueKind, Is.EqualTo(JsonValueKind.Null));
-            Assert.That(goalIntervalTypesElementConsecutiveRequest.ValueKind, Is.EqualTo(JsonValueKind.Null));
+            if (isFirstRequest)
+            {
+                Assert.That(goalTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+                Assert.That(goalTypesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(goalIntervalTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+                Assert.That(goalIntervalTypesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            }
+            else
+            {
+                Assert.That(goalTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
+                Assert.That(goalIntervalTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
+            }
 
         }
 
@@ -418,9 +386,9 @@ namespace PersonalFinanceTrackerTests
             // Validate Newly saved record...Replace the existing '_goalRecord' values
             _goalRecord = DatabaseHelperForTests.GetGoalRecordByName(_goalRecord.GoalName, _userId, _tempConnection);
             _goalRecord.GoalDetails = DatabaseHelperForTests.GetGoalDetailsByGoalName(_goalRecord.GoalName, _userId, _tempConnection);
+
             Assert.That(_goalRecord.GoalId, Is.Not.Null);
             Assert.That(_goalRecord.GoalDetails.Count, Is.GreaterThanOrEqualTo(0));
-
 
         }
 
@@ -560,6 +528,9 @@ namespace PersonalFinanceTrackerTests
             request.Content = JsonContent.Create(new { goalId = _goalRecord.GoalId });
             request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+            // Cleanup Dummy Data in Related Tables:
+            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("goals", _tempConnection);
+
             // Generate dummy data in related tables...pft_transactions, pft_recurring_schedules
             DatabaseHelperForTests.GenerateDummyDataInRelatedTablesForUser("goals", _userId, _tempConnection, _goalRecord.GoalId, null);
 
@@ -604,9 +575,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(transactionsRuleRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(goalDetailsRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(goalRecordsCountsAfterDelete, Is.EqualTo(0));
-
-            // Cleanup Dummy Data in Related Tables:
-            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("goals", _tempConnection);
 
         }
 

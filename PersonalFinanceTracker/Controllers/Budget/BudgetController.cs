@@ -50,11 +50,18 @@ namespace PersonalFinanceTracker.Controllers
         public IActionResult Index([FromBody] BudgetDetailsFilter budgetDetailsFilter, string? connString)
         {
 
-            var budgetDetails = _budgetDetailsRepository.GetBudgetDetails(_currentUserId, budgetDetailsFilter.BudgetDetailsStartDate, budgetDetailsFilter.BudgetDetailsEndDate, connString);
-            var budgetsMonthYear = budgetDetails.Select(b => b.BudgetMonthYear).Distinct();
-            var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
+            if (ModelState.IsValid)
+            {
+                var budgetDetails = _budgetDetailsRepository.GetBudgetDetails(_currentUserId, budgetDetailsFilter.BudgetDetailsStartDate, budgetDetailsFilter.BudgetDetailsEndDate, connString);
+                var budgetsMonthYear = budgetDetails.Select(b => b.BudgetMonthYear).Distinct();
+                var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
 
-            return Ok(new { budgetDetails, budgetsMonthYear, userCurrencyDetails });
+                return Ok(new { budgetDetails, budgetsMonthYear, userCurrencyDetails });
+            }
+            else
+            {
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
+            }
 
         }
 
@@ -80,6 +87,7 @@ namespace PersonalFinanceTracker.Controllers
                 {
                     return StatusCode(500, new { success = false, message = "Database error occurred." });
                 }
+
             }
             else
             {
@@ -88,19 +96,27 @@ namespace PersonalFinanceTracker.Controllers
 
         }
 
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteBudget([FromBody] BudgetDetails budgetDetails, string? connString = null)
         {
-            
-            if (_budgetDetailsRepository.DeleteBudgetDetails(_currentUserId, budgetDetails.BudgetId, budgetDetails.BudgetDateDigits, connString))
+
+            if (ModelState.IsValid)
             {
-                return Ok(new { success = true });
+                if (_budgetDetailsRepository.DeleteBudgetDetails(_currentUserId, budgetDetails.BudgetId, budgetDetails.BudgetDateDigits, connString))
+                {
+                    return Ok(new { success = true });
+                }
+                else
+                {
+                    return StatusCode(500, new { success = false, message = "Database error occurred." });  // record may not be found!!!
+                }
             }
             else
             {
-                return StatusCode(500, new { success = false, message = "Database error occurred." });  // record may not be found!!!
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
             }
 
         }
@@ -115,7 +131,9 @@ namespace PersonalFinanceTracker.Controllers
 
             var budgetSettings = _budgetRepository.GetBudgetSettings(_currentUserId, connString);
             return Ok(budgetSettings);
+
         }
+
 
         [Authorize]
         [HttpPost]
@@ -123,9 +141,8 @@ namespace PersonalFinanceTracker.Controllers
         // Save Budget Settings!!!
         public IActionResult SaveBudgetSettings([FromBody] Budget budget, string? connString = null)
         {
-            // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
-
             
+            // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
 
             if (ModelState.IsValid)
             {

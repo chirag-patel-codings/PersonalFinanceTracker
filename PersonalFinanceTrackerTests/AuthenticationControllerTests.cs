@@ -42,6 +42,8 @@ namespace PersonalFinanceTrackerTests
         private AuthenticationController _controller = null!;
         private IServiceScope _testScope = null!;
         private IDbConnectionFactory _factory = null!;
+
+        IDbConnection _connection = null!;
         private IUserRegistrationRepository _userRegistrationRepository = null!;
         private IUserRepository _userRepository = null!;
         private IEmailService _emailService = null!;
@@ -94,12 +96,14 @@ namespace PersonalFinanceTrackerTests
             _emailService = provider.GetRequiredService<IEmailService>();
             _controller = provider.GetRequiredService<AuthenticationController>();      // NO HttpContext Services added to this controller instance
 
+            
         }
 
         // Runs in-between every single test
         [SetUp]
         public void Setup()
         {
+
             // Fresh ModelState
             _controller.ModelState.Clear();
 
@@ -108,7 +112,9 @@ namespace PersonalFinanceTrackerTests
             {
                 HttpContext = new DefaultHttpContext()
             };
-        
+
+            _connection = _factory.GetDBConnection("pft_con_str_testenv");
+
         }
 
         // Runs once at the END of all the tests
@@ -116,13 +122,22 @@ namespace PersonalFinanceTrackerTests
         public void OneTimeTeardown()
         {
 
+            _connection.Close();
+            _connection.Dispose();
+
             _controller.Dispose();
             _testScope.Dispose();
 
         }
 
-
-        // THIS TEST MUST RUN BEFORE ANY OTHER TESTS
+        /*
+        *   THIS TEST MUST RUN BEFORE ANY OTHER TESTS
+        *   When a new user is created:
+        *   A new record added to users table
+        *   37 new categories records added to the categories table
+        *   34 budget (settings) records added to the budgets table as "Permanent Categories" are excluded from budget settings!
+        *   1 email varification token record added to the tokens table
+        */
         [Test]
         [TestCase("PFT_Test", "User123", "PFT_Test_User_123", "PassWord43@^", "PassWord43@^", "test@test.tt", true, "", "Login", 0, 1)]
         public void Authentication_UserRegistration_ShouldPassForNewRecordInsertion
@@ -130,7 +145,18 @@ namespace PersonalFinanceTrackerTests
         {
 
             // Arrange:
-            int actRecordCountInDB = 0;
+            string existingUserId = "0";
+            string newUserId = "0";
+            int userRecordsCountAfterDelete = 0;
+            int categoryRecordsCountAfterDelete = 0;
+            int budgetRecordsCountAfterDelete = 0;
+            int userTokenRecordsCountAfterDelete = 0;
+            
+            int userRecordsCountAfterInsert = 0;
+            int categoryRecordsCountAfterInsert = 0;
+            int budgetRecordsCountAfterInsert = 0;
+            int userTokenRecordsCountAfterInsert = 0;
+
             var model = new UserRegistration
             {
                 FirstName = firstName,
@@ -143,28 +169,47 @@ namespace PersonalFinanceTrackerTests
             };
 
             // Check here if the user is inserted into the database!!!
-            IDbConnection _connection = _factory.GetDBConnection("pft_con_str_testenv");
-            DatabaseHelperForTests.DeleteNewUserByUserNameAndEmail(userName, email, _connection);       // DELETE IF ANY EXSITING USER WITH THE SAME NAME...
+            // IDbConnection _connection = _factory.GetDBConnection("pft_con_str_testenv");
+
+            existingUserId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(userName, email, _connection).ToString();
+            DatabaseHelperForTests.DeleteNewUserByUserNameAndEmail(userName, email, _connection);       // DELETE IF ANY EXSITING USER WITH THE SAME NAME AND EMAIL
+            
+            userRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_users", "user_id", existingUserId, _connection);
+            categoryRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_categories", "user_id", existingUserId, _connection);
+            budgetRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_budgets", "user_id", existingUserId, _connection);
+            userTokenRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_user_tokens", "user_id", existingUserId, _connection);
 
             // Act
             var response = _controller.Register(model, "pft_con_str_testenv") as RedirectToActionResult;
-
+            /*
             if (_connection.State == ConnectionState.Closed)    // closed by client app
             {
                 _connection = _factory.GetDBConnection("pft_con_str_testenv");
             }
-            actRecordCountInDB = DatabaseHelperForTests.GetUserCountsByUserNameAndEmail(userName, email, _connection);  // Keep this user for to run all the tests!!!
+            */
+            userRecordsCountAfterInsert = DatabaseHelperForTests.GetUserCountsByUserNameAndEmail(userName, email, _connection);  // Keep this user for to run all the tests!!!
+            newUserId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(userName, email, _connection).ToString();
+
+            categoryRecordsCountAfterInsert = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(newUserId, "pft_categories", "user_id", newUserId, _connection);
+            budgetRecordsCountAfterInsert = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(newUserId, "pft_budgets", "user_id", newUserId, _connection);
+            userTokenRecordsCountAfterInsert = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(newUserId, "pft_user_tokens", "user_id", newUserId, _connection);
 
             // Assert
+            Assert.That(userRecordsCountAfterDelete, Is.EqualTo(0));
+            Assert.That(categoryRecordsCountAfterDelete, Is.EqualTo(0));
+            Assert.That(budgetRecordsCountAfterDelete, Is.EqualTo(0));
+            Assert.That(userTokenRecordsCountAfterDelete, Is.EqualTo(0));
+
             Assert.That(_controller.ModelState.IsValid, Is.True);
             Assert.That(                                                    // Confirm the error message...
                      _controller.ModelState.Values
                     .SelectMany(v => v.Errors).Count, Is.EqualTo(totalValidationErrors));
             Assert.That(response.ActionName, Is.EqualTo(expectedViewName));
-            Assert.That(actRecordCountInDB, Is.EqualTo(expectedRecordCountInDB));
 
-            _connection.Close();
-            _connection.Dispose();
+            Assert.That(userRecordsCountAfterInsert, Is.EqualTo(expectedRecordCountInDB));
+            Assert.That(categoryRecordsCountAfterInsert, Is.EqualTo(37));
+            Assert.That(budgetRecordsCountAfterInsert, Is.EqualTo(34)); 
+            Assert.That(userTokenRecordsCountAfterInsert, Is.EqualTo(1));
 
         }
 
@@ -364,44 +409,53 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", "Authentication", "Login")]
+        [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", "Login")]
+        [TestCase("PFT_Test_User_123", "PassWord43@^", "Authentication", "Login", "Logout")]
         public async Task Authentication_LoginAndLogOutActions_ShouldPassWithSuccess
-            (string? userNameOrEmail, string? password, string expectedLoginControllerName, string expectedLoginActionName, string expectedLogOutControllerName, string expectedLogOutActionName)
+            (string? userNameOrEmail, string? password, string expectedControllerName, string expectedActionName, string actionName)
         {
 
             AuthenticationController controller = GetAuthenticationControllerWithDifferentHttpContext();
 
+            RedirectToActionResult response;
             // Arrange Model
-            var model = new SessionUser
+            if (actionName == "Login")
             {
-                UserNameOrEmail = userNameOrEmail,
-                Password = password
-            };
 
-            // Act (Run Validation & Call Login)
-            var validationResults = ModelValidationHelper.ValidateModel(model);
-
-            foreach (var result in validationResults)
-            {
-                foreach (var member in result.MemberNames)
+                var model = new SessionUser
                 {
-                    controller.ModelState.AddModelError(member, result.ErrorMessage);
+                    UserNameOrEmail = userNameOrEmail,
+                    Password = password
+                };
+
+                // Act (Run Validation & Call Login)
+                var validationResults = ModelValidationHelper.ValidateModel(model);
+
+                foreach (var result in validationResults)
+                {
+                    foreach (var member in result.MemberNames)
+                    {
+                        controller.ModelState.AddModelError(member, result.ErrorMessage);
+                    }
                 }
+
+                response = await controller.Login(model, "pft_con_str_testenv") as RedirectToActionResult;
             }
-
-            var responseLogin = await controller.Login(model, "pft_con_str_testenv") as RedirectToActionResult;
-            var reponseLogOut = await controller.Logout() as RedirectToActionResult;
-
+            else
+            {
+                response = await controller.Logout() as RedirectToActionResult;
+            }
+            
             // Assert
             // Login
-            Assert.That(responseLogin, Is.Not.Null);
-            Assert.That(controller.ModelState.IsValid, Is.True);
-            Assert.That(responseLogin.ControllerName, Is.EqualTo(expectedLoginControllerName));
-            Assert.That(responseLogin.ActionName, Is.EqualTo(expectedLoginActionName));
+            if (actionName == "Login")
+            {
+                Assert.That(controller.ModelState.IsValid, Is.True);
+            }
 
-            // Logout
-            Assert.That(reponseLogOut.ControllerName, Is.EqualTo(expectedLogOutControllerName));
-            Assert.That(reponseLogOut.ActionName, Is.EqualTo(expectedLogOutActionName));
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.ControllerName, Is.EqualTo(expectedControllerName));
+            Assert.That(response.ActionName, Is.EqualTo(expectedActionName));
 
         }
 
@@ -559,6 +613,7 @@ namespace PersonalFinanceTrackerTests
             // Instantiate the controller directly (passing its dependencies from the container)
             // This avoids sharing a dirty/cached controller instance across tests.
             var controller = new AuthenticationController(
+                serviceProvider.GetRequiredService<IDbConnectionFactory>(),
                 serviceProvider.GetRequiredService<IUserRepository>(),
                 serviceProvider.GetRequiredService<IUserRegistrationRepository>(),
                 serviceProvider.GetRequiredService<IEmailService>() // adjust if your logger is different

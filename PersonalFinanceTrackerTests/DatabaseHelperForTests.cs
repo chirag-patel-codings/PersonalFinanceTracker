@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
@@ -39,6 +40,10 @@ namespace PersonalFinanceTrackerTests
             if (tableName == "pft_goals")
             {
                 sql = $"SET FOREIGN_KEY_CHECKS = 0; DELETE FROM {childTableName} WHERE {childFieldName} = @RecordId; DELETE FROM {tableName} WHERE {fieldName} = @RecordId; SET FOREIGN_KEY_CHECKS = 1;";
+            }
+            else if (tableName == "pft_budgets_details")
+            {
+                sql = $"SET FOREIGN_KEY_CHECKS = 0; START TRANSACTION; UPDATE pft_budgets SET budget_base_amount = NULL WHERE budget_id = @RecordId; DELETE FROM {tableName} WHERE {fieldName} = @RecordId; COMMIT; SET FOREIGN_KEY_CHECKS = 1;";
             }
             else
             {
@@ -201,6 +206,8 @@ namespace PersonalFinanceTrackerTests
                 case "pft_transactions_rules":
                 case "pft_budgets":
                 case "pft_import_templates":
+                case "pft_users":
+                case "pft_user_tokens":
 
                     sql = $"SELECT COUNT(*) FROM {tableName} WHERE user_id = '{userId}' AND {searchFieldName} = '{searchValue}'";
                     break;
@@ -263,7 +270,7 @@ namespace PersonalFinanceTrackerTests
 
                 case "categories":
 
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_budgets_details", "pft_budgets", "pft_accounts");
+                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_budgets_details", "pft_accounts");
                     break;
             }
 
@@ -408,6 +415,7 @@ namespace PersonalFinanceTrackerTests
         // Gets the flag values for the Email Varification Related Database Fields
         public static (int isUserEmailVarified, int isUsed) GetEmailVarificationFieldValuesForUser(string userId, IDbConnection _conn)
         {
+
             string sql = $"SELECT u.is_user_email_verified AS IsUserEmailVarified, ut.is_used AS IsUsed FROM pft_user_tokens ut JOIN pft_users u ON u.user_id = ut.user_id WHERE u.user_id = '{userId}';";
 
             return  _conn.QueryFirst<(int isUserEmailVarified, int isUsed)>(sql);
@@ -706,6 +714,117 @@ namespace PersonalFinanceTrackerTests
         }
 
         // Goals Tests - End
+
+        // Budget Tests - Start
+
+        // Select statement for budget table with field names that maps to the Category model class
+        private static string GetBudgetSettingsSelectStatementWithFieldNames()
+        {
+            return "SELECT b.user_id AS UserId, " +
+                            "b.category_id AS CategoryId, " +
+                            "c.category_name AS CategoryName, " +
+                            "b.br_to_be_rolled_over AS BudgetToBeRolledOver, " +
+                            "b.br_if_under_setting AS BudgetIfUnderSettings, " +
+                            "b.br_if_over_setting AS BudgetIfOverSettings " +
+                            "FROM pft_budgets b " +
+                            "JOIN pft_categories c " +
+                            "ON b.category_id = c.category_id ";
+        }
+
+        // Select statement for budget table with field names that maps to the Category model class
+        private static string GetBudgetDetailsSelectStatementWithFieldNames()
+        {
+            return "SELECT b.user_id AS userId, " +
+                            "b.budget_id AS BudgetId, " +
+                            "b.category_id AS CategoryId, " + 
+                            "c.category_name AS CategoryName, " +
+                            "c.category_type AS CategoryType, " +
+                            "DATE_FORMAT(bd.budget_for_month_year, '%Y%m%d') AS BudgetDateDigits, " +
+                            "DATE_FORMAT(bd.budget_for_month_year, '%b %Y') AS BudgetMonthYear, " +
+                            "bd.budget_amount AS BudgetAmount " +
+                            "FROM pft_budgets b " + 
+                            "JOIN pft_budgets_details bd " +
+                            "ON b.budget_id = bd.budget_id " +
+                            "JOIN pft_categories c ON " +
+                            "b.category_id = c.category_id ";
+        }
+
+        
+        // Get the specific record from a table for a user using a search value
+        public static Budget? GetBudgetRecordByCategoryName(string categoryName, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetBudgetSettingsSelectStatementWithFieldNames()} WHERE b.user_id = @UserId AND c.category_name = @CategoryName LIMIT 1";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
+
+            // Get this value and then delete the record!!!
+            Budget? budget = _conn.QuerySingleOrDefault<Budget?> (sql, new
+            {
+                UserId = ulong.Parse(userId),
+                CategoryName = categoryName
+            });
+
+            return budget;
+
+        }
+
+        public static ulong? GetBudgetIdByCategoryName(string categoryName, IDbConnection _conn)
+        {
+
+            string sql = $"SELECT b.budget_id, c.category_id FROM pft_budgets b JOIN pft_categories c ON c.category_id = b.category_id AND c.user_id = b.user_id WHERE c.category_name = @CategoryName;";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
+
+            // Get this value and then delete the record!!!
+            return _conn.QuerySingleOrDefault<ulong?> (sql, new
+            {
+                CategoryName = categoryName
+            });
+
+
+        }
+        
+        public static BudgetDetails? GetBudgetDetailsByBudgetId(string budgetId, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetBudgetDetailsSelectStatementWithFieldNames()} WHERE bd.budget_id = @BudgetId AND b.user_id = @UserId ORDER BY bd.budget_for_month_year DESC LIMIT 1;";
+
+            // Get this value and then delete the record!!!
+            return _conn.QuerySingleOrDefault<BudgetDetails>(sql, new
+            {
+                BudgetId = budgetId,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        public static BudgetDetails? GetBudgetDetailsByBudgetIdAndBudgetDateDigits(string userId, string budgetId, string budgetDateDigits, IDbConnection _conn)
+        {
+
+            string sql = $"{GetBudgetDetailsSelectStatementWithFieldNames()} WHERE bd.budget_id = @BudgetId AND b.user_id = @UserId AND bd.budget_for_month_year = @BudgetMonthYear ORDER BY bd.budget_for_month_year DESC LIMIT 1;";
+
+            // Get this value and then delete the record!!!
+            return _conn.QuerySingleOrDefault<BudgetDetails>(sql, new
+            {
+                BudgetId = budgetId,
+                BudgetMonthYear = DateTime.ParseExact(budgetDateDigits, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd"),
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        public static double? GetBudgetBaseAmountBudgetId(string budgetId, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"SELECT b.budget_base_amount FROM pft_budgets b WHERE b.budget_id = @BudgetId AND b.user_id = @UserId";
+
+            // Get this value and then delete the record!!!
+            return _conn.ExecuteScalar<double?>(sql, new
+            {
+                BudgetId = budgetId,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        // Budget Tests - End
 
     }
 }

@@ -29,7 +29,7 @@ namespace PersonalFinanceTracker.Services.Repository
         {
             
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
             parameters.Add("user_first_name", userRegistration.FirstName.Trim());

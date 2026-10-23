@@ -77,6 +77,33 @@ namespace PersonalFinanceTracker.Controllers
 
         }
 
+        [AllowAnonymous]
+        [Route("VerifyEmail")]
+        public IActionResult VerifyEmail([FromQuery] string? token, string? connString)
+        {
+
+            if(token != null)
+            {
+                int totalRecordsUpdated = _userRegistrationRepository.UpdateUserEmailVarification(token, connString);
+                if(totalRecordsUpdated > 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return RedirectToAction("Error/" + HttpStatusCode.InternalServerError, "Error");
+
+        }
+
+
+        [AllowAnonymous]
+        public IActionResult Privacy()
+        {
+
+            return View();
+
+        }
+
         // Gets the Monthly Income-Expense data
         private List<Report> GetCategoryWiseSummaryData(DashboardFilter dashboardFilter, string? connString)
         {
@@ -86,7 +113,6 @@ namespace PersonalFinanceTracker.Controllers
             return categoryWiseSummary;
 
         }
-
 
         // Gets the Monthly Income-Expense data
         private List<DashboardBarAndLineCharts> GetMonthlyIncomeExpenseData(DashboardFilter dashboardFilter, string? connString) 
@@ -181,31 +207,6 @@ namespace PersonalFinanceTracker.Controllers
 
         }
 
-        [AllowAnonymous]
-        [Route("VerifyEmail")]
-        public IActionResult VerifyEmail([FromQuery] string? token, string? connString)
-        {
-
-            if(token != null)
-            {
-                int totalRecordsUpdated = _userRegistrationRepository.UpdateUserEmailVarification(token, connString);
-                if(totalRecordsUpdated > 0)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-
-            return RedirectToAction("Error/" + HttpStatusCode.InternalServerError, "Error");
-
-        }
-
-        [AllowAnonymous]
-        public IActionResult Privacy()
-        {
-
-            return View();
-
-        }
-        
     }
+
 }

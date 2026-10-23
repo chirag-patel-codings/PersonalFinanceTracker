@@ -45,7 +45,7 @@ namespace PersonalFinanceTracker.Controllers
             IEnumerable<Account> accounts;
             IEnumerable<AccountType>? accountTypes = null;
 
-            if (payload["firstRequest"]?.ToString() == "true")
+            if (payload["firstRequest"]?.ToString().ToLower() == "true")
             {
                 pagination = new Pagination();
                 pagination.TotalNumberOfRecords = _accountRepository.GetTotalNoOfRecords(_currentUserId, connString);

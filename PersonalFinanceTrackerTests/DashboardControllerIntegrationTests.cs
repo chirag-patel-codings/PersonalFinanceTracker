@@ -88,63 +88,72 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task DashboardUnAuthenticatedRequests_ForAuthenticatedActions_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/Dashboard/Index")]
+        public async Task DashboardAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/Dashboard/Index");
-
-            var requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
-            var requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
-
-            var requestGetReportsDataPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData");
-            var requestGetReportsDataPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData");
-
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            // requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize.Content = JsonContent.Create(new {  });
-
-            // requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
-
-            // requestGetDashboardPostInValidAuthorize
-            requestGetReportsDataPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetReportsDataPostInValidAuthorize.Content = JsonContent.Create(new { _dashboardFilter });
-
-            // requestGetDashboardPostInValidAntiforgeryToken
-            requestGetReportsDataPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetReportsDataPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _dashboardFilter });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize);
-            var responseGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken);
-
-            var responseGetReportsDataPostInValidAuthorize = await _client.SendAsync(requestGetReportsDataPostInValidAuthorize);
-            var responseGetReportsDataPostInValidAntiforgeryToken = await _client.SendAsync(requestGetReportsDataPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetReportsDataPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetReportsDataPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+
+        [Test]
+        [TestCase("/Dashboard/GetUserCurrencyDetailsAndLicenseKey")]
+        [TestCase("/Dashboard/GetReportsData")]
+        
+        public async Task AccountsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
+
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // requestPostInValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+
+                case "/Dashboard/GetUserCurrencyDetailsAndLicenseKey":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
+                    break;
+
+                case "/Dashboard/GetReportsData":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { _dashboardFilter });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _dashboardFilter });
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
+
 
         [Test]
         public async Task DashboardIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
@@ -152,7 +161,7 @@ namespace PersonalFinanceTrackerTests
             // ARRANGE
             var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "/Dashboard/Index");   // As [FromBody] can only accept one parameter
+            var request = new HttpRequestMessage(HttpMethod.Get, "/Dashboard/Index");   
 
             request.Headers.Add("Request-Verification-Token", token);
             request.Headers.Add("Cookie", cookie);
@@ -169,31 +178,40 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+        
         [Test]
-        public async Task DashboardsAllowAnonymousActions_UnAuthenticatedRequests_ReturnsValidRedirectToActions()
+        [TestCase("VerifyEmail")]
+        [TestCase("/Dashboard/Privacy")]
+        public async Task DashboardAllowAnonymousActions_UnAuthenticatedRequests_ReturnsValidRedirectToActions
+            (string actionName)
         {
 
             // Act - Sends a real HTTP GET request through Program.cs, middleware, and controllers
-            var responseVerifyEmail = await _client.GetAsync("VerifyEmail");
-            var responsePrivacy = await _client.GetAsync("/Dashboard/Privacy");
-
+            var response = await _client.GetAsync(actionName);
+            
             // Assert
-            Assert.That(responseVerifyEmail.IsSuccessStatusCode, Is.True, "The request failed with status code: " + responseVerifyEmail.StatusCode);
-            Assert.That(responsePrivacy.IsSuccessStatusCode, Is.True, "The request failed with status code: " + responsePrivacy.StatusCode);
-
-            Assert.That(responseVerifyEmail.RequestMessage.RequestUri.AbsoluteUri, Is.EqualTo("http://localhost/Error/Error%2FInternalServerError")); // As no tokens provided but request reached
-
-            var jsonResponsePrivacy = await responsePrivacy.Content.ReadAsStringAsync();
-            Assert.That(jsonResponsePrivacy, Is.Not.Null.And.Not.Empty);
-            Assert.That(jsonResponsePrivacy.Contains("<h1>Privacy Policy</h1>"), Is.True);   // Contents of account view
+            Assert.That(response.IsSuccessStatusCode, Is.True, "The request failed with status code: " + response.StatusCode);
+            
+            if(actionName == "VerifyEmail")
+            {
+                Assert.That(response.RequestMessage.RequestUri.AbsoluteUri, Is.EqualTo("http://localhost/Error/Error%2FInternalServerError")); // As no tokens provided but request reached
+            }
+            else
+            {
+                var jsonResponsePrivacy = await response.Content.ReadAsStringAsync();
+                Assert.That(jsonResponsePrivacy, Is.Not.Null.And.Not.Empty);
+                Assert.That(jsonResponsePrivacy.Contains("<h1>Privacy Policy</h1>"), Is.True);   // Contents of account view
+            }
 
         }
+
+
 
         [Test]
         [TestCase(null, false, "pft_con_str_testenv")]
         [TestCase("waGUTqmYYZrDZSLAqBLGaPdUZvCNfV46f89OTZbDVq48vwUg-77wyt9c7Sp-c12bt-vA1xwkyjaQX4vDl8zxFnblK_3USlROAO6zGfsxRdDfhNe5cAHBg0eC66oconm7tVUs06pjkzs1KijnPo7PVaDbx2TYJ7dAi-LQxF6mAmM28FkmUa6xvEcTckDamTR5Y1Y8C0YBhRk8vxudCxwg2nqOhKxTHxY7250gWTwtzLdI8Zs2AsY38Z2Kqrou75", false, "pft_con_str_testenv")]
         [TestCase("LneO3S8w325fcNYNei0hkgEw0md-vR1YKOL4UlP2Ay1Pckp5oU5whtNCwhD6hDrUyEyOQAMfNosdsWunkLj60ZwaGUTqmYYZrDZSLAqBLGaPdUZvCNfV46f89OTZbDVq48vwUg-77wyt9c7Sp-c12bt-vA1xwkyjaQX4vDl8zxFnblK_3USlROAO6zGfsxRdDfhNe5cAHBg0eC66oconm7tVUs06pjkzs1KijnPo7PVaDbx2TYJ7dAi-LQxF6mAmM28FkmUa6xvEcTckDamTR5Y1Y8C0YBhRk8vxudCxwg2nqOhKxTHxY7250gWTwtzLdI8Zs2AsY38Z2Kqrou75", true, "pft_con_str_testenv")]
-        public async Task DashboardsVerifyEmailGet_NoAuthenticationRequest_ReturnsRedirectToIndexActionOrErrorPage(string? token, bool isValidTokenUsed, string? connString)
+        public async Task DashboardVerifyEmailGet_NoAuthenticationRequest_ReturnsRedirectToIndexActionOrErrorPage(string? token, bool isValidTokenUsed, string? connString)
         {
 
             // ARRANGE
@@ -217,9 +235,7 @@ namespace PersonalFinanceTrackerTests
 
             if (isValidTokenUsed)
             {
-
                 Assert.That(jsonResponse.Contains("<h3>Dashboard</h3>"), Is.True);
-                
             }
             else
             {
@@ -233,52 +249,50 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-        public async Task DashboradUnAuthenticatedRequest_ForAuthorizedActions_ReturnsUnAuthorizedOrBadRequest()
+        public async Task DashboradGetUserCurrencyDetailsAndLicenseKeyPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
-            var requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
+            var requestGetUserCurrencyDetailsAndLicenseKey = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
 
-            var requestGetReportsDataPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData");
-            var requestGetReportsDataPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData");
-
-            // requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize.Content = JsonContent.Create(new { });
-
-            // requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);    // Cookie is eleminated as null
-            requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
-
-
-            // requestGetReportsDataPostInValidAuthorize
-            requestGetReportsDataPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetReportsDataPostInValidAuthorize.Content = JsonContent.Create(new { });
-
-            // requestGetReportsDataPostInValidAntiforgeryToken
-            requestGetReportsDataPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);    // Cookie is eleminated as null
-            requestGetReportsDataPostInValidAntiforgeryToken.Content = JsonContent.Create(new { });
-
+            requestGetUserCurrencyDetailsAndLicenseKey.Headers.Add("Request-Verification-Token", token);
+            requestGetUserCurrencyDetailsAndLicenseKey.Headers.Add("Cookie", cookie);
+            requestGetUserCurrencyDetailsAndLicenseKey.Content = JsonContent.Create(new { });
 
             // ACT
-            var responseGetUserCurrencyDetailsAndLicenseKeyInValidAuthorize = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAuthorize);
-            var responseGetUserCurrencyDetailsAndLicenseKeyInValidAntiforgeryToken = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKeyPostInValidAntiforgeryToken);
-
-            var responseGetReportsDataPostInValidAuthorize = await _client.SendAsync(requestGetReportsDataPostInValidAuthorize);
-            var responseGetReportsDataPostInValidAntiforgeryToken = await _client.SendAsync(requestGetReportsDataPostInValidAntiforgeryToken);
+            var responseGetUserCurrencyDetailsAndLicenseKey = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKey);
+            var jsonResponseGetUserCurrencyDetailsAndLicenseKey = await responseGetUserCurrencyDetailsAndLicenseKey.Content.ReadAsStringAsync();
 
 
-            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
-            Assert.That(responseGetUserCurrencyDetailsAndLicenseKeyInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetUserCurrencyDetailsAndLicenseKeyInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            // ASSERT
+            Assert.That(responseGetUserCurrencyDetailsAndLicenseKey.IsSuccessStatusCode, Is.True);
 
-            Assert.That(responseGetReportsDataPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetReportsDataPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            /*
+             * Parse the JSON tree:
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * or worry about deserialization exceptions if a property happens to be null (like reportTypes when firstRequest is false).
+             */
+            using var doc = JsonDocument.Parse(jsonResponseGetUserCurrencyDetailsAndLicenseKey);
+            var root = doc.RootElement;
+
+            // Verify all three root properties exist in the first request's response
+            Assert.That(root.TryGetProperty("userCurrencyDetails", out var userCurrencyDetailsElement), Is.True);
+            Assert.That(root.TryGetProperty("licenseKey", out var licenseKeyElement), Is.True);
+
+            // Assert on specific values inside pagination or reports
+            var currencyCode = userCurrencyDetailsElement.GetProperty("currencyCode").GetString();
+            var currencySymbol = userCurrencyDetailsElement.GetProperty("currencySymbol").GetString();
+
+            Assert.That(currencyCode, Is.Not.Empty.Or.Null);
+            Assert.That(currencySymbol, Is.Not.Empty.Or.Null);
+
+            Assert.That(licenseKeyElement.ValueKind, Is.EqualTo(JsonValueKind.String));
+            Assert.That(licenseKeyElement.GetString().Length, Is.GreaterThan(0));
 
         }
+
 
         [Test]
         [TestCase("2026-12-31", "2026-01-01", 400, "DashboardParametersStartDate", "Start date must be earlier than end date!")]
@@ -327,51 +341,6 @@ namespace PersonalFinanceTrackerTests
 
             Assert.That(messageElement.TryGetProperty(failedValidationPropertyName, out var validationErrorElement), Is.True);
             Assert.That(validationErrorElement[0].GetString(), Is.EqualTo(expectedErrorMessage));
-
-        }
-
-        [Test]
-        public async Task DashboradGetUserCurrencyDetailsAndLicenseKeyPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
-        {
-
-            // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
-
-            var requestGetUserCurrencyDetailsAndLicenseKey = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
-            
-            requestGetUserCurrencyDetailsAndLicenseKey.Headers.Add("Request-Verification-Token", token);
-            requestGetUserCurrencyDetailsAndLicenseKey.Headers.Add("Cookie", cookie);
-            requestGetUserCurrencyDetailsAndLicenseKey.Content = JsonContent.Create(new {  });
-
-            // ACT
-            var responseGetUserCurrencyDetailsAndLicenseKey = await _client.SendAsync(requestGetUserCurrencyDetailsAndLicenseKey);
-            var jsonResponseGetUserCurrencyDetailsAndLicenseKey = await responseGetUserCurrencyDetailsAndLicenseKey.Content.ReadAsStringAsync();
-
-
-            // ASSERT
-            Assert.That(responseGetUserCurrencyDetailsAndLicenseKey.IsSuccessStatusCode, Is.True);
-
-            /*
-             * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
-             * or worry about deserialization exceptions if a property happens to be null (like reportTypes when firstRequest is false).
-             */
-            using var doc = JsonDocument.Parse(jsonResponseGetUserCurrencyDetailsAndLicenseKey);
-            var root = doc.RootElement;
-
-            // Verify all three root properties exist in the first request's response
-            Assert.That(root.TryGetProperty("userCurrencyDetails", out var userCurrencyDetailsElement), Is.True);
-            Assert.That(root.TryGetProperty("licenseKey", out var licenseKeyElement), Is.True);
-
-            // Assert on specific values inside pagination or reports
-            var currencyCode = userCurrencyDetailsElement.GetProperty("currencyCode").GetString();
-            var currencySymbol = userCurrencyDetailsElement.GetProperty("currencySymbol").GetString();
-            
-            Assert.That(currencyCode, Is.Not.Empty.Or.Null);
-            Assert.That(currencySymbol, Is.Not.Empty.Or.Null);
-
-            Assert.That(licenseKeyElement.ValueKind, Is.EqualTo(JsonValueKind.String));
-            Assert.That(licenseKeyElement.GetString().Length, Is.GreaterThan(0));
 
         }
 
@@ -425,6 +394,7 @@ namespace PersonalFinanceTrackerTests
             Assert.That(monthlyNetWorthChartDataElement.GetArrayLength, Is.GreaterThanOrEqualTo(0));
 
         }
+
 
         // For Server to authenticates. (Part of client request)
         // Before a real browser submits a form or a secure POST request with anti-forgery protection, it needs to hit the server to get a valid validation token and cookie.

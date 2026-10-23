@@ -98,96 +98,85 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+        
         [Test]
-        public async Task AccountsAllActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest()
+        [TestCase("/accounts")]
+        public async Task AccountsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
         {
 
             // ARRANGE - Build an explicit request message to attach the test header
-            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, "/accounts");
-
-            var requestIndexPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/accounts");
-            var requestIndexPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/accounts");
-
-            var requestGetAccountPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Account/GetAccount");
-            var requestGetAccountPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Account/GetAccount");
-
-            var requestSaveAccountPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Account/SaveAccount");
-            var requestSaveAccountPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Account/SaveAccount");
-
-            var requestDeleteAccountPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, "/Account/DeleteAccount");
-            var requestDeleteAccountPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, "/Account/DeleteAccount");
+            var requestIndexGet = new HttpRequestMessage(HttpMethod.Get, actionName);
 
             // Configure Header to fail authentication for this request by TestAuthHandler 
-            // requestIndexGet
             requestIndexGet.Headers.Add("X-Test-Unauthorized", "true");
-
-            // requestIndexPostInValidAuthorize
-            requestIndexPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestIndexPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
-
-            requestIndexPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
-            requestIndexPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            // requestGetAccountPostInValidAuthorize
-            requestGetAccountPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestGetAccountPostInValidAuthorize.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
-
-            // requestGetAccountPostInValidAntiforgeryToken
-            requestGetAccountPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestGetAccountPostInValidAntiforgeryToken.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
-
-            // requestSaveAccountPostInValidAuthorize
-            requestSaveAccountPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestSaveAccountPostInValidAuthorize.Content = JsonContent.Create(new { _accountRecord });
-
-            // requestSaveAccountPostInValidAntiforgeryToken
-            requestSaveAccountPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestSaveAccountPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _accountRecord });
-
-            // requestDeleteAccountPostInValidAuthorize
-            requestDeleteAccountPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
-            requestDeleteAccountPostInValidAuthorize.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
-
-            // requestDeleteAccountPostInValidAntiforgeryToken
-            requestDeleteAccountPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);  // 'cookie' eliminated as null;
-            requestDeleteAccountPostInValidAntiforgeryToken.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
-
 
             // ACT - Send the GET request through the custom client
             var responseIndexGet = await _client.SendAsync(requestIndexGet);
 
-            var responseIndexPostInValidAuthorize = await _client.SendAsync(requestIndexPostInValidAuthorize);
-            var responseIndexPostInValidAntiforgeryToken = await _client.SendAsync(requestIndexPostInValidAntiforgeryToken);
-
-            var responseGetAccountPostInValidAuthorize = await _client.SendAsync(requestGetAccountPostInValidAuthorize);
-            var responseGetAccountPostInValidAntiforgeryToken = await _client.SendAsync(requestGetAccountPostInValidAntiforgeryToken);
-
-            var responseSaveAccountPostInValidAuthorize = await _client.SendAsync(requestSaveAccountPostInValidAuthorize);
-            var responseSaveAccountPostInValidAntiforgeryToken = await _client.SendAsync(requestSaveAccountPostInValidAntiforgeryToken);
-
-            var responseDeleteAccountPostInValidAuthorize = await _client.SendAsync(requestDeleteAccountPostInValidAuthorize);
-            var responseDeleteAccountPostInValidAntiforgeryToken = await _client.SendAsync(requestDeleteAccountPostInValidAntiforgeryToken);
-
-
             // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
             Assert.That(responseIndexGet.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
-            Assert.That(responseIndexPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseIndexPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
 
-            Assert.That(responseGetAccountPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseGetAccountPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
-            Assert.That(responseSaveAccountPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseSaveAccountPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        [Test]
+        [TestCase("/accounts")]
+        [TestCase("/Account/GetAccount")]
+        [TestCase("/Account/SaveAccount")]
+        [TestCase("/Account/DeleteAccount")]
+        public async Task AccountsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+            (string actionName)
+        {
 
-            Assert.That(responseDeleteAccountPostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(responseDeleteAccountPostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            var requestPostInValidAuthorize = new HttpRequestMessage(HttpMethod.Post, actionName);
+            var requestPostInValidAntiforgeryToken = new HttpRequestMessage(HttpMethod.Post, actionName);
+
+            // InValidAuthorize
+            requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
+
+            // InValidAntiforgeryToken
+            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
+
+            switch (actionName)
+            {
+                
+                case "/accounts":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
+                    break;
+
+                case "/Account/GetAccount":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
+                    break;
+
+                case "/Account/SaveAccount":
+                    requestPostInValidAuthorize.Content =  JsonContent.Create(new { _accountRecord });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { _accountRecord });
+                    break;
+
+                case "/Account/DeleteAccount":
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { accountId = _accountRecord == null ? "2222222222222222222" : _accountRecord.AccountId });
+                    break;
+
+                default:
+                    break;
+                
+            }
+            
+            // ACT - Send the GET request through the custom client
+            var responsePostInValidAuthorize = await _client.SendAsync(requestPostInValidAuthorize);
+            var responsePostInValidAntiforgeryToken = await _client.SendAsync(requestPostInValidAntiforgeryToken);
+
+            // ASSERT - Verify the server successfully blocked the request with 401 Unauthorized
+            Assert.That(responsePostInValidAuthorize.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(responsePostInValidAntiforgeryToken.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
         }
+
 
         [Test]
         public async Task AccountsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
@@ -204,79 +193,63 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+
         [Test]
-        public async Task AccountsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task AccountsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
+            (bool isFirstRequest)
         {
             // ARRANGE
             var (token, cookie) = await GetAntiforgeryTokensAsync();
 
-            var firstRequest = new HttpRequestMessage(HttpMethod.Post, "/accounts?connString=pft_con_str_testenv");
-            var consecutiveRequests = new HttpRequestMessage(HttpMethod.Post, "/accounts?connString=pft_con_str_testenv");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/accounts?connString=pft_con_str_testenv");
 
-
-            firstRequest.Headers.Add("Request-Verification-Token", token);
-            firstRequest.Headers.Add("Cookie", cookie);
-            firstRequest.Content = JsonContent.Create(new { firstRequest = "true", pagination = new { } });
-
-            consecutiveRequests.Headers.Add("Request-Verification-Token", token);
-            consecutiveRequests.Headers.Add("Cookie", cookie);
-            consecutiveRequests.Content = JsonContent.Create(new { firstRequest = "false", pagination = new { } });
+            request.Headers.Add("Request-Verification-Token", token);
+            request.Headers.Add("Cookie", cookie);
+            request.Content = JsonContent.Create(new { firstRequest = isFirstRequest.ToString(), pagination = new { } });
 
             // ACT
-            var responseFirstRequest = await _client.SendAsync(firstRequest);
-            var jsonResponseFirstRequest = await responseFirstRequest.Content.ReadAsStringAsync();
-
-            var responseConsecutiveRequests = await _client.SendAsync(consecutiveRequests);
-            var jsonResponseConsecutiveRequests = await responseConsecutiveRequests.Content.ReadAsStringAsync();
+            var response = await _client.SendAsync(request);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             // ASSERT
-            Assert.That(responseFirstRequest.IsSuccessStatusCode, Is.True);
-            Assert.That(responseConsecutiveRequests.IsSuccessStatusCode, Is.True);
+            Assert.That(response.IsSuccessStatusCode, Is.True);
 
             /*
              * Parse the JSON tree:
-             * Using JsonDocument allows you to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+             * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
              * or worry about deserialization exceptions if a property happens to be null (like accountTypes when firstRequest is false).
              */
-            using var docFirstRequest = JsonDocument.Parse(jsonResponseFirstRequest);
-            var rootFirstRequest = docFirstRequest.RootElement;
-
-            using var docConsecutiveRequests = JsonDocument.Parse(jsonResponseConsecutiveRequests);
-            var rootConsecutiveRequests = docConsecutiveRequests.RootElement;
+            using var doc = JsonDocument.Parse(jsonResponse);
+            var root = doc.RootElement;
 
             // Verify all three root properties exist in the first request's response
-            Assert.That(rootFirstRequest.TryGetProperty("accounts", out var accountsElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("pagination", out var paginationElementFirstRequest), Is.True);
-            Assert.That(rootFirstRequest.TryGetProperty("accountTypes", out var accountTypesElementFirstRequest), Is.True);
-
-            // Verify all three root properties exist in the consecutive request's response
-            Assert.That(rootConsecutiveRequests.TryGetProperty("accounts", out var accountsElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("pagination", out var paginationElementConsecutiveRequests), Is.True);
-            Assert.That(rootConsecutiveRequests.TryGetProperty("accountTypes", out var accountTypesElementConsecutiveRequests), Is.True);
+            Assert.That(root.TryGetProperty("accounts", out var accountsElement), Is.True);
+            Assert.That(root.TryGetProperty("pagination", out var paginationElement), Is.True);
+            Assert.That(root.TryGetProperty("accountTypes", out var accountTypesElement), Is.True);
 
             // Assert on specific values inside pagination or accounts
-            var totalRecordsFirstRequest = int.Parse(paginationElementFirstRequest.GetProperty("totalNumberOfRecords").GetString());
-            var totalRecordsConsecutiveRequest = int.Parse(paginationElementConsecutiveRequests.GetProperty("totalNumberOfRecords").GetString());
+            var totalRecords = int.Parse(paginationElement.GetProperty("totalNumberOfRecords").GetString());
 
-
-            Assert.That(totalRecordsFirstRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that accounts has no data...
-            Assert.That(totalRecordsConsecutiveRequest, Is.GreaterThanOrEqualTo(0));  // there is a possibility that accounts has no data...
-
+            Assert.That(totalRecords, Is.GreaterThanOrEqualTo(0));  // there is a possibility that accounts has no data...
 
             // Check if accounts & account types are arrays and has data (if expected)
-            Assert.That(accountsElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(accountsElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            Assert.That(accountsElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+            Assert.That(accountsElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
 
-            Assert.That(accountTypesElementFirstRequest.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(accountTypesElementFirstRequest.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-
-            // Check if accounts is an array and has data (if expected) & account types is null
-            Assert.That(accountsElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Array));
-            Assert.That(accountsElementConsecutiveRequests.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
-
-            Assert.That(accountTypesElementConsecutiveRequests.ValueKind, Is.EqualTo(JsonValueKind.Null));
+            if (isFirstRequest)
+            {
+                Assert.That(accountTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+                Assert.That(accountTypesElement.GetArrayLength(), Is.GreaterThanOrEqualTo(0));
+            }
+            else
+            {
+                Assert.That(accountTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
+            }
 
         }
+
 
         [Test]
         
@@ -351,6 +324,7 @@ namespace PersonalFinanceTrackerTests
             Assert.That(invalidAccount, Is.Null);
 
         }
+
 
         [Test]
         public async Task AccountsAddAccount_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
@@ -439,8 +413,8 @@ namespace PersonalFinanceTrackerTests
             Assert.That(_accountRecord.AccountTypeId, Is.EqualTo(updatedAccount.AccountTypeId));
             Assert.That(_accountRecord.IsALinkedAccount, Is.EqualTo(updatedAccount.IsALinkedAccount));
 
-
         }
+
 
         [Test]
         public async Task AccountsGetAccount_AuthenticatedRequest_ReturnsAccountRecord()
@@ -484,16 +458,17 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+
         [Test]
         /*
          * 
-         * When an Account is deleted:
-         * pft_transactions: Records are deleted!
-         * pft_import_templates: Records are deleted!
-         * pft_recurring_schedules: Records are deleted!
-         * pft_trasactions_repeats: Records are deleted!
-         * pft_transactions_rules: Records are deleted!
-         * pft_accounts: Records are deleted! 
+         *  When an Account is deleted:
+         *      pft_transactions: Records are deleted!
+         *      pft_import_templates: Records are deleted!
+         *      pft_recurring_schedules: Records are deleted!
+         *      pft_trasactions_repeats: Records are deleted!
+         *      pft_transactions_rules: Records are deleted!
+         *      pft_accounts: Records are deleted! 
          * 
          */
         public async Task AccountsDeleteAccount_AuthenticatedRequest_DeletesAccountRecord()
@@ -553,6 +528,7 @@ namespace PersonalFinanceTrackerTests
             // No need to clean up...All the records are deleted!
 
         }
+
 
         // For Server to authenticate. (Part of client request)
         // Before a real browser submits a form or a secure POST request with anti-forgery protection, it needs to hit the server to get a valid validation token and cookie.

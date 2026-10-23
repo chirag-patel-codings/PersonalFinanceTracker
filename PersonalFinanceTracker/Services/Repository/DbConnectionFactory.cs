@@ -19,7 +19,8 @@ namespace PersonalFinanceTracker.Services.Repository
         {
 
             // Return existing connection if already created in this request
-            if (_activeConnection != null && _activeConnection.State == ConnectionState.Open) return _activeConnection;
+            if (_activeConnection != null && _activeConnection.State == ConnectionState.Open) 
+               return _activeConnection;
 
             var connStr = _config.GetConnectionString(connectionName);
             _activeConnection = new MySqlConnection(connStr);
