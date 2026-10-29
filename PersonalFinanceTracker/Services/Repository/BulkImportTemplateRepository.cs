@@ -63,7 +63,7 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("import_template_id", bulkImportTemplate.ImportTemplateId == null ? 0 : int.Parse(bulkImportTemplate.ImportTemplateId));
+            parameters.Add("import_template_id", string.IsNullOrEmpty(bulkImportTemplate.ImportTemplateId) ? 0 : int.Parse(bulkImportTemplate.ImportTemplateId));
             parameters.Add("user_id", bulkImportTemplate.UserId);
             parameters.Add("account_id", ulong.Parse(bulkImportTemplate.AccountId));
             parameters.Add("import_template_name", bulkImportTemplate.ImportTemplateName.Trim());

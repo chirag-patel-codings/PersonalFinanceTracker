@@ -77,7 +77,7 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("tag_id", tag.TagId == "" ? 0 : ulong.Parse(tag.TagId));
+            parameters.Add("tag_id", string.IsNullOrEmpty(tag.TagId) ? 0 : ulong.Parse(tag.TagId));
             parameters.Add("user_id", tag.UserId);
             parameters.Add("tag_name", tag.TagName.Trim());
             parameters.Add("tag_description", string.IsNullOrEmpty(tag.TagDescription) ? tag.TagDescription : tag.TagDescription.Trim());

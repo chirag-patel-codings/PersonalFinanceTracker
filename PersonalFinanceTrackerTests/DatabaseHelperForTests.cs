@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Mysqlx;
+using Org.BouncyCastle.Bcpg;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Services.Handler;
@@ -115,78 +116,71 @@ namespace PersonalFinanceTrackerTests
             string newRecurringScheduleId;
             string newTransactionRuleId;
             string newImportTemplateId;
+            string getCategoryIdForCategory = forTestName == "transactionrules" ? "Payments" : "Business Income";
             string sql = "";
 
-            
-            switch (forTestName.ToLower())
+            forTestName = forTestName.ToLower();
+
+            newAccountId = forTestName == "accounts" ? testRecIdInBaseTable : ExecuteSQLAndReturnId(GetInsertDummyAccountRecordAndRetrieveIdSQL(userId), _conn).ToString();
+            newCategoryId = forTestName == "categories" ? testRecIdInBaseTable  : GetRecIdByName("pft_categories", "category_id", "category_name", getCategoryIdForCategory, userId, _conn).ToString();
+
+            switch (forTestName)
             {
 
                 case "accounts":
 
-                    newAccountId = testRecIdInBaseTable;
-                    newCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Business Income", userId, _conn).ToString();
-
-                    sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
-                    newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-                    
                     sql = GetInsertDummyImportTemplateRecordAndRetrieveIdSQL(userId, newAccountId);
                     newImportTemplateId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
                     break;
 
                 case "categories":
                     
-                    sql = GetInsertDummyAccountRecordAndRetrieveIdSQL(userId);
-                    newAccountId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
-                    newCategoryId = testRecIdInBaseTable;
-                    
-                    sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
-                    newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
                     // pft_budgets would already have a new record added when a new category is generated...
                     newBudgetId = GetRecIdByName("pft_budgets", "budget_id", "category_id", testRecIdInBaseTable, userId, _conn).ToString();
-                    
                     // Insert a new record in pft_budget_details
                     sql = GetInsertDummyBudgetDetailsRecordAndRetrieveIdSQL(newBudgetId);
                     newBudgetId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
                     break;
 
                 case "tags":
 
-                    sql = GetInsertDummyAccountRecordAndRetrieveIdSQL(userId);
-                    newAccountId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
-                    newCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Business Income", userId, _conn).ToString();
                     newTagId = testRecIdInBaseTable;
                     break;
 
                 case "goals":
 
-                    sql = GetInsertDummyAccountRecordAndRetrieveIdSQL(userId);
-                    newAccountId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
-                    newCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Business Income", userId, _conn).ToString();
                     newGoalId = testRecIdInBaseTable;
-
-                    sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
-                    newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-
                     break;
+
+                case "transactionrules":
+
+                    sql = GetInsertDummyGoalRecordAndRetrieveIdSQL(userId);
+                    newGoalId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                    break;
+
 
             }
 
-            // Common tables...
+            // accounts, categories, goals, transactionrules
+            if (forTestName != "tags")
+            {
+                sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
+                newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+            }
 
-            sql = GetInsertDummyTransactionRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId, newTagId);
-            newTransactionId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+            if(forTestName != "transactionrules")
+            {
+                
+                sql = GetInsertDummyTransactionRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId, newTagId);
+                newTransactionId = ExecuteSQLAndReturnId(sql, _conn).ToString();
 
-            sql = GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(userId, newTransactionId);
-            newTransactionRepeatId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                sql = GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(userId, newTransactionId);
+                newTransactionRepeatId = ExecuteSQLAndReturnId(sql, _conn).ToString();
 
-            sql = GetInsertDummyRecurringScheuduleRecordAndRetrieveIdSQL(newTransactionRepeatId, 250, newAccountId, newCategoryId, newGoalId, newTagId);
-            newRecurringScheduleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                sql = GetInsertDummyRecurringScheuduleRecordAndRetrieveIdSQL(newTransactionRepeatId, 250, newAccountId, newCategoryId, newGoalId, newTagId);
+                newRecurringScheduleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+            
+            }
 
         }
 
@@ -255,7 +249,9 @@ namespace PersonalFinanceTrackerTests
         // Performs straight off delete without any conditional checking!
         public static void CleanupDummyDataInRelatedTables(string testName, IDbConnection _conn)
         {
+
             string sql = "";
+
             switch (testName)
             {
                 case "tags":
@@ -271,6 +267,10 @@ namespace PersonalFinanceTrackerTests
                 case "categories":
 
                     sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_budgets_details", "pft_accounts");
+                    break;
+
+                case "transactionrules":
+                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_goals", "pft_accounts");
                     break;
             }
 
@@ -296,7 +296,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_accounts (account_id, user_id, account_name, account_institution_name, account_type_id, account_description, is_a_linked_account) " +
                                 $"VALUES (GeneratePrefixedId(2), {userId}, 'Dummy Account Name', 'Dummy Account Institute Name', '102', 'Dummy Account Description', '0');" + 
-                            " SELECT account_id FROM pft_accounts WHERE account_name =  'Dummy Account Name'";       
+                            " SELECT MAX(account_id) FROM pft_accounts WHERE account_name =  'Dummy Account Name'";       
         }
 
         // Categories Table Dummy Record Insert SQL
@@ -304,8 +304,8 @@ namespace PersonalFinanceTrackerTests
         {
             return $"SELECT category_id FROM pft_categories WHERE user_id = {userId} AND category_name = 'Business Income' INTO @standardCategoryId;" +
                         "INSERT INTO pft_categories (category_id, user_id, standard_category_id, category_type, category_name, category_description, category_color, category_display_order) " +
-                                $"VALUES (GeneratePrefixedId(9), '{userId}', @standardCategoryId, '1', 'Dummy Category Name', 'Dummy Category Description', '#123456', '350');" + 
-                            " SELECT category_id FROM pft_categories WHERE category_name =  'Dummy Category Name'"; 
+                                $"VALUES (GeneratePrefixedId(9), '{userId}', @standardCategoryId, '1', 'Dummy Category Name', 'Dummy Category Description', '#123456', '350');" +
+                            " SELECT MAX(category_id) FROM pft_categories WHERE category_name =  'Dummy Category Name'"; 
         }
 
         // Goals Table Dummy Record Insert SQL
@@ -313,7 +313,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_goals (goal_id, user_id, goal_name, goal_description, goal_type) " +
                                 $"VALUES (GeneratePrefixedId(7), '{userId}', 'Dummy Goal Name', 'Dummy Goal Description', '1');" + 
-                            " SELECT goal_id FROM pft_goals WHERE goal_name =  'Dummy Goal Name'"; 
+                            " SELECT MAX(goal_id) FROM pft_goals WHERE goal_name =  'Dummy Goal Name'"; 
         }
 
         // GoalDetails Table Dummy Record Insert SQL
@@ -322,7 +322,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_goal_details (goal_id, goal_interval, goal_amount, goal_period_start_date, goal_period_end_date) " +
                                 $"VALUES ('{goalId}', '6', '500', '{(new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1)).ToString("yyyy-MM-dd")}', '{(new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(3)).ToString("yyyy-MM-dd")}');" + 
-                            $" SELECT MIN(rec_id) FROM pft_goal_details WHERE goal_id = {goalId}"; 
+                            $" SELECT MAX(rec_id) FROM pft_goal_details WHERE goal_id = {goalId}"; 
         }
         
         // Tags Table Dummy Record Insert SQL
@@ -330,8 +330,8 @@ namespace PersonalFinanceTrackerTests
         {
 
             return "INSERT INTO pft_tags (tag_id, user_id, tag_name, tag_description, tag_color, is_tag_active) " +
-                                $"VALUES (GeneratePrefixedId(8), '{userId}', 'Dummy Tag Name', 'Dummy Tag Description', '#123456', '1');" + 
-                            " SELECT tag_id FROM pft_tags WHERE tag_name =  'Dummy Tag Name'";
+                                $"VALUES (GeneratePrefixedId(8), '{userId}', 'Dummy Tag Name', 'Dummy Tag Description', '#123456', '1');" +
+                            " SELECT MAX(tag_id) FROM pft_tags WHERE tag_name =  'Dummy Tag Name'";
 
         }
 
@@ -342,7 +342,7 @@ namespace PersonalFinanceTrackerTests
             
             return "INSERT INTO pft_transactions (transaction_id, user_id, transaction_date, transaction_description, transaction_amount, account_id, category_id, goal_id, tag_id, transaction_categorization, transaction_type) " +
                                 $"VALUES (GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Dummy Transaction Description', '123.45', '{accountId}', '{categoryId}', {(goalId ?? "null")}, {(tagId ?? "null")}, '1', '1');" + 
-                            " SELECT transaction_id FROM pft_transactions WHERE transaction_description =  'Dummy Transaction Description'";
+                            " SELECT MAX(transaction_id) FROM pft_transactions WHERE transaction_description =  'Dummy Transaction Description'";
 
         }
 
@@ -351,7 +351,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_trasactions_repeats (transaction_id, user_id, transaction_repeat_interval, transaction_repeat_end_date, is_transaction_repeat_active) " +
                                 $"VALUES ('{transactionId}', '{userId}', '4', '{(DateOnly.FromDateTime(DateTime.Now.AddMonths(2)).ToString("yyyy-MM-dd"))}', '1');" + 
-                            $" SELECT transaction_repeat_id FROM pft_trasactions_repeats WHERE transaction_id = {transactionId} AND user_id = {userId}";
+                            $" SELECT MAX(transaction_repeat_id) FROM pft_trasactions_repeats WHERE transaction_id = {transactionId} AND user_id = {userId}";
         }
 
         // RecurringScheudule (Transactions) Table Dummy Record Insert SQL
@@ -360,7 +360,7 @@ namespace PersonalFinanceTrackerTests
             // recurring_next_date: is assigned a random value here!!!
             return "INSERT INTO pft_recurring_schedules (transaction_recurring_id, transaction_repeat_id, recurring_description, recurring_next_date, recurring_amount, account_id, category_id, goal_id, tag_id, transaction_categorization) " +
                                 $"VALUES (GeneratePrefixedId(3), '{transactionRepeatId}', 'Dummy Transaction Recurring Description', '{(DateOnly.FromDateTime(DateTime.Now.AddMonths(3)).ToString("yyyy-MM-dd"))}', '{recurringAmount}', '{accountId}', '{categoryId}', {goalId ?? "null"}, {tagId ?? "null"}, '1');" + 
-                            $" SELECT transaction_recurring_id FROM pft_recurring_schedules WHERE recurring_description = 'Dummy Transaction Recurring Description'";
+                            $" SELECT MAX(transaction_recurring_id) FROM pft_recurring_schedules WHERE recurring_description = 'Dummy Transaction Recurring Description'";
         }
 
         // TransctionRule Table Dummy Record Insert SQL
@@ -368,7 +368,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_transactions_rules (transctions_rule_id, user_id, account_id, category_id, goal_id, tr_text_to_match, tr_text_match_comparison, tr_amount_match_comparison, tr_exact_amount, tr_description_override) " +
                                 $"VALUES (GeneratePrefixedId(4), '{userId}', '{accountId}', '{categoryId}', {goalId ?? "null"}, 'Dummy Transaction Rule Match Text', '0', '0', null, null);" + 
-                            $" SELECT transctions_rule_id FROM pft_transactions_rules WHERE tr_text_to_match = 'Dummy Transaction Rule Match Text' AND user_id = {userId}";
+                            $" SELECT MAX(transctions_rule_id) FROM pft_transactions_rules WHERE tr_text_to_match = 'Dummy Transaction Rule Match Text' AND user_id = {userId}";
         }
 
         // Budget Table Dummy Record Insert SQL
@@ -376,7 +376,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_budgets (budget_id, user_id, category_id, budget_base_amount, br_to_be_rolled_over, br_if_under_setting, br_if_over_setting) " +
                                 $"VALUES (GeneratePrefixedId(6), '{userId}', '{categoryId}', '{budgetBaseAmount}',  '0', '0', '0');" + 
-                            $" SELECT budget_id FROM pft_budgets WHERE user_id = {userId} AND category_id = {categoryId}";
+                            $" SELECT MAX(budget_id) FROM pft_budgets WHERE user_id = {userId} AND category_id = {categoryId}";
         }
 
         // Budget Details Table Dummy Record Insert SQL
@@ -384,14 +384,14 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_budgets_details (budget_id, budget_amount, budget_for_month_year) " +
                                 $"VALUES ('{budgetId}', '250', '{(new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1)).ToString("yyyy-MM-dd")}');" + 
-                            $" SELECT budget_id FROM pft_budgets_details WHERE budget_id = '{budgetId}'";
+                            $" SELECT MAX(budget_id) FROM pft_budgets_details WHERE budget_id = '{budgetId}'";
         }
 
         private static string GetInsertDummyImportTemplateRecordAndRetrieveIdSQL(string userId, string accountId)
         {
             return "INSERT INTO pft_import_templates (user_id, account_id, import_template_name, import_type, import_header_row_index, import_template_date_field_index, import_template_description_field_index, import_template_amount_field_index, import_template_debit_field_index, import_template_credit_field_index) " +
                                 $"VALUES ('{userId}', '{accountId}', 'Dummy Import Template Name', '1', '0', '1', '2', '3', '4','5');" + 
-                            $" SELECT import_template_id FROM pft_import_templates WHERE import_template_name = '{"Dummy Import Template Name"}'";
+                            $" SELECT MAX(import_template_id) FROM pft_import_templates WHERE import_template_name = '{"Dummy Import Template Name"}'";
         }
 
         // INSERT DUMMY RECORD IN RELATED TABLES - END
@@ -593,6 +593,19 @@ namespace PersonalFinanceTrackerTests
                             "category_color AS CategoryColor, " +
                             "category_display_order AS CategoryDisplayOrder " +
                             "FROM pft_categories ";
+        }
+
+        // Changes the transaction amount for tests
+        public static void InverseAmountInTransactionTable(string userId, string categoryId, IDbConnection _conn)
+        {
+
+            string sql = "UPDATE pft_transactions t SET t.transaction_amount = (-1) * t.transaction_amount WHERE user_id = @UserId AND category_id = @CategoryId";
+            _conn.Execute(sql, new
+            {
+                UserId = userId,
+                categoryId = categoryId
+            });
+            
         }
 
         // Get the any one record from a table for a user_id
@@ -825,6 +838,131 @@ namespace PersonalFinanceTrackerTests
         }
 
         // Budget Tests - End
+
+        // TransactionRules Tests - Start
+        private static string GetTransactionRulesTableSelectStatementWithFieldNames()
+        {
+
+            return "SELECT transctions_rule_id AS TransactionRuleId, " +
+                            "user_id AS UserId, " +
+                            "account_id AS AccountId, " +
+                            "category_id AS CategoryId, " +
+                            "goal_id AS GoalId, " +
+                            "tr_text_to_match AS TransactionTextToMatch, " +
+                            "tr_text_match_comparison AS TransactionTextMatchComparision, " +
+                            "tr_amount_match_comparison AS TransactionAmountMatchComparision, " +
+                            "tr_exact_amount AS TransactionExactAmount, " +
+                            "tr_description_override AS TransactionDescriptionOverride " +
+                            "FROM pft_transactions_rules ";
+
+        }
+        // Get the any one record from a table for a user_id
+        public static TransactionRule? GetSingleRecordFromTransactionRulesTable(string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetTransactionRulesTableSelectStatementWithFieldNames()} WHERE user_id = @UserId LIMIT 1";
+            
+            // Get this value and then delete the record!!!
+            return _conn.QuerySingleOrDefault<TransactionRule?>(sql, new
+            {
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        // Get the specific record from a table for a user_id using a search field name and value
+        public static TransactionRule? GetTransactionRuleRecordByTransactionTextToMatch(string textToMatch, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetTransactionRulesTableSelectStatementWithFieldNames()} WHERE tr_text_to_match = @TextToMatch AND user_id = @UserId";
+
+            // Get this value and then delete the record!!!
+            return _conn.QuerySingleOrDefault<TransactionRule?>(sql, new
+            {
+                TextToMatch = textToMatch,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        // To test the transaction rules application
+        public static void InsertTransactionRecordsForTransactionRuleTests(string userId, string accountId, bool deleteExistingRecords, IDbConnection _conn)
+        {
+
+            string categoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Uncategorized", userId, _conn).ToString();
+
+            string sql = $"{(deleteExistingRecords ? "DELETE FROM pft_transactions; " : "")}" +
+                         "INSERT INTO pft_transactions (transaction_id, user_id, transaction_date, transaction_description, transaction_amount, account_id, category_id, goal_id, tag_id, transaction_categorization, transaction_type) " +
+                         $"VALUES (GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '123.01', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +      // Manual Transactions (Any Amount + Exact Amount + Money In)
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '123.02', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '123.03', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '-123.04', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +             // Manual Transactions (Any Amount + Exact Amount + Money out)
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '-123.05', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '-123.06', '{accountId}', '{categoryId}', {"null"}, {"null"}, '1', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '123.01', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +              // CSV Uploads Transactions (Any Amount + Exact Amount + Money In)
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '123.02', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '123.03', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '-123.04', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +             // CSV Uploads Transactions (Any Amount + Exact Amount + Money out) 
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '-123.05', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '-123.06', '{accountId}', '{categoryId}', {"null"}, {"null"}, '2', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '123.01', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1'), " +              // Linked Account Transactions (Any Amount + Exact Amount + Money In)
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '123.02', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '123.03', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Transaction Contains Description', '-123.04', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1'), " +             // Linked Account Transactions (Any Amount + Exact Amount + Money out) 
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Starts With Transaction Description', '-123.05', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1'), " +
+                         $"(GeneratePrefixedId(3), '{userId}', '{(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))}', 'Exact Match Description', '-123.06', '{accountId}', '{categoryId}', {"null"}, {"null"}, '3', '1');";
+            
+            _conn.Execute(sql);
+
+        }
+        
+        public static int GetNoOfRecordsCountsFromTransactionTable(bool isForManualEntry, string userId, string accountId, string categoryId, string? goalId, string? descriptionToCheck, IDbConnection _conn)
+        {
+
+            string sql = $"SELECT COUNT(*) FROM pft_transactions t WHERE t.user_id = @UserId AND t.account_id = @AccountId AND t.category_id = @CategoryId AND t.goal_id = @GoalId";
+            sql = $"{sql} {(isForManualEntry ? "AND t.transaction_categorization = '1' " : "AND t.transaction_categorization <> '1' " )}";
+            
+            if(descriptionToCheck != null)
+            {
+                sql = $"{sql} AND transaction_description LIKE '%{descriptionToCheck}%' ";
+            }
+
+            return _conn.ExecuteScalar<int>(sql, new {
+                    UserId = userId,
+                    AccountId = accountId,
+                    CategoryId = categoryId,
+                    GoalId = goalId == null ? "null" : goalId
+                });
+
+        }
+
+        public static void ResetToDefaultCategoryAndGoalIDsInTransactionTable(string userId, IDbConnection _conn)
+        {
+
+            string unCategorizedCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Uncategorized", userId, _conn).ToString();
+            string sql = $"UPDATE pft_transactions SET category_id = {unCategorizedCategoryId}, goal_id = {"null"} WHERE user_id = @UserId";
+            
+            _conn.Execute(sql, new
+            {
+                UserId = userId
+            });
+
+        }
+
+        public static (string newAccountId, string newGoalId) GenerateNewAccountAndGoalRecords(string userId, IDbConnection _conn)
+        {
+
+            string sql = GetInsertDummyAccountRecordAndRetrieveIdSQL(userId);
+            string newAccountId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+
+            sql = GetInsertDummyGoalRecordAndRetrieveIdSQL(userId);
+            string newGoalId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+
+            return (newAccountId, newGoalId);
+
+        }
+
+        // TransactionRules Tests - End
 
     }
 }

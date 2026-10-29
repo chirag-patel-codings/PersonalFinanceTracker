@@ -201,8 +201,8 @@ const saveCategoryRecord = function () {
                 showDbMessage("Category saved successfully.", true);
             }
             else {
-                console.error(result.message);
-                showDbMessage("Error: Category has not been saved successfully!!!", false);
+                // console.error(result.message);
+                showDbMessage(`Error: Category has not been saved successfully!!! ${result.message}`, false);
                 return;
             }
 

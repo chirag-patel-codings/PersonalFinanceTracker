@@ -98,20 +98,28 @@ namespace PersonalFinanceTracker.Controllers
         public IActionResult SaveCategory([FromBody] Category category, string? connString = null)
         {
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
-            
+
             if (ModelState.IsValid)
             {
 
                 category.UserId = _currentUserId;
 
-                if(_categoryRepository.SaveCategory(category, connString))
+                if (!_categoryRepository.CheckInvalidTransactionsExists(_currentUserId, category.CategoryId, category.CategoryType, connString))
                 {
-                    return Ok(new { success = true });
+                    if (_categoryRepository.SaveCategory(category, connString))
+                    {
+                        return Ok(new { success = true });
+                    }
+                    else
+                    {
+                        return StatusCode(500, new { success = false, message = "Database error occurred." });
+                    }
                 }
                 else
                 {
-                    return StatusCode(500, new { success = false, message = "Database error occurred." });
+                    return BadRequest(new { success = false, message = "Some existing transaction/recurring records mismatches for the Category Type. Please update those records first and then change the category type!" });
                 }
+                
             }
             else
             {

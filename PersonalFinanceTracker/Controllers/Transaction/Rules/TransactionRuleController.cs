@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services.Contracts;
+using Syncfusion.EJ2.Notifications;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -16,11 +17,11 @@ namespace PersonalFinanceTracker.Controllers
         private readonly ITransactionRuleService _transactionRuleService;
         private readonly ulong _currentUserId;
         private readonly string _userCurrencyCode, _userCurrencySymbol;
-        public TransactionRuleController(IHttpContextAccessor httpContextAccessor, 
-                                            ITransactionRuleRepository transactionRuleRepository, 
+        public TransactionRuleController(IHttpContextAccessor httpContextAccessor,
+                                            ITransactionRuleRepository transactionRuleRepository,
                                             ITransactionRepository transactionRepository,
-                                            ITransactionRuleService transactionRuleService) 
-        { 
+                                            ITransactionRuleService transactionRuleService)
+        {
 
             _transactionRuleRepository = transactionRuleRepository;
             _transactionRepository = transactionRepository;
@@ -96,7 +97,7 @@ namespace PersonalFinanceTracker.Controllers
 
                 // Deserialize the string into your strongly-typed Pagination object
                 pagination = JsonSerializer.Deserialize<Pagination>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                
+
             }
 
             transactionRules = _transactionRuleRepository.GetTransactionRules(_currentUserId, pagination.RecordStartNumber, pagination.RecordEndNumber, connString);
@@ -123,7 +124,7 @@ namespace PersonalFinanceTracker.Controllers
 
             string transactionRuleId = getTransactionRuleDataFor.GetProperty("transactionRuleId").GetString();
             var transactionRule = _transactionRuleRepository.GetTransactionRule(_currentUserId, transactionRuleId, connString);
-            
+
             return Ok(transactionRule);
 
         }
@@ -137,9 +138,7 @@ namespace PersonalFinanceTracker.Controllers
         {
 
             // PAGINATION  TO BE  DONE  FROM UI AFTER INSERT/SAVE SUCCESS!!! NOT BY THIS CONTROLLER ACTION!!!
-            
             TransactionRule transactionRule = JsonSerializer.Deserialize<TransactionRule>(payload["data"]?.ToString(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            
 
             bool applyRule = payload["applyRule"]?.ToString() == "1";
 
@@ -150,33 +149,69 @@ namespace PersonalFinanceTracker.Controllers
             {
 
                 transactionRule.UserId = _currentUserId;
-                
-                if(_transactionRuleRepository.SaveTransactionRule(transactionRule, connString))
+
+                if (_transactionRuleRepository.SaveTransactionRule(transactionRule, connString))
                 {
+
+                    bool allTransactionRecordsHaveValidCategoryAssigned = true;
+
                     if (applyRule)
                     {
-
+                        // To get the category type
+                        var categoriesList = _transactionRepository.GetSelectOptionsDataFor(_currentUserId, "categories", connString);
                         var allTransactions = _transactionRepository.GetCSVAndBankLinkTransactionsForUser(_currentUserId, connString);
 
-                        foreach(var transaction in allTransactions)
+                        foreach (var transaction in allTransactions)
                         {
 
                             var transactionWithRuleApplied = _transactionRuleService.ApplyRuleToTransaction(_currentUserId, transaction, transactionRule, connString);
 
-                            // Update only if the transaction record has been changed with the rule values applied!
+                            // Only if the transaction record has been changed with the rule values applied!
                             if (transactionWithRuleApplied.isRuleApplied)
                             {
-                                _transactionRepository.UpdateTransactionRecordFromRule(_currentUserId, transactionWithRuleApplied.transaction, connString);
+
+                                transactionWithRuleApplied.transaction.CategoryType = categoriesList.First(c => c.ListOptionId == transactionWithRuleApplied.transaction.CategoryId).ListOptionType.ToString();
+
+                                // Clear any existing previous errors in the model state, so that TryValidateModel can validate new transaction record!
+                                ModelState.Clear();
+                                // Update only category type valid for transaction amount...other transaction records will be skipped!
+                                if (TryValidateModel(transactionWithRuleApplied.transaction))
+                                {
+                                    _transactionRepository.UpdateTransactionRecordFromRule(_currentUserId, transactionWithRuleApplied.transaction, connString);
+                                }
+                                else
+                                {
+                                    if (allTransactionRecordsHaveValidCategoryAssigned)
+                                    {
+                                        allTransactionRecordsHaveValidCategoryAssigned = false;
+                                    }
+                                }
+
                             }
 
                         }
 
                     }
-                    return Ok(new { success = true });
+
+                    string message = "Rule has been successfully saved!";
+
+                    if (applyRule && allTransactionRecordsHaveValidCategoryAssigned)
+                    {
+                        message = $"{message} And matching transaction records have been updated sucessfully!";
+                    }
+                    else if (applyRule && !allTransactionRecordsHaveValidCategoryAssigned)
+                    {
+                        message = $"{message} BUT SOME TRANSACTIONS RECORDS ARE NOT UPDATED DUE TO INVALID CATEGORY TYPE ASSIGNMENT FROM THIS RULE!";
+                    }
+
+                    return Ok(new { success = true, message = message });
+
                 }
                 else
                 {
+
                     return StatusCode(500, new { success = false, message = "Database error occurred." });
+
                 }
             }
             else
@@ -191,7 +226,7 @@ namespace PersonalFinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteTransactionRule([FromBody] dynamic getTransactionRuleDataFor, string? connString = null)
         {
-            
+
             string transactionRuleId = getTransactionRuleDataFor.GetProperty("transactionRuleId").GetString();
 
             if (_transactionRuleRepository.DeleteTransactionRule(_currentUserId, transactionRuleId, connString))

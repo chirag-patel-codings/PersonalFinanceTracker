@@ -5,7 +5,7 @@ using System.Data;
 
 namespace PersonalFinanceTracker.Services.Repository
 {
-    public class DbConnectionFactory : IDbConnectionFactory
+    public class DbConnectionFactory : IDbConnectionFactory, IDisposable
     {
         private readonly IConfiguration _config;
         private IDbConnection _activeConnection;
@@ -28,7 +28,7 @@ namespace PersonalFinanceTracker.Services.Repository
             return _activeConnection;
         }
 
-        /*
+        
         public void Dispose()
         {
             if (_activeConnection != null && _activeConnection.State == ConnectionState.Open)
@@ -38,6 +38,6 @@ namespace PersonalFinanceTracker.Services.Repository
             // Called automatically by .NET DI when the Scoped lifetime ends
             _activeConnection?.Dispose();
         }
-        */
+        
     }
 }

@@ -91,7 +91,7 @@ namespace PersonalFinanceTracker.Services.TransactionRules
 
             (bool isRuleApplied, TransactionDataModel transaction) transactionForRuleApplication = (false, transaction);
 
-            if (transactionRule.AccountId == null || transactionRule.AccountId == transaction.AccountId)    // Apply Rule if condition is "All Accounts" or "Matching Account Only"
+            if (string.IsNullOrEmpty(transactionRule.AccountId) || transactionRule.AccountId == transaction.AccountId)    // Apply Rule if condition is "All Accounts" or "Matching Account Only"
             {
                 transactionForRuleApplication = ApplyRuleValues(transactionRule, transaction);
             }
@@ -135,28 +135,6 @@ namespace PersonalFinanceTracker.Services.TransactionRules
             return transactionForRuleApplication;
 
         }
-
-        
-
-        /*
-        // Complete.. deleted due to circular reference!
-        // Applies the supplied rule (Single Rule) to the existing (CSV/Bank) transactions. Does not change the Manual Entries
-        public void ApplyRuleToExistingTransactions(ulong userId, IEnumerable<TransactionDataModel> allTransactions, TransactionRule transactionRule, string? connString) 
-        {
-            // var allTransactions = _transactionRepository.GetCSVAndBankLinkTransactionsForUser(userId, connString);
-
-            // Filter the transaction records as per Account!
-            var transactions = transactionRule.AccountId == "" ? allTransactions : allTransactions.Where(t => t.AccountId == transactionRule.AccountId);
-
-            foreach (var transaction in transactions)
-            {
-                var transactionWithRuleApplied = ApplyRuleValues(transactionRule, transaction);
-                _transactionRepository.UpdateTransactionRecordFromRule(userId, transactionWithRuleApplied, connString);
-            }
-
-        }
-        */
-
 
 
     }

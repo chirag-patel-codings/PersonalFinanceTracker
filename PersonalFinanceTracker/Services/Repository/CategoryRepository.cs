@@ -80,7 +80,7 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("category_id", category.CategoryId == "" ? 0 : ulong.Parse(category.CategoryId));
+            parameters.Add("category_id", string.IsNullOrEmpty(category.CategoryId) ? 0 : ulong.Parse(category.CategoryId));
             parameters.Add("user_id", category.UserId);
             parameters.Add("standard_category_id", ulong.Parse(category.StandardCategoryId));
             parameters.Add("category_type", category.CategoryType);
@@ -95,6 +95,33 @@ namespace PersonalFinanceTracker.Services.Repository
                           );
 
             return parameters.Get<int>("total_effected_records") > 0 ? true : false;
+
+        }
+
+        // Checks if there are any invalid transactions records for the category type
+        public bool CheckInvalidTransactionsExists(ulong userId, string categoryId, sbyte categoryType, string? connString)
+        {
+
+            int? invalidRecordsCount = null;
+
+            if(categoryType != 0)
+            {
+
+                connString = connString ?? "pft_con_str";
+                using IDbConnection _conn = _factory.GetDBConnection(connString);
+                
+                string sql = $"SELECT 1 FROM pft_transactions WHERE user_id = @UserId AND category_id = @CategoryId AND transaction_amount {(categoryType > 0 ? "< 0" : "> 0")} LIMIT 1";
+                invalidRecordsCount = _conn.ExecuteScalar<int?>(sql, new { UserId = userId, CategoryId = categoryId });
+
+                if(invalidRecordsCount == null)
+                {
+                    sql = $"SELECT 1 FROM pft_trasactions_repeats r JOIN pft_recurring_schedules s ON r.transaction_repeat_id = s.transaction_repeat_id WHERE r.user_id = @UserId AND s.category_id = @CategoryId AND s.recurring_amount {(categoryType > 0 ? "< 0" : "> 0")} LIMIT 1";
+                    invalidRecordsCount = _conn.ExecuteScalar<int?>(sql, new { UserId = userId, CategoryId = categoryId });
+                }
+
+            }
+
+            return (invalidRecordsCount ?? 0) > 0;
 
         }
 
@@ -130,6 +157,8 @@ namespace PersonalFinanceTracker.Services.Repository
             return _conn.Query<StandardCategories>(sql, new { UserId = userId });
 
         }
+
+        
 
     }
 }

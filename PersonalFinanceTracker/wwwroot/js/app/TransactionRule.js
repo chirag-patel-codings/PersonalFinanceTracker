@@ -256,7 +256,7 @@ const saveTransactionRuleRecord = function () {
                 modalApplyRuleToExistingTransactions.checked = false; // Reset the checkbox after saving
                 showHideAddEditTransactionRulesModal(false);
                 doNavigation(null, 'current');  // Refresh the page!
-                showDbMessage("Transaction Rule saved successfully.", true);
+                showDbMessage(result.message, true);
             }
             else {
                 console.error(result.message);

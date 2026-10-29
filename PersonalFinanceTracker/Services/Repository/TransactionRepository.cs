@@ -109,20 +109,21 @@ namespace PersonalFinanceTracker.Services.Repository
         // Saves a single record in the transaction table (if it's a repeat tranasction then: also creates a new entry in the 'repeat' tables
         public bool SaveTransaction(TransactionDataModel transactionRecord, string? connString)
         {
+            
             connString = connString ?? "pft_con_str";
             using IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("transaction_id", transactionRecord.TransactionId == "" ? 0 : ulong.Parse(transactionRecord.TransactionId));
+            parameters.Add("transaction_id", string.IsNullOrEmpty(transactionRecord.TransactionId) ? 0 : ulong.Parse(transactionRecord.TransactionId));
             parameters.Add("user_id", transactionRecord.UserId);
             parameters.Add("transaction_date", transactionRecord.TransactionDate.ToString("yyyy-MM-dd"));
             parameters.Add("transaction_description", transactionRecord.TransactionDescription.Trim());
             parameters.Add("transaction_amount", transactionRecord.TransactionAmount);
             parameters.Add("account_id", ulong.Parse(transactionRecord.AccountId));
             parameters.Add("category_id", ulong.Parse(transactionRecord.CategoryId));
-            parameters.Add("goal_id", transactionRecord.GoalId == "" ? null : ulong.Parse(transactionRecord.GoalId));
-            parameters.Add("tag_id", transactionRecord.TagId == "" ? null :  ulong.Parse(transactionRecord.TagId));
+            parameters.Add("goal_id", string.IsNullOrEmpty(transactionRecord.GoalId) ? null : ulong.Parse(transactionRecord.GoalId));
+            parameters.Add("tag_id", string.IsNullOrEmpty(transactionRecord.TagId) ? null :  ulong.Parse(transactionRecord.TagId));
             parameters.Add("transaction_categorization", transactionRecord.TransactionCategorization);   // 1 - Manual Entry,  2 - CSV uplod, 3 - Auto (Linked Bank Account)
             parameters.Add("transaction_type", transactionRecord.TransactionType);
             parameters.Add("transaction_repeat_id", transactionRecord.TransactionRepeatId);

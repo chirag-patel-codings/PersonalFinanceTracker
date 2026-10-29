@@ -29,7 +29,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
-    public class DashboardControllerIntegrationTests
+    public class DashboardControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
         private HttpClient _client;
@@ -56,6 +56,10 @@ namespace PersonalFinanceTrackerTests
             // Query the test database for the user ID using your existing helper
             _userId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(
                 "PFT_Test_User_123", "test@test.tt", _tempConnection).ToString();
+
+            // Otherwise tokens are generated for the _userId = 0
+            if (_userId == "0")
+                return;
 
             // Dashboard Filter
             _dashboardFilter = new DashboardFilter
@@ -111,8 +115,7 @@ namespace PersonalFinanceTrackerTests
         [Test]
         [TestCase("/Dashboard/GetUserCurrencyDetailsAndLicenseKey")]
         [TestCase("/Dashboard/GetReportsData")]
-        
-        public async Task AccountsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+        public async Task DashboardAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
         {
 
@@ -123,7 +126,7 @@ namespace PersonalFinanceTrackerTests
             requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
 
             // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId, false);
             requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
 
             switch (actionName)
@@ -159,7 +162,7 @@ namespace PersonalFinanceTrackerTests
         public async Task DashboardIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Get, "/Dashboard/Index");   
 
@@ -253,7 +256,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var requestGetUserCurrencyDetailsAndLicenseKey = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetUserCurrencyDetailsAndLicenseKey");
 
@@ -301,7 +304,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -350,7 +353,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var requestGetReportsDataPost = new HttpRequestMessage(HttpMethod.Post, "/Dashboard/GetReportsData?connString=pft_con_str_testenv");
 
@@ -392,48 +395,6 @@ namespace PersonalFinanceTrackerTests
 
             Assert.That(monthlyNetWorthChartDataElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
             Assert.That(monthlyNetWorthChartDataElement.GetArrayLength, Is.GreaterThanOrEqualTo(0));
-
-        }
-
-
-        // For Server to authenticates. (Part of client request)
-        // Before a real browser submits a form or a secure POST request with anti-forgery protection, it needs to hit the server to get a valid validation token and cookie.
-        // This helper method simulates that exact browser behavior programmatically.
-        protected async Task<(string? token, string? cookieHeader)> GetAntiforgeryTokensAsync(bool generateAntiforgeryToken = true)
-        {
-
-            using var scope = _factory.Services.CreateScope();
-            var antiforgery = scope.ServiceProvider.GetRequiredService<IAntiforgery>();
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = scope.ServiceProvider;
-
-            if (generateAntiforgeryToken)
-            {
-                // Attach the authenticated user so the token binds to this user ID
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, _userId),
-                    new Claim(ClaimTypes.Name, "PFT_Test_User_123"),
-                    new Claim("CurrencyCode", "USD"),
-                    new Claim("CurrencySymbol", "$")
-                };
-                var identity = new ClaimsIdentity(claims, "TestScheme");
-                httpContext.User = new ClaimsPrincipal(identity);
-
-                // Generate the tokens
-                var tokens = antiforgery.GetAndStoreTokens(httpContext);
-
-                // Use the exact static cookie name we configured in PostConfigure
-                string cookieHeader = $".AspNetCore.Antiforgery.TestCookie={tokens.CookieToken}";
-
-                return (tokens.RequestToken, cookieHeader);
-
-            }
-            else
-            {
-                return (null, null);    // Invalid Request
-            }
 
         }
 

@@ -345,6 +345,15 @@ document.getElementById('modalCategoryId').addEventListener("change", (e) => {
 
 });
 
+
+document.getElementById('modalRecurringAmount').addEventListener("input", (e) => {
+
+    e.preventDefault();
+    const categoryEleValue = document.getElementById('modalCategoryId').value;
+    document.getElementById('modalCategoryType').value = categoriesListJSON.find(c => c.listOptionId == categoryEleValue)?.listOptionType;
+
+});
+
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 

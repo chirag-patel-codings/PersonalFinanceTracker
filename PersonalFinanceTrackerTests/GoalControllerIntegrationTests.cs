@@ -28,7 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
-    public class GoalControllerIntegrationTests
+    public class GoalControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
         private HttpClient _client;
@@ -54,6 +54,10 @@ namespace PersonalFinanceTrackerTests
             // Query the test database for the user ID using your existing helper
             _userId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(
                 "PFT_Test_User_123", "test@test.tt", _tempConnection).ToString();
+
+            // Otherwise tokens are generated for the _userId = 0
+            if (_userId == "0")
+                return;
 
             var goalRec = DatabaseHelperForTests.GetSingleRecordFromGoalsTable(_userId, _tempConnection);
             if (goalRec != null) { 
@@ -153,7 +157,7 @@ namespace PersonalFinanceTrackerTests
             requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
 
             // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId, false);
             requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
 
             switch (actionName)
@@ -166,8 +170,8 @@ namespace PersonalFinanceTrackerTests
 
                 case "/Goal/GetGoal":
                 case "/Goal/DeleteGoal":
-                    requestPostInValidAuthorize.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
-                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { goalId = _goalRecord == null ? "7777777777777777777" : _goalRecord.GoalId });
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { goalId = _goalRecord.GoalId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { goalId = _goalRecord.GoalId });
                     break;
 
                 case "/Goal/SaveGoal":
@@ -216,7 +220,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/goals?connString=pft_con_str_testenv");
             
@@ -294,13 +298,12 @@ namespace PersonalFinanceTrackerTests
         // GoalDescription
         [TestCase("", null, 1, "From_Test_Goal_Name", "This Goal Description is more than 255 characters long to test the max length for the goal description...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...", null, 400, "GoalDescription", "Goal description should not be more than 255 characters long!")]
         [TestCase(null, null, 1, "From_Test_Goal_Name", "This Goal Description is more than 255 characters long to test the max length for the goal description...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...blah...", null, 400, "GoalDescription", "Goal description should not be more than 255 characters long!")]
-
         public async Task GoalsSaveGoal_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
             (string? goalId, ulong? userId, sbyte? goalType, string goalName, string? goalDescription, IEnumerable<GoalDetails>? goalDetails, int expectedStatusCode, string failedValidationPropertyName, string? expectedErrorMessage)
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Goal/SaveGoal?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -343,18 +346,19 @@ namespace PersonalFinanceTrackerTests
             Assert.That(messageElement.TryGetProperty(failedValidationPropertyName, out var validationErrorElement), Is.True);
             Assert.That(validationErrorElement[0].GetString(), Is.EqualTo(expectedErrorMessage));
 
-            // Validate Newly saved record...Replace the existing '_goalRecord' values
+            // Validate if record is saved...
             invalidGoal = DatabaseHelperForTests.GetGoalRecordByName(invalidGoal.GoalName, _userId, _tempConnection);
             Assert.That(invalidGoal, Is.Null);
 
         }
+
 
         [Test]
         public async Task GoalsAddGoal_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
             
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Goal/SaveGoal?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -398,7 +402,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Goal/SaveGoal?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -461,7 +465,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Goal/GetGoal?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -518,7 +522,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Goal/DeleteGoal?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -575,47 +579,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(transactionsRuleRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(goalDetailsRecordsCountsAfterDelete, Is.EqualTo(0));
             Assert.That(goalRecordsCountsAfterDelete, Is.EqualTo(0));
-
-        }
-
-        // For Server to authenticates. (Part of client request)
-        // Before a real browser submits a form or a secure POST request with anti-forgery protection, it needs to hit the server to get a valid validation token and cookie.
-        // This helper method simulates that exact browser behavior programmatically.
-        protected async Task<(string? token, string? cookieHeader)> GetAntiforgeryTokensAsync(bool generateAntiforgeryToken = true)
-        {
-
-            using var scope = _factory.Services.CreateScope();
-            var antiforgery = scope.ServiceProvider.GetRequiredService<IAntiforgery>();
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = scope.ServiceProvider;
-
-            if (generateAntiforgeryToken)
-            {
-                // Attach the authenticated user so the token binds to this user ID
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, _userId),
-                    new Claim(ClaimTypes.Name, "PFT_Test_User_123"),
-                    new Claim("CurrencyCode", "USD"),
-                    new Claim("CurrencySymbol", "$")
-                };
-                var identity = new ClaimsIdentity(claims, "TestScheme");
-                httpContext.User = new ClaimsPrincipal(identity);
-
-                // Generate the tokens
-                var tokens = antiforgery.GetAndStoreTokens(httpContext);
-
-                // Use the exact static cookie name we configured in PostConfigure
-                string cookieHeader = $".AspNetCore.Antiforgery.TestCookie={tokens.CookieToken}";
-
-                return (tokens.RequestToken, cookieHeader);
-
-            }
-            else
-            {
-                return (null, null);    // Invalid Request
-            }
 
         }
 

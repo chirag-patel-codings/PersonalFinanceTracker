@@ -11,7 +11,7 @@ namespace PersonalFinanceTracker.Models
 
         public string AccountId { get; set; }
 
-        [Required(ErrorMessage = "Please provide category!!")]
+        [Required(ErrorMessage = "Please provide category!")]
         public string CategoryId { get; set; }  // If no rules, then assign a default category!!!
 
         public string? GoalId { get; set; }

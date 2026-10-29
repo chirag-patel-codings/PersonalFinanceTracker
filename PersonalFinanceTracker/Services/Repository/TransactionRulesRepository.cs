@@ -94,11 +94,11 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("transctions_rule_id", transactionRulesRecord.TransactionRuleId == "" ? 0 : ulong.Parse(transactionRulesRecord.TransactionRuleId));
+            parameters.Add("transctions_rule_id", string.IsNullOrEmpty(transactionRulesRecord.TransactionRuleId) ? 0 : ulong.Parse(transactionRulesRecord.TransactionRuleId));
             parameters.Add("user_id", transactionRulesRecord.UserId);
-            parameters.Add("account_id", transactionRulesRecord.AccountId == "" ? null : ulong.Parse(transactionRulesRecord.AccountId));
+            parameters.Add("account_id", string.IsNullOrEmpty(transactionRulesRecord.AccountId) ? null : ulong.Parse(transactionRulesRecord.AccountId));
             parameters.Add("category_id", ulong.Parse(transactionRulesRecord.CategoryId));
-            parameters.Add("goal_id", transactionRulesRecord.GoalId == "" ? null : ulong.Parse(transactionRulesRecord.GoalId));
+            parameters.Add("goal_id", string.IsNullOrEmpty(transactionRulesRecord.GoalId) ? null : ulong.Parse(transactionRulesRecord.GoalId));
             parameters.Add("tr_text_to_match", transactionRulesRecord.TransactionTextToMatch.Trim());   
             parameters.Add("tr_text_match_comparison", transactionRulesRecord.TransactionTextMatchComparision);
             parameters.Add("tr_amount_match_comparison", transactionRulesRecord.TransactionAmountMatchComparision); 

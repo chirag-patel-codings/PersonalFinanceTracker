@@ -11,6 +11,7 @@ namespace PersonalFinanceTracker.Services.Contracts
         public Category? GetCategory(ulong userId, string categoryId, string? connString);
         public IEnumerable<Category>? GetCategories(ulong userId, int recStartNumber, int recEndNumber, string? connString);
         public bool SaveCategory(Category category, string? connString);
+        public bool CheckInvalidTransactionsExists(ulong userId, string categoryId, sbyte categoryType, string? connString);
         public bool DeleteCategory(ulong userId, string categoryId, string? connString);
         public IEnumerable<StandardCategories> GetStandardCategories(ulong userId, string? connString);
     }

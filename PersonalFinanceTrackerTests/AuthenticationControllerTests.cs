@@ -181,12 +181,7 @@ namespace PersonalFinanceTrackerTests
 
             // Act
             var response = _controller.Register(model, "pft_con_str_testenv") as RedirectToActionResult;
-            /*
-            if (_connection.State == ConnectionState.Closed)    // closed by client app
-            {
-                _connection = _factory.GetDBConnection("pft_con_str_testenv");
-            }
-            */
+            
             userRecordsCountAfterInsert = DatabaseHelperForTests.GetUserCountsByUserNameAndEmail(userName, email, _connection);  // Keep this user for to run all the tests!!!
             newUserId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(userName, email, _connection).ToString();
 

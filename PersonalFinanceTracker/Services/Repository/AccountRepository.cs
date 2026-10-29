@@ -80,7 +80,7 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("account_id", account.AccountId == "" ? 0 : ulong.Parse(account.AccountId));
+            parameters.Add("account_id", string.IsNullOrEmpty(account.AccountId) ? 0 : ulong.Parse(account.AccountId));
             parameters.Add("user_id", account.UserId);
             parameters.Add("account_name", account.AccountName.Trim());
             parameters.Add("account_institution_name", account.AccountInstitutionName);

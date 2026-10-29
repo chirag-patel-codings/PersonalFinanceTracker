@@ -99,15 +99,15 @@ namespace PersonalFinanceTracker.Services.Repository
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
-            parameters.Add("transaction_recurring_id", transactionRecurringRecord.RecurringId == "" ? 0 : ulong.Parse(transactionRecurringRecord.RecurringId));
+            parameters.Add("transaction_recurring_id", string.IsNullOrEmpty(transactionRecurringRecord.RecurringId) ? 0 : ulong.Parse(transactionRecurringRecord.RecurringId));
             parameters.Add("user_id", transactionRecurringRecord.UserId);
             parameters.Add("recurring_next_date", transactionRecurringRecord.RecurringNextDate?.ToString("yyyy-MM-dd"));
             parameters.Add("recurring_description", transactionRecurringRecord.RecurringDescription.Trim());
             parameters.Add("recurring_amount", transactionRecurringRecord.RecurringAmount);
             parameters.Add("account_id", ulong.Parse(transactionRecurringRecord.AccountId));
             parameters.Add("category_id", ulong.Parse(transactionRecurringRecord.CategoryId));
-            parameters.Add("goal_id", transactionRecurringRecord.GoalId == "" ? null : ulong.Parse(transactionRecurringRecord.GoalId));
-            parameters.Add("tag_id", transactionRecurringRecord.TagId == "" ? null :  ulong.Parse(transactionRecurringRecord.TagId));
+            parameters.Add("goal_id", string.IsNullOrEmpty(transactionRecurringRecord.GoalId) ? null : ulong.Parse(transactionRecurringRecord.GoalId));
+            parameters.Add("tag_id", string.IsNullOrEmpty(transactionRecurringRecord.TagId) ? null :  ulong.Parse(transactionRecurringRecord.TagId));
             parameters.Add("transaction_categorization", transactionRecurringRecord.TransactionCategorization);   // 1 - Manual Entry,  2 - CSV uplod, 3 - Auto (Linked Bank Account)
             parameters.Add("transaction_repeat_id", transactionRecurringRecord.TransactionRepeatId);
             parameters.Add("transaction_repeat_interval", transactionRecurringRecord.TransactionRepeatInterval); 

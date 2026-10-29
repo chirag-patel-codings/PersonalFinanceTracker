@@ -142,7 +142,7 @@ const appendLessThanDateValueValidationFunctionality = function () {
 const appendAmountValidationForCategoryType = function (categoryElementName, amountElementName) {
     // Amount Validation
     $.validator.addMethod("isvalidforcategorytype", function (value, element, params) {
-
+        
         if (!value) return true;
 
         var $form = $(element).closest("form");
@@ -158,7 +158,6 @@ const appendAmountValidationForCategoryType = function (categoryElementName, amo
             return true;    // Leave it for required attribute...
         }
         else {
-
             if ((targetValue == "-1" && parseFloat(value) > 0) || (targetValue == "1" && parseFloat(value) < 0))
                 return false;
         };
@@ -174,9 +173,12 @@ const appendAmountValidationForCategoryType = function (categoryElementName, amo
         options.messages["isvalidforcategorytype"] = options.message;
     });
 
-    $(document).on("change", "select[name='"+ categoryElementName + "']", function () {
-        var $amountElement = $("input[name='"+ amountElementName + "']");
-        $amountElement.valid();
+    $(document).on("change", "select[name='" + categoryElementName + "'], input[name='" + amountElementName + "']", function () {
+        
+        var $amountElement = $("input[name='" + amountElementName + "']");
+            $amountElement.valid();
+
+        
     });
 
 }

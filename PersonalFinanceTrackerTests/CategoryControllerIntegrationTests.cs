@@ -28,7 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
-    public class CategoryControllerIntegrationTests
+    public class CategoryControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
         private HttpClient _client;
@@ -54,6 +54,10 @@ namespace PersonalFinanceTrackerTests
             // Query the test database for the user ID using your existing helper
             _userId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(
                 "PFT_Test_User_123", "test@test.tt", _tempConnection).ToString();
+
+            // Otherwise tokens are generated for the _userId = 0
+            if (_userId == "0")
+                return;
 
             _uncategorizedCategoryId = DatabaseHelperForTests.GetCategoryIdForUser(_userId, "Uncategorized", _tempConnection).ToString();
             _businessIncomeCategoryId = DatabaseHelperForTests.GetCategoryIdForUser(_userId, "Business Income", _tempConnection).ToString();
@@ -142,7 +146,7 @@ namespace PersonalFinanceTrackerTests
             requestPostInValidAuthorize.Headers.Add("X-Test-Unauthorized", "true");
 
             // InValidAntiforgeryToken
-            var (token, cookie) = await GetAntiforgeryTokensAsync(false);
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId, false);
             requestPostInValidAntiforgeryToken.Headers.Add("Request-Verification-Token", token);   // 'cookie' eliminated as null;
 
             switch (actionName)
@@ -155,8 +159,8 @@ namespace PersonalFinanceTrackerTests
 
                 case "/Category/GetCategory":
                 case "/Category/DeleteCategory":
-                    requestPostInValidAuthorize.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
-                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { categoryId = _categoryRecord == null ? "9999999999999999999" : _categoryRecord.CategoryId });
+                    requestPostInValidAuthorize.Content = JsonContent.Create(new { categoryId = _categoryRecord.CategoryId });
+                    requestPostInValidAntiforgeryToken.Content = JsonContent.Create(new { categoryId = _categoryRecord.CategoryId });
                     break;
 
                 case "/Category/SaveCategory":
@@ -205,7 +209,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/categories?connString=pft_con_str_testenv");
 
@@ -213,10 +217,12 @@ namespace PersonalFinanceTrackerTests
             request.Headers.Add("Cookie", cookie);
             request.Content = JsonContent.Create(new { firstRequest = isFirstRequest.ToString().ToLower(), pagination = new { } });
 
+
             // ACT
             var response = await _client.SendAsync(request);
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
+            
             // ASSERT
             Assert.That(response.IsSuccessStatusCode, Is.True);
 
@@ -228,14 +234,12 @@ namespace PersonalFinanceTrackerTests
             using var doc = JsonDocument.Parse(jsonResponse);
             var root = doc.RootElement;
 
-
             // Verify all three root properties exist in the first request's response   (categories, pagination, standardCategories, categoryTypes)
             Assert.That(root.TryGetProperty("categories", out var categoriesElement), Is.True);
             Assert.That(root.TryGetProperty("pagination", out var paginationElement), Is.True);
             Assert.That(root.TryGetProperty("standardCategories", out var standardCategoriesElement), Is.True);
             Assert.That(root.TryGetProperty("categoryTypes", out var categoryTypesElement), Is.True);
             
-
             // Assert on specific values inside pagination or categories
             var totalRecords = int.Parse(paginationElement.GetProperty("totalNumberOfRecords").GetString());
 
@@ -258,7 +262,6 @@ namespace PersonalFinanceTrackerTests
                 Assert.That(standardCategoriesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
                 Assert.That(categoryTypesElement.ValueKind, Is.EqualTo(JsonValueKind.Null));
             }
-
 
         }
 
@@ -294,7 +297,7 @@ namespace PersonalFinanceTrackerTests
             // ARRANGE
             standardCategoryId = standardCategoryId == "123" ? _businessIncomeCategoryId : standardCategoryId;  // Default to a valid standard category ID if "123" is passed in the test case
 
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -339,7 +342,7 @@ namespace PersonalFinanceTrackerTests
             Assert.That(messageElement.TryGetProperty(failedValidationPropertyName, out var validationErrorElement), Is.True);
             Assert.That(validationErrorElement[0].GetString(), Is.EqualTo(expectedErrorMessage));
 
-            // Validate Newly saved record...Replace the existing '_categoryRecord' values
+            // Validate if record is saved...
             invalidCategory = DatabaseHelperForTests.GetCategoryRecordByName(invalidCategory.CategoryName, _userId, _tempConnection);
             Assert.That(invalidCategory, Is.Null);
 
@@ -350,7 +353,7 @@ namespace PersonalFinanceTrackerTests
         {
             
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -367,10 +370,12 @@ namespace PersonalFinanceTrackerTests
             request.Content = JsonContent.Create( _categoryRecord );
             request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+
             // ACT
             var response = await _client.SendAsync(request);
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
+            
             // ASSERT
             Assert.That(response.IsSuccessStatusCode, Is.True, "The request failed with status: " + response.StatusCode);
             
@@ -388,13 +393,12 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-
         [Test]
         public async Task CategorysUpdateCategory_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -437,15 +441,86 @@ namespace PersonalFinanceTrackerTests
             Assert.That(_categoryRecord?.CategoryColor, Is.EqualTo(updatedCategory.CategoryColor));
             Assert.That(_categoryRecord.CategoryDisplayOrder, Is.Not.EqualTo(updatedCategory.CategoryDisplayOrder));
 
+        }
+
+        [Test]
+        [TestCase("transactions")]
+        [TestCase("recurrings")]
+        public async Task CategorysUpdateCategory_AuthenticatedRequest_ReturnsBadRequest
+            (string checkForRecordInTable)
+        {
+
+            // ARRANGE
+            if (checkForRecordInTable == "transactions")
+            {
+                // Cleanup Dummy Data in Related Tables:
+                DatabaseHelperForTests.CleanupDummyDataInRelatedTables("categories", _tempConnection);
+
+                // Generate dummy data in related tables...pft_transactions, pft_recurring_schedules
+                DatabaseHelperForTests.GenerateDummyDataInRelatedTablesForUser("categories", _userId, _tempConnection, _categoryRecord.CategoryId, null);
+            }
+            else
+            {   
+                // set the amount in transaction table to -ve so that amount in recurring table is checked
+                DatabaseHelperForTests.InverseAmountInTransactionTable(_userId.ToString(), _categoryRecord.CategoryId, _tempConnection);
+            }
+
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/Category/SaveCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
+
+            request.Headers.Add("Request-Verification-Token", token);
+            request.Headers.Add("Cookie", cookie);
+
+            Category updatedCategory = new Category();
+            updatedCategory.CategoryId = _categoryRecord.CategoryId;
+            updatedCategory.StandardCategoryId = _educationCategoryId;
+            updatedCategory.CategoryType = -1;
+            updatedCategory.CategoryName = _categoryRecord.CategoryName.Replace(" - Updated", "");
+            updatedCategory.CategoryDescription = _categoryRecord.CategoryDescription.Replace(" - Updated", "");
+            updatedCategory.CategoryColor = "#222222";
+            // updatedCategory.CategoryDisplayOrder = 999;  // Automatically generated at save.
+
+            request.Content = JsonContent.Create(updatedCategory);
+            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            // ACT
+            var response = await _client.SendAsync(request);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            
+            if(checkForRecordInTable == "recurrings")
+            {
+                // Reset the amount in transaction table as check completed!
+                DatabaseHelperForTests.InverseAmountInTransactionTable(_userId.ToString(), _categoryRecord.CategoryId, _tempConnection);
+            }
+
+            // ASSERT
+            Assert.That(response.IsSuccessStatusCode, Is.False, "The request failed with status: " + response.StatusCode);
+
+            // Parse the JSON response: return Ok(new { success = true });
+            using var doc = JsonDocument.Parse(jsonResponse);
+            var root = doc.RootElement;
+
+            // Verify the success flag returned by the controller
+            Assert.That(root.TryGetProperty("success", out var successElement), Is.True);
+            Assert.That(successElement.GetBoolean(), Is.False);
+
+            Assert.That(root.TryGetProperty("message", out var messageElement), Is.True);
+            Assert.That(messageElement.GetString(), Is.EqualTo("Some existing transaction/recurring records mismatches for the Category Type. Please update those records first and then change the category type!"));
+            
+            // Validate Newly saved record...Replace the existing '_categoryRecord' values
+            var nullCategoryRecord = DatabaseHelperForTests.GetCategoryRecordByName(updatedCategory.CategoryName, _userId, _tempConnection);
+            Assert.That(nullCategoryRecord, Is.Null);
 
         }
+
 
         [Test]
         public async Task CategorysGetCategory_AuthenticatedRequest_ReturnsCategoryRecord()
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Category/GetCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -499,7 +574,7 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-            var (token, cookie) = await GetAntiforgeryTokensAsync();
+            var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Category/DeleteCategory?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
 
@@ -571,47 +646,6 @@ namespace PersonalFinanceTrackerTests
             Assert.That(uncategorizedCategoryRecordsCountsInTransactionsAfterDelete, Is.GreaterThanOrEqualTo(1));
             Assert.That(uncategorizedCategoryRecordsCountsInRecurringSchedulesAfterDelete, Is.GreaterThanOrEqualTo(1));
             Assert.That(uncategorizedCategoryRecordsCountsInTransactionsRuleAfterDelete, Is.GreaterThanOrEqualTo(1));
-
-        }
-
-        // For Server to authenticates. (Part of client request)
-        // Before a real browser submits a form or a secure POST request with anti-forgery protection, it needs to hit the server to get a valid validation token and cookie.
-        // This helper method simulates that exact browser behavior programmatically.
-        protected async Task<(string? token, string? cookieHeader)> GetAntiforgeryTokensAsync(bool generateAntiforgeryToken = true)
-        {
-
-            using var scope = _factory.Services.CreateScope();
-            var antiforgery = scope.ServiceProvider.GetRequiredService<IAntiforgery>();
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = scope.ServiceProvider;
-
-            if (generateAntiforgeryToken)
-            {
-                // Attach the authenticated user so the token binds to this user ID
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, _userId),
-                    new Claim(ClaimTypes.Name, "PFT_Test_User_123"),
-                    new Claim("CurrencyCode", "USD"),
-                    new Claim("CurrencySymbol", "$")
-                };
-                var identity = new ClaimsIdentity(claims, "TestScheme");
-                httpContext.User = new ClaimsPrincipal(identity);
-
-                // Generate the tokens
-                var tokens = antiforgery.GetAndStoreTokens(httpContext);
-
-                // Use the exact static cookie name we configured in PostConfigure
-                string cookieHeader = $".AspNetCore.Antiforgery.TestCookie={tokens.CookieToken}";
-
-                return (tokens.RequestToken, cookieHeader);
-
-            }
-            else
-            {
-                return (null, null);    // Invalid Request
-            }
 
         }
 
