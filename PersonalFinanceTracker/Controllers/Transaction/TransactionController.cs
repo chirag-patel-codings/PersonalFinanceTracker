@@ -66,9 +66,15 @@ namespace PersonalFinanceTracker.Controllers
             string transactionFilterString = payload["transactionFilter"]?.ToJsonString() ?? "{}";
             TransactionFilter transactionFilter = JsonSerializer.Deserialize<TransactionFilter>(transactionFilterString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
+            TryValidateModel(transactionFilter);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ModelState.Where(ms => ms.Value.Errors.Count > 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()) });
+            }
 
             bool isFirstRequest = payload["firstRequest"]?.ToString().ToLower() == "true";
+
+            var userCurrencyDetails = new { CurrencyCode = _userCurrencyCode, CurrencySymbol = _userCurrencySymbol };
 
             if (isFirstRequest)
             {
@@ -251,7 +257,6 @@ namespace PersonalFinanceTracker.Controllers
                 int validationErrorsOrTransactionsLastItemIndex = validationErrorsOrTransactions.modelValidationResults.Count - 1;
                 var recordDetails = validationErrorsOrTransactions.modelValidationResults.ElementAt(validationErrorsOrTransactionsLastItemIndex);
                 validationErrorsOrTransactions.modelValidationResults.RemoveAt(validationErrorsOrTransactionsLastItemIndex);
-
 
                 return BadRequest(new { success = false, recordDetails = recordDetails.ErrorMessage, message = validationErrorsOrTransactions.modelValidationResults });
             }

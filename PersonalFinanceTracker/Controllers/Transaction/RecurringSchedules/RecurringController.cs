@@ -157,7 +157,7 @@ namespace PersonalFinanceTracker.Controllers
         {
             // dynamic deleteRecurringDataFor
 
-            bool deleteSeries = payload["deleteSeries"]?.ToString() == "true";
+            bool deleteSeries = payload["deleteSeries"]?.ToString().ToLower() == "true";
             string recurringId = payload["recurringId"]?.ToString();
 
             if (_recurringRepository.DeleteRecurring(_currentUserId, recurringId, deleteSeries, connString))

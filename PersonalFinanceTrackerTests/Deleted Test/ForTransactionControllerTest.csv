@@ -1,0 +1,3889 @@
+CategoryType,AccountType,Description,Tags,goal,TransactionCategorization,TransactionFilterType
+null,null,null,null,null,0,0
+null,0,null,null,null,0,0
+null,1,null,null,null,0,0
+null,null,Transaction Filter,null,null,0,0
+null,null,Filter Test 1,null,null,0,0
+null,null,Filter Test 2,null,null,0,0
+null,null,Transaction Filter Test 1,null,null,0,0
+null,null,Transaction Filter Test 2,null,null,0,0
+null,0,Transaction Filter,null,null,0,0
+null,0,Filter Test 1,null,null,0,0
+null,0,Filter Test 2,null,null,0,0
+null,0,Transaction Filter Test 1,null,null,0,0
+null,0,Transaction Filter Test 2,null,null,0,0
+null,1,Transaction Filter,null,null,0,0
+null,1,Filter Test 1,null,null,0,0
+null,1,Filter Test 2,null,null,0,0
+null,1,Transaction Filter Test 1,null,null,0,0
+null,1,Transaction Filter Test 2,null,null,0,0
+null,null,Transaction Filter,0,null,0,0
+null,null,Filter Test 1,0,null,0,0
+null,null,Filter Test 2,0,null,0,0
+null,null,Transaction Filter Test 1,0,null,0,0
+null,null,Transaction Filter Test 2,0,null,0,0
+null,0,Transaction Filter,0,null,0,0
+null,0,Filter Test 1,0,null,0,0
+null,0,Filter Test 2,0,null,0,0
+null,0,Transaction Filter Test 1,0,null,0,0
+null,0,Transaction Filter Test 2,0,null,0,0
+null,1,Transaction Filter,0,null,0,0
+null,1,Filter Test 1,0,null,0,0
+null,1,Filter Test 2,0,null,0,0
+null,1,Transaction Filter Test 1,0,null,0,0
+null,1,Transaction Filter Test 2,0,null,0,0
+null,null,Transaction Filter,1,null,0,0
+null,null,Filter Test 1,1,null,0,0
+null,null,Filter Test 2,1,null,0,0
+null,null,Transaction Filter Test 1,1,null,0,0
+null,null,Transaction Filter Test 2,1,null,0,0
+null,0,Transaction Filter,1,null,0,0
+null,0,Filter Test 1,1,null,0,0
+null,0,Filter Test 2,1,null,0,0
+null,0,Transaction Filter Test 1,1,null,0,0
+null,0,Transaction Filter Test 2,1,null,0,0
+null,1,Transaction Filter,1,null,0,0
+null,1,Filter Test 1,1,null,0,0
+null,1,Filter Test 2,1,null,0,0
+null,1,Transaction Filter Test 1,1,null,0,0
+null,1,Transaction Filter Test 2,1,null,0,0
+null,null,null,null,0,0,0
+null,0,null,null,0,0,0
+null,1,null,null,0,0,0
+null,null,Transaction Filter,null,0,0,0
+null,null,Filter Test 1,null,0,0,0
+null,null,Filter Test 2,null,0,0,0
+null,null,Transaction Filter Test 1,null,0,0,0
+null,null,Transaction Filter Test 2,null,0,0,0
+null,0,Transaction Filter,null,0,0,0
+null,0,Filter Test 1,null,0,0,0
+null,0,Filter Test 2,null,0,0,0
+null,0,Transaction Filter Test 1,null,0,0,0
+null,0,Transaction Filter Test 2,null,0,0,0
+null,1,Transaction Filter,null,0,0,0
+null,1,Filter Test 1,null,0,0,0
+null,1,Filter Test 2,null,0,0,0
+null,1,Transaction Filter Test 1,null,0,0,0
+null,1,Transaction Filter Test 2,null,0,0,0
+null,null,Transaction Filter,0,0,0,0
+null,null,Filter Test 1,0,0,0,0
+null,null,Filter Test 2,0,0,0,0
+null,null,Transaction Filter Test 1,0,0,0,0
+null,null,Transaction Filter Test 2,0,0,0,0
+null,0,Transaction Filter,0,0,0,0
+null,0,Filter Test 1,0,0,0,0
+null,0,Filter Test 2,0,0,0,0
+null,0,Transaction Filter Test 1,0,0,0,0
+null,0,Transaction Filter Test 2,0,0,0,0
+null,1,Transaction Filter,0,0,0,0
+null,1,Filter Test 1,0,0,0,0
+null,1,Filter Test 2,0,0,0,0
+null,1,Transaction Filter Test 1,0,0,0,0
+null,1,Transaction Filter Test 2,0,0,0,0
+null,null,Transaction Filter,1,0,0,0
+null,null,Filter Test 1,1,0,0,0
+null,null,Filter Test 2,1,0,0,0
+null,null,Transaction Filter Test 1,1,0,0,0
+null,null,Transaction Filter Test 2,1,0,0,0
+null,0,Transaction Filter,1,0,0,0
+null,0,Filter Test 1,1,0,0,0
+null,0,Filter Test 2,1,0,0,0
+null,0,Transaction Filter Test 1,1,0,0,0
+null,0,Transaction Filter Test 2,1,0,0,0
+null,1,Transaction Filter,1,0,0,0
+null,1,Filter Test 1,1,0,0,0
+null,1,Filter Test 2,1,0,0,0
+null,1,Transaction Filter Test 1,1,0,0,0
+null,1,Transaction Filter Test 2,1,0,0,0
+null,null,null,null,1,0,0
+null,0,null,null,1,0,0
+null,1,null,null,1,0,0
+null,null,Transaction Filter,null,1,0,0
+null,null,Filter Test 1,null,1,0,0
+null,null,Filter Test 2,null,1,0,0
+null,null,Transaction Filter Test 1,null,1,0,0
+null,null,Transaction Filter Test 2,null,1,0,0
+null,0,Transaction Filter,null,1,0,0
+null,0,Filter Test 1,null,1,0,0
+null,0,Filter Test 2,null,1,0,0
+null,0,Transaction Filter Test 1,null,1,0,0
+null,0,Transaction Filter Test 2,null,1,0,0
+null,1,Transaction Filter,null,1,0,0
+null,1,Filter Test 1,null,1,0,0
+null,1,Filter Test 2,null,1,0,0
+null,1,Transaction Filter Test 1,null,1,0,0
+null,1,Transaction Filter Test 2,null,1,0,0
+null,null,Transaction Filter,0,1,0,0
+null,null,Filter Test 1,0,1,0,0
+null,null,Filter Test 2,0,1,0,0
+null,null,Transaction Filter Test 1,0,1,0,0
+null,null,Transaction Filter Test 2,0,1,0,0
+null,0,Transaction Filter,0,1,0,0
+null,0,Filter Test 1,0,1,0,0
+null,0,Filter Test 2,0,1,0,0
+null,0,Transaction Filter Test 1,0,1,0,0
+null,0,Transaction Filter Test 2,0,1,0,0
+null,1,Transaction Filter,0,1,0,0
+null,1,Filter Test 1,0,1,0,0
+null,1,Filter Test 2,0,1,0,0
+null,1,Transaction Filter Test 1,0,1,0,0
+null,1,Transaction Filter Test 2,0,1,0,0
+null,null,Transaction Filter,1,1,0,0
+null,null,Filter Test 1,1,1,0,0
+null,null,Filter Test 2,1,1,0,0
+null,null,Transaction Filter Test 1,1,1,0,0
+null,null,Transaction Filter Test 2,1,1,0,0
+null,0,Transaction Filter,1,1,0,0
+null,0,Filter Test 1,1,1,0,0
+null,0,Filter Test 2,1,1,0,0
+null,0,Transaction Filter Test 1,1,1,0,0
+null,0,Transaction Filter Test 2,1,1,0,0
+null,1,Transaction Filter,1,1,0,0
+null,1,Filter Test 1,1,1,0,0
+null,1,Filter Test 2,1,1,0,0
+null,1,Transaction Filter Test 1,1,1,0,0
+null,1,Transaction Filter Test 2,1,1,0,0
+null,null,null,null,null,1,0
+null,0,null,null,null,1,0
+null,1,null,null,null,1,0
+null,null,Transaction Filter,null,null,1,0
+null,null,Filter Test 1,null,null,1,0
+null,null,Filter Test 2,null,null,1,0
+null,null,Transaction Filter Test 1,null,null,1,0
+null,null,Transaction Filter Test 2,null,null,1,0
+null,0,Transaction Filter,null,null,1,0
+null,0,Filter Test 1,null,null,1,0
+null,0,Filter Test 2,null,null,1,0
+null,0,Transaction Filter Test 1,null,null,1,0
+null,0,Transaction Filter Test 2,null,null,1,0
+null,1,Transaction Filter,null,null,1,0
+null,1,Filter Test 1,null,null,1,0
+null,1,Filter Test 2,null,null,1,0
+null,1,Transaction Filter Test 1,null,null,1,0
+null,1,Transaction Filter Test 2,null,null,1,0
+null,null,Transaction Filter,0,null,1,0
+null,null,Filter Test 1,0,null,1,0
+null,null,Filter Test 2,0,null,1,0
+null,null,Transaction Filter Test 1,0,null,1,0
+null,null,Transaction Filter Test 2,0,null,1,0
+null,0,Transaction Filter,0,null,1,0
+null,0,Filter Test 1,0,null,1,0
+null,0,Filter Test 2,0,null,1,0
+null,0,Transaction Filter Test 1,0,null,1,0
+null,0,Transaction Filter Test 2,0,null,1,0
+null,1,Transaction Filter,0,null,1,0
+null,1,Filter Test 1,0,null,1,0
+null,1,Filter Test 2,0,null,1,0
+null,1,Transaction Filter Test 1,0,null,1,0
+null,1,Transaction Filter Test 2,0,null,1,0
+null,null,Transaction Filter,1,null,1,0
+null,null,Filter Test 1,1,null,1,0
+null,null,Filter Test 2,1,null,1,0
+null,null,Transaction Filter Test 1,1,null,1,0
+null,null,Transaction Filter Test 2,1,null,1,0
+null,0,Transaction Filter,1,null,1,0
+null,0,Filter Test 1,1,null,1,0
+null,0,Filter Test 2,1,null,1,0
+null,0,Transaction Filter Test 1,1,null,1,0
+null,0,Transaction Filter Test 2,1,null,1,0
+null,1,Transaction Filter,1,null,1,0
+null,1,Filter Test 1,1,null,1,0
+null,1,Filter Test 2,1,null,1,0
+null,1,Transaction Filter Test 1,1,null,1,0
+null,1,Transaction Filter Test 2,1,null,1,0
+null,null,null,null,0,1,0
+null,0,null,null,0,1,0
+null,1,null,null,0,1,0
+null,null,Transaction Filter,null,0,1,0
+null,null,Filter Test 1,null,0,1,0
+null,null,Filter Test 2,null,0,1,0
+null,null,Transaction Filter Test 1,null,0,1,0
+null,null,Transaction Filter Test 2,null,0,1,0
+null,0,Transaction Filter,null,0,1,0
+null,0,Filter Test 1,null,0,1,0
+null,0,Filter Test 2,null,0,1,0
+null,0,Transaction Filter Test 1,null,0,1,0
+null,0,Transaction Filter Test 2,null,0,1,0
+null,1,Transaction Filter,null,0,1,0
+null,1,Filter Test 1,null,0,1,0
+null,1,Filter Test 2,null,0,1,0
+null,1,Transaction Filter Test 1,null,0,1,0
+null,1,Transaction Filter Test 2,null,0,1,0
+null,null,Transaction Filter,0,0,1,0
+null,null,Filter Test 1,0,0,1,0
+null,null,Filter Test 2,0,0,1,0
+null,null,Transaction Filter Test 1,0,0,1,0
+null,null,Transaction Filter Test 2,0,0,1,0
+null,0,Transaction Filter,0,0,1,0
+null,0,Filter Test 1,0,0,1,0
+null,0,Filter Test 2,0,0,1,0
+null,0,Transaction Filter Test 1,0,0,1,0
+null,0,Transaction Filter Test 2,0,0,1,0
+null,1,Transaction Filter,0,0,1,0
+null,1,Filter Test 1,0,0,1,0
+null,1,Filter Test 2,0,0,1,0
+null,1,Transaction Filter Test 1,0,0,1,0
+null,1,Transaction Filter Test 2,0,0,1,0
+null,null,Transaction Filter,1,0,1,0
+null,null,Filter Test 1,1,0,1,0
+null,null,Filter Test 2,1,0,1,0
+null,null,Transaction Filter Test 1,1,0,1,0
+null,null,Transaction Filter Test 2,1,0,1,0
+null,0,Transaction Filter,1,0,1,0
+null,0,Filter Test 1,1,0,1,0
+null,0,Filter Test 2,1,0,1,0
+null,0,Transaction Filter Test 1,1,0,1,0
+null,0,Transaction Filter Test 2,1,0,1,0
+null,1,Transaction Filter,1,0,1,0
+null,1,Filter Test 1,1,0,1,0
+null,1,Filter Test 2,1,0,1,0
+null,1,Transaction Filter Test 1,1,0,1,0
+null,1,Transaction Filter Test 2,1,0,1,0
+null,null,null,null,1,1,0
+null,0,null,null,1,1,0
+null,1,null,null,1,1,0
+null,null,Transaction Filter,null,1,1,0
+null,null,Filter Test 1,null,1,1,0
+null,null,Filter Test 2,null,1,1,0
+null,null,Transaction Filter Test 1,null,1,1,0
+null,null,Transaction Filter Test 2,null,1,1,0
+null,0,Transaction Filter,null,1,1,0
+null,0,Filter Test 1,null,1,1,0
+null,0,Filter Test 2,null,1,1,0
+null,0,Transaction Filter Test 1,null,1,1,0
+null,0,Transaction Filter Test 2,null,1,1,0
+null,1,Transaction Filter,null,1,1,0
+null,1,Filter Test 1,null,1,1,0
+null,1,Filter Test 2,null,1,1,0
+null,1,Transaction Filter Test 1,null,1,1,0
+null,1,Transaction Filter Test 2,null,1,1,0
+null,null,Transaction Filter,0,1,1,0
+null,null,Filter Test 1,0,1,1,0
+null,null,Filter Test 2,0,1,1,0
+null,null,Transaction Filter Test 1,0,1,1,0
+null,null,Transaction Filter Test 2,0,1,1,0
+null,0,Transaction Filter,0,1,1,0
+null,0,Filter Test 1,0,1,1,0
+null,0,Filter Test 2,0,1,1,0
+null,0,Transaction Filter Test 1,0,1,1,0
+null,0,Transaction Filter Test 2,0,1,1,0
+null,1,Transaction Filter,0,1,1,0
+null,1,Filter Test 1,0,1,1,0
+null,1,Filter Test 2,0,1,1,0
+null,1,Transaction Filter Test 1,0,1,1,0
+null,1,Transaction Filter Test 2,0,1,1,0
+null,null,Transaction Filter,1,1,1,0
+null,null,Filter Test 1,1,1,1,0
+null,null,Filter Test 2,1,1,1,0
+null,null,Transaction Filter Test 1,1,1,1,0
+null,null,Transaction Filter Test 2,1,1,1,0
+null,0,Transaction Filter,1,1,1,0
+null,0,Filter Test 1,1,1,1,0
+null,0,Filter Test 2,1,1,1,0
+null,0,Transaction Filter Test 1,1,1,1,0
+null,0,Transaction Filter Test 2,1,1,1,0
+null,1,Transaction Filter,1,1,1,0
+null,1,Filter Test 1,1,1,1,0
+null,1,Filter Test 2,1,1,1,0
+null,1,Transaction Filter Test 1,1,1,1,0
+null,1,Transaction Filter Test 2,1,1,1,0
+null,null,null,null,null,2,0
+null,0,null,null,null,2,0
+null,1,null,null,null,2,0
+null,null,Transaction Filter,null,null,2,0
+null,null,Filter Test 1,null,null,2,0
+null,null,Filter Test 2,null,null,2,0
+null,null,Transaction Filter Test 1,null,null,2,0
+null,null,Transaction Filter Test 2,null,null,2,0
+null,0,Transaction Filter,null,null,2,0
+null,0,Filter Test 1,null,null,2,0
+null,0,Filter Test 2,null,null,2,0
+null,0,Transaction Filter Test 1,null,null,2,0
+null,0,Transaction Filter Test 2,null,null,2,0
+null,1,Transaction Filter,null,null,2,0
+null,1,Filter Test 1,null,null,2,0
+null,1,Filter Test 2,null,null,2,0
+null,1,Transaction Filter Test 1,null,null,2,0
+null,1,Transaction Filter Test 2,null,null,2,0
+null,null,Transaction Filter,0,null,2,0
+null,null,Filter Test 1,0,null,2,0
+null,null,Filter Test 2,0,null,2,0
+null,null,Transaction Filter Test 1,0,null,2,0
+null,null,Transaction Filter Test 2,0,null,2,0
+null,0,Transaction Filter,0,null,2,0
+null,0,Filter Test 1,0,null,2,0
+null,0,Filter Test 2,0,null,2,0
+null,0,Transaction Filter Test 1,0,null,2,0
+null,0,Transaction Filter Test 2,0,null,2,0
+null,1,Transaction Filter,0,null,2,0
+null,1,Filter Test 1,0,null,2,0
+null,1,Filter Test 2,0,null,2,0
+null,1,Transaction Filter Test 1,0,null,2,0
+null,1,Transaction Filter Test 2,0,null,2,0
+null,null,Transaction Filter,1,null,2,0
+null,null,Filter Test 1,1,null,2,0
+null,null,Filter Test 2,1,null,2,0
+null,null,Transaction Filter Test 1,1,null,2,0
+null,null,Transaction Filter Test 2,1,null,2,0
+null,0,Transaction Filter,1,null,2,0
+null,0,Filter Test 1,1,null,2,0
+null,0,Filter Test 2,1,null,2,0
+null,0,Transaction Filter Test 1,1,null,2,0
+null,0,Transaction Filter Test 2,1,null,2,0
+null,1,Transaction Filter,1,null,2,0
+null,1,Filter Test 1,1,null,2,0
+null,1,Filter Test 2,1,null,2,0
+null,1,Transaction Filter Test 1,1,null,2,0
+null,1,Transaction Filter Test 2,1,null,2,0
+null,null,null,null,0,2,0
+null,0,null,null,0,2,0
+null,1,null,null,0,2,0
+null,null,Transaction Filter,null,0,2,0
+null,null,Filter Test 1,null,0,2,0
+null,null,Filter Test 2,null,0,2,0
+null,null,Transaction Filter Test 1,null,0,2,0
+null,null,Transaction Filter Test 2,null,0,2,0
+null,0,Transaction Filter,null,0,2,0
+null,0,Filter Test 1,null,0,2,0
+null,0,Filter Test 2,null,0,2,0
+null,0,Transaction Filter Test 1,null,0,2,0
+null,0,Transaction Filter Test 2,null,0,2,0
+null,1,Transaction Filter,null,0,2,0
+null,1,Filter Test 1,null,0,2,0
+null,1,Filter Test 2,null,0,2,0
+null,1,Transaction Filter Test 1,null,0,2,0
+null,1,Transaction Filter Test 2,null,0,2,0
+null,null,Transaction Filter,0,0,2,0
+null,null,Filter Test 1,0,0,2,0
+null,null,Filter Test 2,0,0,2,0
+null,null,Transaction Filter Test 1,0,0,2,0
+null,null,Transaction Filter Test 2,0,0,2,0
+null,0,Transaction Filter,0,0,2,0
+null,0,Filter Test 1,0,0,2,0
+null,0,Filter Test 2,0,0,2,0
+null,0,Transaction Filter Test 1,0,0,2,0
+null,0,Transaction Filter Test 2,0,0,2,0
+null,1,Transaction Filter,0,0,2,0
+null,1,Filter Test 1,0,0,2,0
+null,1,Filter Test 2,0,0,2,0
+null,1,Transaction Filter Test 1,0,0,2,0
+null,1,Transaction Filter Test 2,0,0,2,0
+null,null,Transaction Filter,1,0,2,0
+null,null,Filter Test 1,1,0,2,0
+null,null,Filter Test 2,1,0,2,0
+null,null,Transaction Filter Test 1,1,0,2,0
+null,null,Transaction Filter Test 2,1,0,2,0
+null,0,Transaction Filter,1,0,2,0
+null,0,Filter Test 1,1,0,2,0
+null,0,Filter Test 2,1,0,2,0
+null,0,Transaction Filter Test 1,1,0,2,0
+null,0,Transaction Filter Test 2,1,0,2,0
+null,1,Transaction Filter,1,0,2,0
+null,1,Filter Test 1,1,0,2,0
+null,1,Filter Test 2,1,0,2,0
+null,1,Transaction Filter Test 1,1,0,2,0
+null,1,Transaction Filter Test 2,1,0,2,0
+null,null,null,null,1,2,0
+null,0,null,null,1,2,0
+null,1,null,null,1,2,0
+null,null,Transaction Filter,null,1,2,0
+null,null,Filter Test 1,null,1,2,0
+null,null,Filter Test 2,null,1,2,0
+null,null,Transaction Filter Test 1,null,1,2,0
+null,null,Transaction Filter Test 2,null,1,2,0
+null,0,Transaction Filter,null,1,2,0
+null,0,Filter Test 1,null,1,2,0
+null,0,Filter Test 2,null,1,2,0
+null,0,Transaction Filter Test 1,null,1,2,0
+null,0,Transaction Filter Test 2,null,1,2,0
+null,1,Transaction Filter,null,1,2,0
+null,1,Filter Test 1,null,1,2,0
+null,1,Filter Test 2,null,1,2,0
+null,1,Transaction Filter Test 1,null,1,2,0
+null,1,Transaction Filter Test 2,null,1,2,0
+null,null,Transaction Filter,0,1,2,0
+null,null,Filter Test 1,0,1,2,0
+null,null,Filter Test 2,0,1,2,0
+null,null,Transaction Filter Test 1,0,1,2,0
+null,null,Transaction Filter Test 2,0,1,2,0
+null,0,Transaction Filter,0,1,2,0
+null,0,Filter Test 1,0,1,2,0
+null,0,Filter Test 2,0,1,2,0
+null,0,Transaction Filter Test 1,0,1,2,0
+null,0,Transaction Filter Test 2,0,1,2,0
+null,1,Transaction Filter,0,1,2,0
+null,1,Filter Test 1,0,1,2,0
+null,1,Filter Test 2,0,1,2,0
+null,1,Transaction Filter Test 1,0,1,2,0
+null,1,Transaction Filter Test 2,0,1,2,0
+null,null,Transaction Filter,1,1,2,0
+null,null,Filter Test 1,1,1,2,0
+null,null,Filter Test 2,1,1,2,0
+null,null,Transaction Filter Test 1,1,1,2,0
+null,null,Transaction Filter Test 2,1,1,2,0
+null,0,Transaction Filter,1,1,2,0
+null,0,Filter Test 1,1,1,2,0
+null,0,Filter Test 2,1,1,2,0
+null,0,Transaction Filter Test 1,1,1,2,0
+null,0,Transaction Filter Test 2,1,1,2,0
+null,1,Transaction Filter,1,1,2,0
+null,1,Filter Test 1,1,1,2,0
+null,1,Filter Test 2,1,1,2,0
+null,1,Transaction Filter Test 1,1,1,2,0
+null,1,Transaction Filter Test 2,1,1,2,0
+null,null,null,null,null,0,1
+null,0,null,null,null,0,1
+null,1,null,null,null,0,1
+null,null,Transaction Filter,null,null,0,1
+null,null,Filter Test 1,null,null,0,1
+null,null,Filter Test 2,null,null,0,1
+null,null,Transaction Filter Test 1,null,null,0,1
+null,null,Transaction Filter Test 2,null,null,0,1
+null,0,Transaction Filter,null,null,0,1
+null,0,Filter Test 1,null,null,0,1
+null,0,Filter Test 2,null,null,0,1
+null,0,Transaction Filter Test 1,null,null,0,1
+null,0,Transaction Filter Test 2,null,null,0,1
+null,1,Transaction Filter,null,null,0,1
+null,1,Filter Test 1,null,null,0,1
+null,1,Filter Test 2,null,null,0,1
+null,1,Transaction Filter Test 1,null,null,0,1
+null,1,Transaction Filter Test 2,null,null,0,1
+null,null,Transaction Filter,0,null,0,1
+null,null,Filter Test 1,0,null,0,1
+null,null,Filter Test 2,0,null,0,1
+null,null,Transaction Filter Test 1,0,null,0,1
+null,null,Transaction Filter Test 2,0,null,0,1
+null,0,Transaction Filter,0,null,0,1
+null,0,Filter Test 1,0,null,0,1
+null,0,Filter Test 2,0,null,0,1
+null,0,Transaction Filter Test 1,0,null,0,1
+null,0,Transaction Filter Test 2,0,null,0,1
+null,1,Transaction Filter,0,null,0,1
+null,1,Filter Test 1,0,null,0,1
+null,1,Filter Test 2,0,null,0,1
+null,1,Transaction Filter Test 1,0,null,0,1
+null,1,Transaction Filter Test 2,0,null,0,1
+null,null,Transaction Filter,1,null,0,1
+null,null,Filter Test 1,1,null,0,1
+null,null,Filter Test 2,1,null,0,1
+null,null,Transaction Filter Test 1,1,null,0,1
+null,null,Transaction Filter Test 2,1,null,0,1
+null,0,Transaction Filter,1,null,0,1
+null,0,Filter Test 1,1,null,0,1
+null,0,Filter Test 2,1,null,0,1
+null,0,Transaction Filter Test 1,1,null,0,1
+null,0,Transaction Filter Test 2,1,null,0,1
+null,1,Transaction Filter,1,null,0,1
+null,1,Filter Test 1,1,null,0,1
+null,1,Filter Test 2,1,null,0,1
+null,1,Transaction Filter Test 1,1,null,0,1
+null,1,Transaction Filter Test 2,1,null,0,1
+null,null,null,null,0,0,1
+null,0,null,null,0,0,1
+null,1,null,null,0,0,1
+null,null,Transaction Filter,null,0,0,1
+null,null,Filter Test 1,null,0,0,1
+null,null,Filter Test 2,null,0,0,1
+null,null,Transaction Filter Test 1,null,0,0,1
+null,null,Transaction Filter Test 2,null,0,0,1
+null,0,Transaction Filter,null,0,0,1
+null,0,Filter Test 1,null,0,0,1
+null,0,Filter Test 2,null,0,0,1
+null,0,Transaction Filter Test 1,null,0,0,1
+null,0,Transaction Filter Test 2,null,0,0,1
+null,1,Transaction Filter,null,0,0,1
+null,1,Filter Test 1,null,0,0,1
+null,1,Filter Test 2,null,0,0,1
+null,1,Transaction Filter Test 1,null,0,0,1
+null,1,Transaction Filter Test 2,null,0,0,1
+null,null,Transaction Filter,0,0,0,1
+null,null,Filter Test 1,0,0,0,1
+null,null,Filter Test 2,0,0,0,1
+null,null,Transaction Filter Test 1,0,0,0,1
+null,null,Transaction Filter Test 2,0,0,0,1
+null,0,Transaction Filter,0,0,0,1
+null,0,Filter Test 1,0,0,0,1
+null,0,Filter Test 2,0,0,0,1
+null,0,Transaction Filter Test 1,0,0,0,1
+null,0,Transaction Filter Test 2,0,0,0,1
+null,1,Transaction Filter,0,0,0,1
+null,1,Filter Test 1,0,0,0,1
+null,1,Filter Test 2,0,0,0,1
+null,1,Transaction Filter Test 1,0,0,0,1
+null,1,Transaction Filter Test 2,0,0,0,1
+null,null,Transaction Filter,1,0,0,1
+null,null,Filter Test 1,1,0,0,1
+null,null,Filter Test 2,1,0,0,1
+null,null,Transaction Filter Test 1,1,0,0,1
+null,null,Transaction Filter Test 2,1,0,0,1
+null,0,Transaction Filter,1,0,0,1
+null,0,Filter Test 1,1,0,0,1
+null,0,Filter Test 2,1,0,0,1
+null,0,Transaction Filter Test 1,1,0,0,1
+null,0,Transaction Filter Test 2,1,0,0,1
+null,1,Transaction Filter,1,0,0,1
+null,1,Filter Test 1,1,0,0,1
+null,1,Filter Test 2,1,0,0,1
+null,1,Transaction Filter Test 1,1,0,0,1
+null,1,Transaction Filter Test 2,1,0,0,1
+null,null,null,null,1,0,1
+null,0,null,null,1,0,1
+null,1,null,null,1,0,1
+null,null,Transaction Filter,null,1,0,1
+null,null,Filter Test 1,null,1,0,1
+null,null,Filter Test 2,null,1,0,1
+null,null,Transaction Filter Test 1,null,1,0,1
+null,null,Transaction Filter Test 2,null,1,0,1
+null,0,Transaction Filter,null,1,0,1
+null,0,Filter Test 1,null,1,0,1
+null,0,Filter Test 2,null,1,0,1
+null,0,Transaction Filter Test 1,null,1,0,1
+null,0,Transaction Filter Test 2,null,1,0,1
+null,1,Transaction Filter,null,1,0,1
+null,1,Filter Test 1,null,1,0,1
+null,1,Filter Test 2,null,1,0,1
+null,1,Transaction Filter Test 1,null,1,0,1
+null,1,Transaction Filter Test 2,null,1,0,1
+null,null,Transaction Filter,0,1,0,1
+null,null,Filter Test 1,0,1,0,1
+null,null,Filter Test 2,0,1,0,1
+null,null,Transaction Filter Test 1,0,1,0,1
+null,null,Transaction Filter Test 2,0,1,0,1
+null,0,Transaction Filter,0,1,0,1
+null,0,Filter Test 1,0,1,0,1
+null,0,Filter Test 2,0,1,0,1
+null,0,Transaction Filter Test 1,0,1,0,1
+null,0,Transaction Filter Test 2,0,1,0,1
+null,1,Transaction Filter,0,1,0,1
+null,1,Filter Test 1,0,1,0,1
+null,1,Filter Test 2,0,1,0,1
+null,1,Transaction Filter Test 1,0,1,0,1
+null,1,Transaction Filter Test 2,0,1,0,1
+null,null,Transaction Filter,1,1,0,1
+null,null,Filter Test 1,1,1,0,1
+null,null,Filter Test 2,1,1,0,1
+null,null,Transaction Filter Test 1,1,1,0,1
+null,null,Transaction Filter Test 2,1,1,0,1
+null,0,Transaction Filter,1,1,0,1
+null,0,Filter Test 1,1,1,0,1
+null,0,Filter Test 2,1,1,0,1
+null,0,Transaction Filter Test 1,1,1,0,1
+null,0,Transaction Filter Test 2,1,1,0,1
+null,1,Transaction Filter,1,1,0,1
+null,1,Filter Test 1,1,1,0,1
+null,1,Filter Test 2,1,1,0,1
+null,1,Transaction Filter Test 1,1,1,0,1
+null,1,Transaction Filter Test 2,1,1,0,1
+null,null,null,null,null,1,1
+null,0,null,null,null,1,1
+null,1,null,null,null,1,1
+null,null,Transaction Filter,null,null,1,1
+null,null,Filter Test 1,null,null,1,1
+null,null,Filter Test 2,null,null,1,1
+null,null,Transaction Filter Test 1,null,null,1,1
+null,null,Transaction Filter Test 2,null,null,1,1
+null,0,Transaction Filter,null,null,1,1
+null,0,Filter Test 1,null,null,1,1
+null,0,Filter Test 2,null,null,1,1
+null,0,Transaction Filter Test 1,null,null,1,1
+null,0,Transaction Filter Test 2,null,null,1,1
+null,1,Transaction Filter,null,null,1,1
+null,1,Filter Test 1,null,null,1,1
+null,1,Filter Test 2,null,null,1,1
+null,1,Transaction Filter Test 1,null,null,1,1
+null,1,Transaction Filter Test 2,null,null,1,1
+null,null,Transaction Filter,0,null,1,1
+null,null,Filter Test 1,0,null,1,1
+null,null,Filter Test 2,0,null,1,1
+null,null,Transaction Filter Test 1,0,null,1,1
+null,null,Transaction Filter Test 2,0,null,1,1
+null,0,Transaction Filter,0,null,1,1
+null,0,Filter Test 1,0,null,1,1
+null,0,Filter Test 2,0,null,1,1
+null,0,Transaction Filter Test 1,0,null,1,1
+null,0,Transaction Filter Test 2,0,null,1,1
+null,1,Transaction Filter,0,null,1,1
+null,1,Filter Test 1,0,null,1,1
+null,1,Filter Test 2,0,null,1,1
+null,1,Transaction Filter Test 1,0,null,1,1
+null,1,Transaction Filter Test 2,0,null,1,1
+null,null,Transaction Filter,1,null,1,1
+null,null,Filter Test 1,1,null,1,1
+null,null,Filter Test 2,1,null,1,1
+null,null,Transaction Filter Test 1,1,null,1,1
+null,null,Transaction Filter Test 2,1,null,1,1
+null,0,Transaction Filter,1,null,1,1
+null,0,Filter Test 1,1,null,1,1
+null,0,Filter Test 2,1,null,1,1
+null,0,Transaction Filter Test 1,1,null,1,1
+null,0,Transaction Filter Test 2,1,null,1,1
+null,1,Transaction Filter,1,null,1,1
+null,1,Filter Test 1,1,null,1,1
+null,1,Filter Test 2,1,null,1,1
+null,1,Transaction Filter Test 1,1,null,1,1
+null,1,Transaction Filter Test 2,1,null,1,1
+null,null,null,null,0,1,1
+null,0,null,null,0,1,1
+null,1,null,null,0,1,1
+null,null,Transaction Filter,null,0,1,1
+null,null,Filter Test 1,null,0,1,1
+null,null,Filter Test 2,null,0,1,1
+null,null,Transaction Filter Test 1,null,0,1,1
+null,null,Transaction Filter Test 2,null,0,1,1
+null,0,Transaction Filter,null,0,1,1
+null,0,Filter Test 1,null,0,1,1
+null,0,Filter Test 2,null,0,1,1
+null,0,Transaction Filter Test 1,null,0,1,1
+null,0,Transaction Filter Test 2,null,0,1,1
+null,1,Transaction Filter,null,0,1,1
+null,1,Filter Test 1,null,0,1,1
+null,1,Filter Test 2,null,0,1,1
+null,1,Transaction Filter Test 1,null,0,1,1
+null,1,Transaction Filter Test 2,null,0,1,1
+null,null,Transaction Filter,0,0,1,1
+null,null,Filter Test 1,0,0,1,1
+null,null,Filter Test 2,0,0,1,1
+null,null,Transaction Filter Test 1,0,0,1,1
+null,null,Transaction Filter Test 2,0,0,1,1
+null,0,Transaction Filter,0,0,1,1
+null,0,Filter Test 1,0,0,1,1
+null,0,Filter Test 2,0,0,1,1
+null,0,Transaction Filter Test 1,0,0,1,1
+null,0,Transaction Filter Test 2,0,0,1,1
+null,1,Transaction Filter,0,0,1,1
+null,1,Filter Test 1,0,0,1,1
+null,1,Filter Test 2,0,0,1,1
+null,1,Transaction Filter Test 1,0,0,1,1
+null,1,Transaction Filter Test 2,0,0,1,1
+null,null,Transaction Filter,1,0,1,1
+null,null,Filter Test 1,1,0,1,1
+null,null,Filter Test 2,1,0,1,1
+null,null,Transaction Filter Test 1,1,0,1,1
+null,null,Transaction Filter Test 2,1,0,1,1
+null,0,Transaction Filter,1,0,1,1
+null,0,Filter Test 1,1,0,1,1
+null,0,Filter Test 2,1,0,1,1
+null,0,Transaction Filter Test 1,1,0,1,1
+null,0,Transaction Filter Test 2,1,0,1,1
+null,1,Transaction Filter,1,0,1,1
+null,1,Filter Test 1,1,0,1,1
+null,1,Filter Test 2,1,0,1,1
+null,1,Transaction Filter Test 1,1,0,1,1
+null,1,Transaction Filter Test 2,1,0,1,1
+null,null,null,null,1,1,1
+null,0,null,null,1,1,1
+null,1,null,null,1,1,1
+null,null,Transaction Filter,null,1,1,1
+null,null,Filter Test 1,null,1,1,1
+null,null,Filter Test 2,null,1,1,1
+null,null,Transaction Filter Test 1,null,1,1,1
+null,null,Transaction Filter Test 2,null,1,1,1
+null,0,Transaction Filter,null,1,1,1
+null,0,Filter Test 1,null,1,1,1
+null,0,Filter Test 2,null,1,1,1
+null,0,Transaction Filter Test 1,null,1,1,1
+null,0,Transaction Filter Test 2,null,1,1,1
+null,1,Transaction Filter,null,1,1,1
+null,1,Filter Test 1,null,1,1,1
+null,1,Filter Test 2,null,1,1,1
+null,1,Transaction Filter Test 1,null,1,1,1
+null,1,Transaction Filter Test 2,null,1,1,1
+null,null,Transaction Filter,0,1,1,1
+null,null,Filter Test 1,0,1,1,1
+null,null,Filter Test 2,0,1,1,1
+null,null,Transaction Filter Test 1,0,1,1,1
+null,null,Transaction Filter Test 2,0,1,1,1
+null,0,Transaction Filter,0,1,1,1
+null,0,Filter Test 1,0,1,1,1
+null,0,Filter Test 2,0,1,1,1
+null,0,Transaction Filter Test 1,0,1,1,1
+null,0,Transaction Filter Test 2,0,1,1,1
+null,1,Transaction Filter,0,1,1,1
+null,1,Filter Test 1,0,1,1,1
+null,1,Filter Test 2,0,1,1,1
+null,1,Transaction Filter Test 1,0,1,1,1
+null,1,Transaction Filter Test 2,0,1,1,1
+null,null,Transaction Filter,1,1,1,1
+null,null,Filter Test 1,1,1,1,1
+null,null,Filter Test 2,1,1,1,1
+null,null,Transaction Filter Test 1,1,1,1,1
+null,null,Transaction Filter Test 2,1,1,1,1
+null,0,Transaction Filter,1,1,1,1
+null,0,Filter Test 1,1,1,1,1
+null,0,Filter Test 2,1,1,1,1
+null,0,Transaction Filter Test 1,1,1,1,1
+null,0,Transaction Filter Test 2,1,1,1,1
+null,1,Transaction Filter,1,1,1,1
+null,1,Filter Test 1,1,1,1,1
+null,1,Filter Test 2,1,1,1,1
+null,1,Transaction Filter Test 1,1,1,1,1
+null,1,Transaction Filter Test 2,1,1,1,1
+null,null,null,null,null,2,1
+null,0,null,null,null,2,1
+null,1,null,null,null,2,1
+null,null,Transaction Filter,null,null,2,1
+null,null,Filter Test 1,null,null,2,1
+null,null,Filter Test 2,null,null,2,1
+null,null,Transaction Filter Test 1,null,null,2,1
+null,null,Transaction Filter Test 2,null,null,2,1
+null,0,Transaction Filter,null,null,2,1
+null,0,Filter Test 1,null,null,2,1
+null,0,Filter Test 2,null,null,2,1
+null,0,Transaction Filter Test 1,null,null,2,1
+null,0,Transaction Filter Test 2,null,null,2,1
+null,1,Transaction Filter,null,null,2,1
+null,1,Filter Test 1,null,null,2,1
+null,1,Filter Test 2,null,null,2,1
+null,1,Transaction Filter Test 1,null,null,2,1
+null,1,Transaction Filter Test 2,null,null,2,1
+null,null,Transaction Filter,0,null,2,1
+null,null,Filter Test 1,0,null,2,1
+null,null,Filter Test 2,0,null,2,1
+null,null,Transaction Filter Test 1,0,null,2,1
+null,null,Transaction Filter Test 2,0,null,2,1
+null,0,Transaction Filter,0,null,2,1
+null,0,Filter Test 1,0,null,2,1
+null,0,Filter Test 2,0,null,2,1
+null,0,Transaction Filter Test 1,0,null,2,1
+null,0,Transaction Filter Test 2,0,null,2,1
+null,1,Transaction Filter,0,null,2,1
+null,1,Filter Test 1,0,null,2,1
+null,1,Filter Test 2,0,null,2,1
+null,1,Transaction Filter Test 1,0,null,2,1
+null,1,Transaction Filter Test 2,0,null,2,1
+null,null,Transaction Filter,1,null,2,1
+null,null,Filter Test 1,1,null,2,1
+null,null,Filter Test 2,1,null,2,1
+null,null,Transaction Filter Test 1,1,null,2,1
+null,null,Transaction Filter Test 2,1,null,2,1
+null,0,Transaction Filter,1,null,2,1
+null,0,Filter Test 1,1,null,2,1
+null,0,Filter Test 2,1,null,2,1
+null,0,Transaction Filter Test 1,1,null,2,1
+null,0,Transaction Filter Test 2,1,null,2,1
+null,1,Transaction Filter,1,null,2,1
+null,1,Filter Test 1,1,null,2,1
+null,1,Filter Test 2,1,null,2,1
+null,1,Transaction Filter Test 1,1,null,2,1
+null,1,Transaction Filter Test 2,1,null,2,1
+null,null,null,null,0,2,1
+null,0,null,null,0,2,1
+null,1,null,null,0,2,1
+null,null,Transaction Filter,null,0,2,1
+null,null,Filter Test 1,null,0,2,1
+null,null,Filter Test 2,null,0,2,1
+null,null,Transaction Filter Test 1,null,0,2,1
+null,null,Transaction Filter Test 2,null,0,2,1
+null,0,Transaction Filter,null,0,2,1
+null,0,Filter Test 1,null,0,2,1
+null,0,Filter Test 2,null,0,2,1
+null,0,Transaction Filter Test 1,null,0,2,1
+null,0,Transaction Filter Test 2,null,0,2,1
+null,1,Transaction Filter,null,0,2,1
+null,1,Filter Test 1,null,0,2,1
+null,1,Filter Test 2,null,0,2,1
+null,1,Transaction Filter Test 1,null,0,2,1
+null,1,Transaction Filter Test 2,null,0,2,1
+null,null,Transaction Filter,0,0,2,1
+null,null,Filter Test 1,0,0,2,1
+null,null,Filter Test 2,0,0,2,1
+null,null,Transaction Filter Test 1,0,0,2,1
+null,null,Transaction Filter Test 2,0,0,2,1
+null,0,Transaction Filter,0,0,2,1
+null,0,Filter Test 1,0,0,2,1
+null,0,Filter Test 2,0,0,2,1
+null,0,Transaction Filter Test 1,0,0,2,1
+null,0,Transaction Filter Test 2,0,0,2,1
+null,1,Transaction Filter,0,0,2,1
+null,1,Filter Test 1,0,0,2,1
+null,1,Filter Test 2,0,0,2,1
+null,1,Transaction Filter Test 1,0,0,2,1
+null,1,Transaction Filter Test 2,0,0,2,1
+null,null,Transaction Filter,1,0,2,1
+null,null,Filter Test 1,1,0,2,1
+null,null,Filter Test 2,1,0,2,1
+null,null,Transaction Filter Test 1,1,0,2,1
+null,null,Transaction Filter Test 2,1,0,2,1
+null,0,Transaction Filter,1,0,2,1
+null,0,Filter Test 1,1,0,2,1
+null,0,Filter Test 2,1,0,2,1
+null,0,Transaction Filter Test 1,1,0,2,1
+null,0,Transaction Filter Test 2,1,0,2,1
+null,1,Transaction Filter,1,0,2,1
+null,1,Filter Test 1,1,0,2,1
+null,1,Filter Test 2,1,0,2,1
+null,1,Transaction Filter Test 1,1,0,2,1
+null,1,Transaction Filter Test 2,1,0,2,1
+null,null,null,null,1,2,1
+null,0,null,null,1,2,1
+null,1,null,null,1,2,1
+null,null,Transaction Filter,null,1,2,1
+null,null,Filter Test 1,null,1,2,1
+null,null,Filter Test 2,null,1,2,1
+null,null,Transaction Filter Test 1,null,1,2,1
+null,null,Transaction Filter Test 2,null,1,2,1
+null,0,Transaction Filter,null,1,2,1
+null,0,Filter Test 1,null,1,2,1
+null,0,Filter Test 2,null,1,2,1
+null,0,Transaction Filter Test 1,null,1,2,1
+null,0,Transaction Filter Test 2,null,1,2,1
+null,1,Transaction Filter,null,1,2,1
+null,1,Filter Test 1,null,1,2,1
+null,1,Filter Test 2,null,1,2,1
+null,1,Transaction Filter Test 1,null,1,2,1
+null,1,Transaction Filter Test 2,null,1,2,1
+null,null,Transaction Filter,0,1,2,1
+null,null,Filter Test 1,0,1,2,1
+null,null,Filter Test 2,0,1,2,1
+null,null,Transaction Filter Test 1,0,1,2,1
+null,null,Transaction Filter Test 2,0,1,2,1
+null,0,Transaction Filter,0,1,2,1
+null,0,Filter Test 1,0,1,2,1
+null,0,Filter Test 2,0,1,2,1
+null,0,Transaction Filter Test 1,0,1,2,1
+null,0,Transaction Filter Test 2,0,1,2,1
+null,1,Transaction Filter,0,1,2,1
+null,1,Filter Test 1,0,1,2,1
+null,1,Filter Test 2,0,1,2,1
+null,1,Transaction Filter Test 1,0,1,2,1
+null,1,Transaction Filter Test 2,0,1,2,1
+null,null,Transaction Filter,1,1,2,1
+null,null,Filter Test 1,1,1,2,1
+null,null,Filter Test 2,1,1,2,1
+null,null,Transaction Filter Test 1,1,1,2,1
+null,null,Transaction Filter Test 2,1,1,2,1
+null,0,Transaction Filter,1,1,2,1
+null,0,Filter Test 1,1,1,2,1
+null,0,Filter Test 2,1,1,2,1
+null,0,Transaction Filter Test 1,1,1,2,1
+null,0,Transaction Filter Test 2,1,1,2,1
+null,1,Transaction Filter,1,1,2,1
+null,1,Filter Test 1,1,1,2,1
+null,1,Filter Test 2,1,1,2,1
+null,1,Transaction Filter Test 1,1,1,2,1
+null,1,Transaction Filter Test 2,1,1,2,1
+null,null,null,null,null,0,2
+null,0,null,null,null,0,2
+null,1,null,null,null,0,2
+null,null,Transaction Filter,null,null,0,2
+null,null,Filter Test 1,null,null,0,2
+null,null,Filter Test 2,null,null,0,2
+null,null,Transaction Filter Test 1,null,null,0,2
+null,null,Transaction Filter Test 2,null,null,0,2
+null,0,Transaction Filter,null,null,0,2
+null,0,Filter Test 1,null,null,0,2
+null,0,Filter Test 2,null,null,0,2
+null,0,Transaction Filter Test 1,null,null,0,2
+null,0,Transaction Filter Test 2,null,null,0,2
+null,1,Transaction Filter,null,null,0,2
+null,1,Filter Test 1,null,null,0,2
+null,1,Filter Test 2,null,null,0,2
+null,1,Transaction Filter Test 1,null,null,0,2
+null,1,Transaction Filter Test 2,null,null,0,2
+null,null,Transaction Filter,0,null,0,2
+null,null,Filter Test 1,0,null,0,2
+null,null,Filter Test 2,0,null,0,2
+null,null,Transaction Filter Test 1,0,null,0,2
+null,null,Transaction Filter Test 2,0,null,0,2
+null,0,Transaction Filter,0,null,0,2
+null,0,Filter Test 1,0,null,0,2
+null,0,Filter Test 2,0,null,0,2
+null,0,Transaction Filter Test 1,0,null,0,2
+null,0,Transaction Filter Test 2,0,null,0,2
+null,1,Transaction Filter,0,null,0,2
+null,1,Filter Test 1,0,null,0,2
+null,1,Filter Test 2,0,null,0,2
+null,1,Transaction Filter Test 1,0,null,0,2
+null,1,Transaction Filter Test 2,0,null,0,2
+null,null,Transaction Filter,1,null,0,2
+null,null,Filter Test 1,1,null,0,2
+null,null,Filter Test 2,1,null,0,2
+null,null,Transaction Filter Test 1,1,null,0,2
+null,null,Transaction Filter Test 2,1,null,0,2
+null,0,Transaction Filter,1,null,0,2
+null,0,Filter Test 1,1,null,0,2
+null,0,Filter Test 2,1,null,0,2
+null,0,Transaction Filter Test 1,1,null,0,2
+null,0,Transaction Filter Test 2,1,null,0,2
+null,1,Transaction Filter,1,null,0,2
+null,1,Filter Test 1,1,null,0,2
+null,1,Filter Test 2,1,null,0,2
+null,1,Transaction Filter Test 1,1,null,0,2
+null,1,Transaction Filter Test 2,1,null,0,2
+null,null,null,null,0,0,2
+null,0,null,null,0,0,2
+null,1,null,null,0,0,2
+null,null,Transaction Filter,null,0,0,2
+null,null,Filter Test 1,null,0,0,2
+null,null,Filter Test 2,null,0,0,2
+null,null,Transaction Filter Test 1,null,0,0,2
+null,null,Transaction Filter Test 2,null,0,0,2
+null,0,Transaction Filter,null,0,0,2
+null,0,Filter Test 1,null,0,0,2
+null,0,Filter Test 2,null,0,0,2
+null,0,Transaction Filter Test 1,null,0,0,2
+null,0,Transaction Filter Test 2,null,0,0,2
+null,1,Transaction Filter,null,0,0,2
+null,1,Filter Test 1,null,0,0,2
+null,1,Filter Test 2,null,0,0,2
+null,1,Transaction Filter Test 1,null,0,0,2
+null,1,Transaction Filter Test 2,null,0,0,2
+null,null,Transaction Filter,0,0,0,2
+null,null,Filter Test 1,0,0,0,2
+null,null,Filter Test 2,0,0,0,2
+null,null,Transaction Filter Test 1,0,0,0,2
+null,null,Transaction Filter Test 2,0,0,0,2
+null,0,Transaction Filter,0,0,0,2
+null,0,Filter Test 1,0,0,0,2
+null,0,Filter Test 2,0,0,0,2
+null,0,Transaction Filter Test 1,0,0,0,2
+null,0,Transaction Filter Test 2,0,0,0,2
+null,1,Transaction Filter,0,0,0,2
+null,1,Filter Test 1,0,0,0,2
+null,1,Filter Test 2,0,0,0,2
+null,1,Transaction Filter Test 1,0,0,0,2
+null,1,Transaction Filter Test 2,0,0,0,2
+null,null,Transaction Filter,1,0,0,2
+null,null,Filter Test 1,1,0,0,2
+null,null,Filter Test 2,1,0,0,2
+null,null,Transaction Filter Test 1,1,0,0,2
+null,null,Transaction Filter Test 2,1,0,0,2
+null,0,Transaction Filter,1,0,0,2
+null,0,Filter Test 1,1,0,0,2
+null,0,Filter Test 2,1,0,0,2
+null,0,Transaction Filter Test 1,1,0,0,2
+null,0,Transaction Filter Test 2,1,0,0,2
+null,1,Transaction Filter,1,0,0,2
+null,1,Filter Test 1,1,0,0,2
+null,1,Filter Test 2,1,0,0,2
+null,1,Transaction Filter Test 1,1,0,0,2
+null,1,Transaction Filter Test 2,1,0,0,2
+null,null,null,null,1,0,2
+null,0,null,null,1,0,2
+null,1,null,null,1,0,2
+null,null,Transaction Filter,null,1,0,2
+null,null,Filter Test 1,null,1,0,2
+null,null,Filter Test 2,null,1,0,2
+null,null,Transaction Filter Test 1,null,1,0,2
+null,null,Transaction Filter Test 2,null,1,0,2
+null,0,Transaction Filter,null,1,0,2
+null,0,Filter Test 1,null,1,0,2
+null,0,Filter Test 2,null,1,0,2
+null,0,Transaction Filter Test 1,null,1,0,2
+null,0,Transaction Filter Test 2,null,1,0,2
+null,1,Transaction Filter,null,1,0,2
+null,1,Filter Test 1,null,1,0,2
+null,1,Filter Test 2,null,1,0,2
+null,1,Transaction Filter Test 1,null,1,0,2
+null,1,Transaction Filter Test 2,null,1,0,2
+null,null,Transaction Filter,0,1,0,2
+null,null,Filter Test 1,0,1,0,2
+null,null,Filter Test 2,0,1,0,2
+null,null,Transaction Filter Test 1,0,1,0,2
+null,null,Transaction Filter Test 2,0,1,0,2
+null,0,Transaction Filter,0,1,0,2
+null,0,Filter Test 1,0,1,0,2
+null,0,Filter Test 2,0,1,0,2
+null,0,Transaction Filter Test 1,0,1,0,2
+null,0,Transaction Filter Test 2,0,1,0,2
+null,1,Transaction Filter,0,1,0,2
+null,1,Filter Test 1,0,1,0,2
+null,1,Filter Test 2,0,1,0,2
+null,1,Transaction Filter Test 1,0,1,0,2
+null,1,Transaction Filter Test 2,0,1,0,2
+null,null,Transaction Filter,1,1,0,2
+null,null,Filter Test 1,1,1,0,2
+null,null,Filter Test 2,1,1,0,2
+null,null,Transaction Filter Test 1,1,1,0,2
+null,null,Transaction Filter Test 2,1,1,0,2
+null,0,Transaction Filter,1,1,0,2
+null,0,Filter Test 1,1,1,0,2
+null,0,Filter Test 2,1,1,0,2
+null,0,Transaction Filter Test 1,1,1,0,2
+null,0,Transaction Filter Test 2,1,1,0,2
+null,1,Transaction Filter,1,1,0,2
+null,1,Filter Test 1,1,1,0,2
+null,1,Filter Test 2,1,1,0,2
+null,1,Transaction Filter Test 1,1,1,0,2
+null,1,Transaction Filter Test 2,1,1,0,2
+null,null,null,null,null,1,2
+null,0,null,null,null,1,2
+null,1,null,null,null,1,2
+null,null,Transaction Filter,null,null,1,2
+null,null,Filter Test 1,null,null,1,2
+null,null,Filter Test 2,null,null,1,2
+null,null,Transaction Filter Test 1,null,null,1,2
+null,null,Transaction Filter Test 2,null,null,1,2
+null,0,Transaction Filter,null,null,1,2
+null,0,Filter Test 1,null,null,1,2
+null,0,Filter Test 2,null,null,1,2
+null,0,Transaction Filter Test 1,null,null,1,2
+null,0,Transaction Filter Test 2,null,null,1,2
+null,1,Transaction Filter,null,null,1,2
+null,1,Filter Test 1,null,null,1,2
+null,1,Filter Test 2,null,null,1,2
+null,1,Transaction Filter Test 1,null,null,1,2
+null,1,Transaction Filter Test 2,null,null,1,2
+null,null,Transaction Filter,0,null,1,2
+null,null,Filter Test 1,0,null,1,2
+null,null,Filter Test 2,0,null,1,2
+null,null,Transaction Filter Test 1,0,null,1,2
+null,null,Transaction Filter Test 2,0,null,1,2
+null,0,Transaction Filter,0,null,1,2
+null,0,Filter Test 1,0,null,1,2
+null,0,Filter Test 2,0,null,1,2
+null,0,Transaction Filter Test 1,0,null,1,2
+null,0,Transaction Filter Test 2,0,null,1,2
+null,1,Transaction Filter,0,null,1,2
+null,1,Filter Test 1,0,null,1,2
+null,1,Filter Test 2,0,null,1,2
+null,1,Transaction Filter Test 1,0,null,1,2
+null,1,Transaction Filter Test 2,0,null,1,2
+null,null,Transaction Filter,1,null,1,2
+null,null,Filter Test 1,1,null,1,2
+null,null,Filter Test 2,1,null,1,2
+null,null,Transaction Filter Test 1,1,null,1,2
+null,null,Transaction Filter Test 2,1,null,1,2
+null,0,Transaction Filter,1,null,1,2
+null,0,Filter Test 1,1,null,1,2
+null,0,Filter Test 2,1,null,1,2
+null,0,Transaction Filter Test 1,1,null,1,2
+null,0,Transaction Filter Test 2,1,null,1,2
+null,1,Transaction Filter,1,null,1,2
+null,1,Filter Test 1,1,null,1,2
+null,1,Filter Test 2,1,null,1,2
+null,1,Transaction Filter Test 1,1,null,1,2
+null,1,Transaction Filter Test 2,1,null,1,2
+null,null,null,null,0,1,2
+null,0,null,null,0,1,2
+null,1,null,null,0,1,2
+null,null,Transaction Filter,null,0,1,2
+null,null,Filter Test 1,null,0,1,2
+null,null,Filter Test 2,null,0,1,2
+null,null,Transaction Filter Test 1,null,0,1,2
+null,null,Transaction Filter Test 2,null,0,1,2
+null,0,Transaction Filter,null,0,1,2
+null,0,Filter Test 1,null,0,1,2
+null,0,Filter Test 2,null,0,1,2
+null,0,Transaction Filter Test 1,null,0,1,2
+null,0,Transaction Filter Test 2,null,0,1,2
+null,1,Transaction Filter,null,0,1,2
+null,1,Filter Test 1,null,0,1,2
+null,1,Filter Test 2,null,0,1,2
+null,1,Transaction Filter Test 1,null,0,1,2
+null,1,Transaction Filter Test 2,null,0,1,2
+null,null,Transaction Filter,0,0,1,2
+null,null,Filter Test 1,0,0,1,2
+null,null,Filter Test 2,0,0,1,2
+null,null,Transaction Filter Test 1,0,0,1,2
+null,null,Transaction Filter Test 2,0,0,1,2
+null,0,Transaction Filter,0,0,1,2
+null,0,Filter Test 1,0,0,1,2
+null,0,Filter Test 2,0,0,1,2
+null,0,Transaction Filter Test 1,0,0,1,2
+null,0,Transaction Filter Test 2,0,0,1,2
+null,1,Transaction Filter,0,0,1,2
+null,1,Filter Test 1,0,0,1,2
+null,1,Filter Test 2,0,0,1,2
+null,1,Transaction Filter Test 1,0,0,1,2
+null,1,Transaction Filter Test 2,0,0,1,2
+null,null,Transaction Filter,1,0,1,2
+null,null,Filter Test 1,1,0,1,2
+null,null,Filter Test 2,1,0,1,2
+null,null,Transaction Filter Test 1,1,0,1,2
+null,null,Transaction Filter Test 2,1,0,1,2
+null,0,Transaction Filter,1,0,1,2
+null,0,Filter Test 1,1,0,1,2
+null,0,Filter Test 2,1,0,1,2
+null,0,Transaction Filter Test 1,1,0,1,2
+null,0,Transaction Filter Test 2,1,0,1,2
+null,1,Transaction Filter,1,0,1,2
+null,1,Filter Test 1,1,0,1,2
+null,1,Filter Test 2,1,0,1,2
+null,1,Transaction Filter Test 1,1,0,1,2
+null,1,Transaction Filter Test 2,1,0,1,2
+null,null,null,null,1,1,2
+null,0,null,null,1,1,2
+null,1,null,null,1,1,2
+null,null,Transaction Filter,null,1,1,2
+null,null,Filter Test 1,null,1,1,2
+null,null,Filter Test 2,null,1,1,2
+null,null,Transaction Filter Test 1,null,1,1,2
+null,null,Transaction Filter Test 2,null,1,1,2
+null,0,Transaction Filter,null,1,1,2
+null,0,Filter Test 1,null,1,1,2
+null,0,Filter Test 2,null,1,1,2
+null,0,Transaction Filter Test 1,null,1,1,2
+null,0,Transaction Filter Test 2,null,1,1,2
+null,1,Transaction Filter,null,1,1,2
+null,1,Filter Test 1,null,1,1,2
+null,1,Filter Test 2,null,1,1,2
+null,1,Transaction Filter Test 1,null,1,1,2
+null,1,Transaction Filter Test 2,null,1,1,2
+null,null,Transaction Filter,0,1,1,2
+null,null,Filter Test 1,0,1,1,2
+null,null,Filter Test 2,0,1,1,2
+null,null,Transaction Filter Test 1,0,1,1,2
+null,null,Transaction Filter Test 2,0,1,1,2
+null,0,Transaction Filter,0,1,1,2
+null,0,Filter Test 1,0,1,1,2
+null,0,Filter Test 2,0,1,1,2
+null,0,Transaction Filter Test 1,0,1,1,2
+null,0,Transaction Filter Test 2,0,1,1,2
+null,1,Transaction Filter,0,1,1,2
+null,1,Filter Test 1,0,1,1,2
+null,1,Filter Test 2,0,1,1,2
+null,1,Transaction Filter Test 1,0,1,1,2
+null,1,Transaction Filter Test 2,0,1,1,2
+null,null,Transaction Filter,1,1,1,2
+null,null,Filter Test 1,1,1,1,2
+null,null,Filter Test 2,1,1,1,2
+null,null,Transaction Filter Test 1,1,1,1,2
+null,null,Transaction Filter Test 2,1,1,1,2
+null,0,Transaction Filter,1,1,1,2
+null,0,Filter Test 1,1,1,1,2
+null,0,Filter Test 2,1,1,1,2
+null,0,Transaction Filter Test 1,1,1,1,2
+null,0,Transaction Filter Test 2,1,1,1,2
+null,1,Transaction Filter,1,1,1,2
+null,1,Filter Test 1,1,1,1,2
+null,1,Filter Test 2,1,1,1,2
+null,1,Transaction Filter Test 1,1,1,1,2
+null,1,Transaction Filter Test 2,1,1,1,2
+null,null,null,null,null,2,2
+null,0,null,null,null,2,2
+null,1,null,null,null,2,2
+null,null,Transaction Filter,null,null,2,2
+null,null,Filter Test 1,null,null,2,2
+null,null,Filter Test 2,null,null,2,2
+null,null,Transaction Filter Test 1,null,null,2,2
+null,null,Transaction Filter Test 2,null,null,2,2
+null,0,Transaction Filter,null,null,2,2
+null,0,Filter Test 1,null,null,2,2
+null,0,Filter Test 2,null,null,2,2
+null,0,Transaction Filter Test 1,null,null,2,2
+null,0,Transaction Filter Test 2,null,null,2,2
+null,1,Transaction Filter,null,null,2,2
+null,1,Filter Test 1,null,null,2,2
+null,1,Filter Test 2,null,null,2,2
+null,1,Transaction Filter Test 1,null,null,2,2
+null,1,Transaction Filter Test 2,null,null,2,2
+null,null,Transaction Filter,0,null,2,2
+null,null,Filter Test 1,0,null,2,2
+null,null,Filter Test 2,0,null,2,2
+null,null,Transaction Filter Test 1,0,null,2,2
+null,null,Transaction Filter Test 2,0,null,2,2
+null,0,Transaction Filter,0,null,2,2
+null,0,Filter Test 1,0,null,2,2
+null,0,Filter Test 2,0,null,2,2
+null,0,Transaction Filter Test 1,0,null,2,2
+null,0,Transaction Filter Test 2,0,null,2,2
+null,1,Transaction Filter,0,null,2,2
+null,1,Filter Test 1,0,null,2,2
+null,1,Filter Test 2,0,null,2,2
+null,1,Transaction Filter Test 1,0,null,2,2
+null,1,Transaction Filter Test 2,0,null,2,2
+null,null,Transaction Filter,1,null,2,2
+null,null,Filter Test 1,1,null,2,2
+null,null,Filter Test 2,1,null,2,2
+null,null,Transaction Filter Test 1,1,null,2,2
+null,null,Transaction Filter Test 2,1,null,2,2
+null,0,Transaction Filter,1,null,2,2
+null,0,Filter Test 1,1,null,2,2
+null,0,Filter Test 2,1,null,2,2
+null,0,Transaction Filter Test 1,1,null,2,2
+null,0,Transaction Filter Test 2,1,null,2,2
+null,1,Transaction Filter,1,null,2,2
+null,1,Filter Test 1,1,null,2,2
+null,1,Filter Test 2,1,null,2,2
+null,1,Transaction Filter Test 1,1,null,2,2
+null,1,Transaction Filter Test 2,1,null,2,2
+null,null,null,null,0,2,2
+null,0,null,null,0,2,2
+null,1,null,null,0,2,2
+null,null,Transaction Filter,null,0,2,2
+null,null,Filter Test 1,null,0,2,2
+null,null,Filter Test 2,null,0,2,2
+null,null,Transaction Filter Test 1,null,0,2,2
+null,null,Transaction Filter Test 2,null,0,2,2
+null,0,Transaction Filter,null,0,2,2
+null,0,Filter Test 1,null,0,2,2
+null,0,Filter Test 2,null,0,2,2
+null,0,Transaction Filter Test 1,null,0,2,2
+null,0,Transaction Filter Test 2,null,0,2,2
+null,1,Transaction Filter,null,0,2,2
+null,1,Filter Test 1,null,0,2,2
+null,1,Filter Test 2,null,0,2,2
+null,1,Transaction Filter Test 1,null,0,2,2
+null,1,Transaction Filter Test 2,null,0,2,2
+null,null,Transaction Filter,0,0,2,2
+null,null,Filter Test 1,0,0,2,2
+null,null,Filter Test 2,0,0,2,2
+null,null,Transaction Filter Test 1,0,0,2,2
+null,null,Transaction Filter Test 2,0,0,2,2
+null,0,Transaction Filter,0,0,2,2
+null,0,Filter Test 1,0,0,2,2
+null,0,Filter Test 2,0,0,2,2
+null,0,Transaction Filter Test 1,0,0,2,2
+null,0,Transaction Filter Test 2,0,0,2,2
+null,1,Transaction Filter,0,0,2,2
+null,1,Filter Test 1,0,0,2,2
+null,1,Filter Test 2,0,0,2,2
+null,1,Transaction Filter Test 1,0,0,2,2
+null,1,Transaction Filter Test 2,0,0,2,2
+null,null,Transaction Filter,1,0,2,2
+null,null,Filter Test 1,1,0,2,2
+null,null,Filter Test 2,1,0,2,2
+null,null,Transaction Filter Test 1,1,0,2,2
+null,null,Transaction Filter Test 2,1,0,2,2
+null,0,Transaction Filter,1,0,2,2
+null,0,Filter Test 1,1,0,2,2
+null,0,Filter Test 2,1,0,2,2
+null,0,Transaction Filter Test 1,1,0,2,2
+null,0,Transaction Filter Test 2,1,0,2,2
+null,1,Transaction Filter,1,0,2,2
+null,1,Filter Test 1,1,0,2,2
+null,1,Filter Test 2,1,0,2,2
+null,1,Transaction Filter Test 1,1,0,2,2
+null,1,Transaction Filter Test 2,1,0,2,2
+null,null,null,null,1,2,2
+null,0,null,null,1,2,2
+null,1,null,null,1,2,2
+null,null,Transaction Filter,null,1,2,2
+null,null,Filter Test 1,null,1,2,2
+null,null,Filter Test 2,null,1,2,2
+null,null,Transaction Filter Test 1,null,1,2,2
+null,null,Transaction Filter Test 2,null,1,2,2
+null,0,Transaction Filter,null,1,2,2
+null,0,Filter Test 1,null,1,2,2
+null,0,Filter Test 2,null,1,2,2
+null,0,Transaction Filter Test 1,null,1,2,2
+null,0,Transaction Filter Test 2,null,1,2,2
+null,1,Transaction Filter,null,1,2,2
+null,1,Filter Test 1,null,1,2,2
+null,1,Filter Test 2,null,1,2,2
+null,1,Transaction Filter Test 1,null,1,2,2
+null,1,Transaction Filter Test 2,null,1,2,2
+null,null,Transaction Filter,0,1,2,2
+null,null,Filter Test 1,0,1,2,2
+null,null,Filter Test 2,0,1,2,2
+null,null,Transaction Filter Test 1,0,1,2,2
+null,null,Transaction Filter Test 2,0,1,2,2
+null,0,Transaction Filter,0,1,2,2
+null,0,Filter Test 1,0,1,2,2
+null,0,Filter Test 2,0,1,2,2
+null,0,Transaction Filter Test 1,0,1,2,2
+null,0,Transaction Filter Test 2,0,1,2,2
+null,1,Transaction Filter,0,1,2,2
+null,1,Filter Test 1,0,1,2,2
+null,1,Filter Test 2,0,1,2,2
+null,1,Transaction Filter Test 1,0,1,2,2
+null,1,Transaction Filter Test 2,0,1,2,2
+null,null,Transaction Filter,1,1,2,2
+null,null,Filter Test 1,1,1,2,2
+null,null,Filter Test 2,1,1,2,2
+null,null,Transaction Filter Test 1,1,1,2,2
+null,null,Transaction Filter Test 2,1,1,2,2
+null,0,Transaction Filter,1,1,2,2
+null,0,Filter Test 1,1,1,2,2
+null,0,Filter Test 2,1,1,2,2
+null,0,Transaction Filter Test 1,1,1,2,2
+null,0,Transaction Filter Test 2,1,1,2,2
+null,1,Transaction Filter,1,1,2,2
+null,1,Filter Test 1,1,1,2,2
+null,1,Filter Test 2,1,1,2,2
+null,1,Transaction Filter Test 1,1,1,2,2
+null,1,Transaction Filter Test 2,1,1,2,2
+0,null,null,null,null,0,0
+0,0,null,null,null,0,0
+0,1,null,null,null,0,0
+0,null,Transaction Filter,null,null,0,0
+0,null,Filter Test 1,null,null,0,0
+0,null,Filter Test 2,null,null,0,0
+0,null,Transaction Filter Test 1,null,null,0,0
+0,null,Transaction Filter Test 2,null,null,0,0
+0,0,Transaction Filter,null,null,0,0
+0,0,Filter Test 1,null,null,0,0
+0,0,Filter Test 2,null,null,0,0
+0,0,Transaction Filter Test 1,null,null,0,0
+0,0,Transaction Filter Test 2,null,null,0,0
+0,1,Transaction Filter,null,null,0,0
+0,1,Filter Test 1,null,null,0,0
+0,1,Filter Test 2,null,null,0,0
+0,1,Transaction Filter Test 1,null,null,0,0
+0,1,Transaction Filter Test 2,null,null,0,0
+0,null,Transaction Filter,0,null,0,0
+0,null,Filter Test 1,0,null,0,0
+0,null,Filter Test 2,0,null,0,0
+0,null,Transaction Filter Test 1,0,null,0,0
+0,null,Transaction Filter Test 2,0,null,0,0
+0,0,Transaction Filter,0,null,0,0
+0,0,Filter Test 1,0,null,0,0
+0,0,Filter Test 2,0,null,0,0
+0,0,Transaction Filter Test 1,0,null,0,0
+0,0,Transaction Filter Test 2,0,null,0,0
+0,1,Transaction Filter,0,null,0,0
+0,1,Filter Test 1,0,null,0,0
+0,1,Filter Test 2,0,null,0,0
+0,1,Transaction Filter Test 1,0,null,0,0
+0,1,Transaction Filter Test 2,0,null,0,0
+0,null,Transaction Filter,1,null,0,0
+0,null,Filter Test 1,1,null,0,0
+0,null,Filter Test 2,1,null,0,0
+0,null,Transaction Filter Test 1,1,null,0,0
+0,null,Transaction Filter Test 2,1,null,0,0
+0,0,Transaction Filter,1,null,0,0
+0,0,Filter Test 1,1,null,0,0
+0,0,Filter Test 2,1,null,0,0
+0,0,Transaction Filter Test 1,1,null,0,0
+0,0,Transaction Filter Test 2,1,null,0,0
+0,1,Transaction Filter,1,null,0,0
+0,1,Filter Test 1,1,null,0,0
+0,1,Filter Test 2,1,null,0,0
+0,1,Transaction Filter Test 1,1,null,0,0
+0,1,Transaction Filter Test 2,1,null,0,0
+0,null,null,null,0,0,0
+0,0,null,null,0,0,0
+0,1,null,null,0,0,0
+0,null,Transaction Filter,null,0,0,0
+0,null,Filter Test 1,null,0,0,0
+0,null,Filter Test 2,null,0,0,0
+0,null,Transaction Filter Test 1,null,0,0,0
+0,null,Transaction Filter Test 2,null,0,0,0
+0,0,Transaction Filter,null,0,0,0
+0,0,Filter Test 1,null,0,0,0
+0,0,Filter Test 2,null,0,0,0
+0,0,Transaction Filter Test 1,null,0,0,0
+0,0,Transaction Filter Test 2,null,0,0,0
+0,1,Transaction Filter,null,0,0,0
+0,1,Filter Test 1,null,0,0,0
+0,1,Filter Test 2,null,0,0,0
+0,1,Transaction Filter Test 1,null,0,0,0
+0,1,Transaction Filter Test 2,null,0,0,0
+0,null,Transaction Filter,0,0,0,0
+0,null,Filter Test 1,0,0,0,0
+0,null,Filter Test 2,0,0,0,0
+0,null,Transaction Filter Test 1,0,0,0,0
+0,null,Transaction Filter Test 2,0,0,0,0
+0,0,Transaction Filter,0,0,0,0
+0,0,Filter Test 1,0,0,0,0
+0,0,Filter Test 2,0,0,0,0
+0,0,Transaction Filter Test 1,0,0,0,0
+0,0,Transaction Filter Test 2,0,0,0,0
+0,1,Transaction Filter,0,0,0,0
+0,1,Filter Test 1,0,0,0,0
+0,1,Filter Test 2,0,0,0,0
+0,1,Transaction Filter Test 1,0,0,0,0
+0,1,Transaction Filter Test 2,0,0,0,0
+0,null,Transaction Filter,1,0,0,0
+0,null,Filter Test 1,1,0,0,0
+0,null,Filter Test 2,1,0,0,0
+0,null,Transaction Filter Test 1,1,0,0,0
+0,null,Transaction Filter Test 2,1,0,0,0
+0,0,Transaction Filter,1,0,0,0
+0,0,Filter Test 1,1,0,0,0
+0,0,Filter Test 2,1,0,0,0
+0,0,Transaction Filter Test 1,1,0,0,0
+0,0,Transaction Filter Test 2,1,0,0,0
+0,1,Transaction Filter,1,0,0,0
+0,1,Filter Test 1,1,0,0,0
+0,1,Filter Test 2,1,0,0,0
+0,1,Transaction Filter Test 1,1,0,0,0
+0,1,Transaction Filter Test 2,1,0,0,0
+0,null,null,null,1,0,0
+0,0,null,null,1,0,0
+0,1,null,null,1,0,0
+0,null,Transaction Filter,null,1,0,0
+0,null,Filter Test 1,null,1,0,0
+0,null,Filter Test 2,null,1,0,0
+0,null,Transaction Filter Test 1,null,1,0,0
+0,null,Transaction Filter Test 2,null,1,0,0
+0,0,Transaction Filter,null,1,0,0
+0,0,Filter Test 1,null,1,0,0
+0,0,Filter Test 2,null,1,0,0
+0,0,Transaction Filter Test 1,null,1,0,0
+0,0,Transaction Filter Test 2,null,1,0,0
+0,1,Transaction Filter,null,1,0,0
+0,1,Filter Test 1,null,1,0,0
+0,1,Filter Test 2,null,1,0,0
+0,1,Transaction Filter Test 1,null,1,0,0
+0,1,Transaction Filter Test 2,null,1,0,0
+0,null,Transaction Filter,0,1,0,0
+0,null,Filter Test 1,0,1,0,0
+0,null,Filter Test 2,0,1,0,0
+0,null,Transaction Filter Test 1,0,1,0,0
+0,null,Transaction Filter Test 2,0,1,0,0
+0,0,Transaction Filter,0,1,0,0
+0,0,Filter Test 1,0,1,0,0
+0,0,Filter Test 2,0,1,0,0
+0,0,Transaction Filter Test 1,0,1,0,0
+0,0,Transaction Filter Test 2,0,1,0,0
+0,1,Transaction Filter,0,1,0,0
+0,1,Filter Test 1,0,1,0,0
+0,1,Filter Test 2,0,1,0,0
+0,1,Transaction Filter Test 1,0,1,0,0
+0,1,Transaction Filter Test 2,0,1,0,0
+0,null,Transaction Filter,1,1,0,0
+0,null,Filter Test 1,1,1,0,0
+0,null,Filter Test 2,1,1,0,0
+0,null,Transaction Filter Test 1,1,1,0,0
+0,null,Transaction Filter Test 2,1,1,0,0
+0,0,Transaction Filter,1,1,0,0
+0,0,Filter Test 1,1,1,0,0
+0,0,Filter Test 2,1,1,0,0
+0,0,Transaction Filter Test 1,1,1,0,0
+0,0,Transaction Filter Test 2,1,1,0,0
+0,1,Transaction Filter,1,1,0,0
+0,1,Filter Test 1,1,1,0,0
+0,1,Filter Test 2,1,1,0,0
+0,1,Transaction Filter Test 1,1,1,0,0
+0,1,Transaction Filter Test 2,1,1,0,0
+0,null,null,null,null,1,0
+0,0,null,null,null,1,0
+0,1,null,null,null,1,0
+0,null,Transaction Filter,null,null,1,0
+0,null,Filter Test 1,null,null,1,0
+0,null,Filter Test 2,null,null,1,0
+0,null,Transaction Filter Test 1,null,null,1,0
+0,null,Transaction Filter Test 2,null,null,1,0
+0,0,Transaction Filter,null,null,1,0
+0,0,Filter Test 1,null,null,1,0
+0,0,Filter Test 2,null,null,1,0
+0,0,Transaction Filter Test 1,null,null,1,0
+0,0,Transaction Filter Test 2,null,null,1,0
+0,1,Transaction Filter,null,null,1,0
+0,1,Filter Test 1,null,null,1,0
+0,1,Filter Test 2,null,null,1,0
+0,1,Transaction Filter Test 1,null,null,1,0
+0,1,Transaction Filter Test 2,null,null,1,0
+0,null,Transaction Filter,0,null,1,0
+0,null,Filter Test 1,0,null,1,0
+0,null,Filter Test 2,0,null,1,0
+0,null,Transaction Filter Test 1,0,null,1,0
+0,null,Transaction Filter Test 2,0,null,1,0
+0,0,Transaction Filter,0,null,1,0
+0,0,Filter Test 1,0,null,1,0
+0,0,Filter Test 2,0,null,1,0
+0,0,Transaction Filter Test 1,0,null,1,0
+0,0,Transaction Filter Test 2,0,null,1,0
+0,1,Transaction Filter,0,null,1,0
+0,1,Filter Test 1,0,null,1,0
+0,1,Filter Test 2,0,null,1,0
+0,1,Transaction Filter Test 1,0,null,1,0
+0,1,Transaction Filter Test 2,0,null,1,0
+0,null,Transaction Filter,1,null,1,0
+0,null,Filter Test 1,1,null,1,0
+0,null,Filter Test 2,1,null,1,0
+0,null,Transaction Filter Test 1,1,null,1,0
+0,null,Transaction Filter Test 2,1,null,1,0
+0,0,Transaction Filter,1,null,1,0
+0,0,Filter Test 1,1,null,1,0
+0,0,Filter Test 2,1,null,1,0
+0,0,Transaction Filter Test 1,1,null,1,0
+0,0,Transaction Filter Test 2,1,null,1,0
+0,1,Transaction Filter,1,null,1,0
+0,1,Filter Test 1,1,null,1,0
+0,1,Filter Test 2,1,null,1,0
+0,1,Transaction Filter Test 1,1,null,1,0
+0,1,Transaction Filter Test 2,1,null,1,0
+0,null,null,null,0,1,0
+0,0,null,null,0,1,0
+0,1,null,null,0,1,0
+0,null,Transaction Filter,null,0,1,0
+0,null,Filter Test 1,null,0,1,0
+0,null,Filter Test 2,null,0,1,0
+0,null,Transaction Filter Test 1,null,0,1,0
+0,null,Transaction Filter Test 2,null,0,1,0
+0,0,Transaction Filter,null,0,1,0
+0,0,Filter Test 1,null,0,1,0
+0,0,Filter Test 2,null,0,1,0
+0,0,Transaction Filter Test 1,null,0,1,0
+0,0,Transaction Filter Test 2,null,0,1,0
+0,1,Transaction Filter,null,0,1,0
+0,1,Filter Test 1,null,0,1,0
+0,1,Filter Test 2,null,0,1,0
+0,1,Transaction Filter Test 1,null,0,1,0
+0,1,Transaction Filter Test 2,null,0,1,0
+0,null,Transaction Filter,0,0,1,0
+0,null,Filter Test 1,0,0,1,0
+0,null,Filter Test 2,0,0,1,0
+0,null,Transaction Filter Test 1,0,0,1,0
+0,null,Transaction Filter Test 2,0,0,1,0
+0,0,Transaction Filter,0,0,1,0
+0,0,Filter Test 1,0,0,1,0
+0,0,Filter Test 2,0,0,1,0
+0,0,Transaction Filter Test 1,0,0,1,0
+0,0,Transaction Filter Test 2,0,0,1,0
+0,1,Transaction Filter,0,0,1,0
+0,1,Filter Test 1,0,0,1,0
+0,1,Filter Test 2,0,0,1,0
+0,1,Transaction Filter Test 1,0,0,1,0
+0,1,Transaction Filter Test 2,0,0,1,0
+0,null,Transaction Filter,1,0,1,0
+0,null,Filter Test 1,1,0,1,0
+0,null,Filter Test 2,1,0,1,0
+0,null,Transaction Filter Test 1,1,0,1,0
+0,null,Transaction Filter Test 2,1,0,1,0
+0,0,Transaction Filter,1,0,1,0
+0,0,Filter Test 1,1,0,1,0
+0,0,Filter Test 2,1,0,1,0
+0,0,Transaction Filter Test 1,1,0,1,0
+0,0,Transaction Filter Test 2,1,0,1,0
+0,1,Transaction Filter,1,0,1,0
+0,1,Filter Test 1,1,0,1,0
+0,1,Filter Test 2,1,0,1,0
+0,1,Transaction Filter Test 1,1,0,1,0
+0,1,Transaction Filter Test 2,1,0,1,0
+0,null,null,null,1,1,0
+0,0,null,null,1,1,0
+0,1,null,null,1,1,0
+0,null,Transaction Filter,null,1,1,0
+0,null,Filter Test 1,null,1,1,0
+0,null,Filter Test 2,null,1,1,0
+0,null,Transaction Filter Test 1,null,1,1,0
+0,null,Transaction Filter Test 2,null,1,1,0
+0,0,Transaction Filter,null,1,1,0
+0,0,Filter Test 1,null,1,1,0
+0,0,Filter Test 2,null,1,1,0
+0,0,Transaction Filter Test 1,null,1,1,0
+0,0,Transaction Filter Test 2,null,1,1,0
+0,1,Transaction Filter,null,1,1,0
+0,1,Filter Test 1,null,1,1,0
+0,1,Filter Test 2,null,1,1,0
+0,1,Transaction Filter Test 1,null,1,1,0
+0,1,Transaction Filter Test 2,null,1,1,0
+0,null,Transaction Filter,0,1,1,0
+0,null,Filter Test 1,0,1,1,0
+0,null,Filter Test 2,0,1,1,0
+0,null,Transaction Filter Test 1,0,1,1,0
+0,null,Transaction Filter Test 2,0,1,1,0
+0,0,Transaction Filter,0,1,1,0
+0,0,Filter Test 1,0,1,1,0
+0,0,Filter Test 2,0,1,1,0
+0,0,Transaction Filter Test 1,0,1,1,0
+0,0,Transaction Filter Test 2,0,1,1,0
+0,1,Transaction Filter,0,1,1,0
+0,1,Filter Test 1,0,1,1,0
+0,1,Filter Test 2,0,1,1,0
+0,1,Transaction Filter Test 1,0,1,1,0
+0,1,Transaction Filter Test 2,0,1,1,0
+0,null,Transaction Filter,1,1,1,0
+0,null,Filter Test 1,1,1,1,0
+0,null,Filter Test 2,1,1,1,0
+0,null,Transaction Filter Test 1,1,1,1,0
+0,null,Transaction Filter Test 2,1,1,1,0
+0,0,Transaction Filter,1,1,1,0
+0,0,Filter Test 1,1,1,1,0
+0,0,Filter Test 2,1,1,1,0
+0,0,Transaction Filter Test 1,1,1,1,0
+0,0,Transaction Filter Test 2,1,1,1,0
+0,1,Transaction Filter,1,1,1,0
+0,1,Filter Test 1,1,1,1,0
+0,1,Filter Test 2,1,1,1,0
+0,1,Transaction Filter Test 1,1,1,1,0
+0,1,Transaction Filter Test 2,1,1,1,0
+0,null,null,null,null,2,0
+0,0,null,null,null,2,0
+0,1,null,null,null,2,0
+0,null,Transaction Filter,null,null,2,0
+0,null,Filter Test 1,null,null,2,0
+0,null,Filter Test 2,null,null,2,0
+0,null,Transaction Filter Test 1,null,null,2,0
+0,null,Transaction Filter Test 2,null,null,2,0
+0,0,Transaction Filter,null,null,2,0
+0,0,Filter Test 1,null,null,2,0
+0,0,Filter Test 2,null,null,2,0
+0,0,Transaction Filter Test 1,null,null,2,0
+0,0,Transaction Filter Test 2,null,null,2,0
+0,1,Transaction Filter,null,null,2,0
+0,1,Filter Test 1,null,null,2,0
+0,1,Filter Test 2,null,null,2,0
+0,1,Transaction Filter Test 1,null,null,2,0
+0,1,Transaction Filter Test 2,null,null,2,0
+0,null,Transaction Filter,0,null,2,0
+0,null,Filter Test 1,0,null,2,0
+0,null,Filter Test 2,0,null,2,0
+0,null,Transaction Filter Test 1,0,null,2,0
+0,null,Transaction Filter Test 2,0,null,2,0
+0,0,Transaction Filter,0,null,2,0
+0,0,Filter Test 1,0,null,2,0
+0,0,Filter Test 2,0,null,2,0
+0,0,Transaction Filter Test 1,0,null,2,0
+0,0,Transaction Filter Test 2,0,null,2,0
+0,1,Transaction Filter,0,null,2,0
+0,1,Filter Test 1,0,null,2,0
+0,1,Filter Test 2,0,null,2,0
+0,1,Transaction Filter Test 1,0,null,2,0
+0,1,Transaction Filter Test 2,0,null,2,0
+0,null,Transaction Filter,1,null,2,0
+0,null,Filter Test 1,1,null,2,0
+0,null,Filter Test 2,1,null,2,0
+0,null,Transaction Filter Test 1,1,null,2,0
+0,null,Transaction Filter Test 2,1,null,2,0
+0,0,Transaction Filter,1,null,2,0
+0,0,Filter Test 1,1,null,2,0
+0,0,Filter Test 2,1,null,2,0
+0,0,Transaction Filter Test 1,1,null,2,0
+0,0,Transaction Filter Test 2,1,null,2,0
+0,1,Transaction Filter,1,null,2,0
+0,1,Filter Test 1,1,null,2,0
+0,1,Filter Test 2,1,null,2,0
+0,1,Transaction Filter Test 1,1,null,2,0
+0,1,Transaction Filter Test 2,1,null,2,0
+0,null,null,null,0,2,0
+0,0,null,null,0,2,0
+0,1,null,null,0,2,0
+0,null,Transaction Filter,null,0,2,0
+0,null,Filter Test 1,null,0,2,0
+0,null,Filter Test 2,null,0,2,0
+0,null,Transaction Filter Test 1,null,0,2,0
+0,null,Transaction Filter Test 2,null,0,2,0
+0,0,Transaction Filter,null,0,2,0
+0,0,Filter Test 1,null,0,2,0
+0,0,Filter Test 2,null,0,2,0
+0,0,Transaction Filter Test 1,null,0,2,0
+0,0,Transaction Filter Test 2,null,0,2,0
+0,1,Transaction Filter,null,0,2,0
+0,1,Filter Test 1,null,0,2,0
+0,1,Filter Test 2,null,0,2,0
+0,1,Transaction Filter Test 1,null,0,2,0
+0,1,Transaction Filter Test 2,null,0,2,0
+0,null,Transaction Filter,0,0,2,0
+0,null,Filter Test 1,0,0,2,0
+0,null,Filter Test 2,0,0,2,0
+0,null,Transaction Filter Test 1,0,0,2,0
+0,null,Transaction Filter Test 2,0,0,2,0
+0,0,Transaction Filter,0,0,2,0
+0,0,Filter Test 1,0,0,2,0
+0,0,Filter Test 2,0,0,2,0
+0,0,Transaction Filter Test 1,0,0,2,0
+0,0,Transaction Filter Test 2,0,0,2,0
+0,1,Transaction Filter,0,0,2,0
+0,1,Filter Test 1,0,0,2,0
+0,1,Filter Test 2,0,0,2,0
+0,1,Transaction Filter Test 1,0,0,2,0
+0,1,Transaction Filter Test 2,0,0,2,0
+0,null,Transaction Filter,1,0,2,0
+0,null,Filter Test 1,1,0,2,0
+0,null,Filter Test 2,1,0,2,0
+0,null,Transaction Filter Test 1,1,0,2,0
+0,null,Transaction Filter Test 2,1,0,2,0
+0,0,Transaction Filter,1,0,2,0
+0,0,Filter Test 1,1,0,2,0
+0,0,Filter Test 2,1,0,2,0
+0,0,Transaction Filter Test 1,1,0,2,0
+0,0,Transaction Filter Test 2,1,0,2,0
+0,1,Transaction Filter,1,0,2,0
+0,1,Filter Test 1,1,0,2,0
+0,1,Filter Test 2,1,0,2,0
+0,1,Transaction Filter Test 1,1,0,2,0
+0,1,Transaction Filter Test 2,1,0,2,0
+0,null,null,null,1,2,0
+0,0,null,null,1,2,0
+0,1,null,null,1,2,0
+0,null,Transaction Filter,null,1,2,0
+0,null,Filter Test 1,null,1,2,0
+0,null,Filter Test 2,null,1,2,0
+0,null,Transaction Filter Test 1,null,1,2,0
+0,null,Transaction Filter Test 2,null,1,2,0
+0,0,Transaction Filter,null,1,2,0
+0,0,Filter Test 1,null,1,2,0
+0,0,Filter Test 2,null,1,2,0
+0,0,Transaction Filter Test 1,null,1,2,0
+0,0,Transaction Filter Test 2,null,1,2,0
+0,1,Transaction Filter,null,1,2,0
+0,1,Filter Test 1,null,1,2,0
+0,1,Filter Test 2,null,1,2,0
+0,1,Transaction Filter Test 1,null,1,2,0
+0,1,Transaction Filter Test 2,null,1,2,0
+0,null,Transaction Filter,0,1,2,0
+0,null,Filter Test 1,0,1,2,0
+0,null,Filter Test 2,0,1,2,0
+0,null,Transaction Filter Test 1,0,1,2,0
+0,null,Transaction Filter Test 2,0,1,2,0
+0,0,Transaction Filter,0,1,2,0
+0,0,Filter Test 1,0,1,2,0
+0,0,Filter Test 2,0,1,2,0
+0,0,Transaction Filter Test 1,0,1,2,0
+0,0,Transaction Filter Test 2,0,1,2,0
+0,1,Transaction Filter,0,1,2,0
+0,1,Filter Test 1,0,1,2,0
+0,1,Filter Test 2,0,1,2,0
+0,1,Transaction Filter Test 1,0,1,2,0
+0,1,Transaction Filter Test 2,0,1,2,0
+0,null,Transaction Filter,1,1,2,0
+0,null,Filter Test 1,1,1,2,0
+0,null,Filter Test 2,1,1,2,0
+0,null,Transaction Filter Test 1,1,1,2,0
+0,null,Transaction Filter Test 2,1,1,2,0
+0,0,Transaction Filter,1,1,2,0
+0,0,Filter Test 1,1,1,2,0
+0,0,Filter Test 2,1,1,2,0
+0,0,Transaction Filter Test 1,1,1,2,0
+0,0,Transaction Filter Test 2,1,1,2,0
+0,1,Transaction Filter,1,1,2,0
+0,1,Filter Test 1,1,1,2,0
+0,1,Filter Test 2,1,1,2,0
+0,1,Transaction Filter Test 1,1,1,2,0
+0,1,Transaction Filter Test 2,1,1,2,0
+0,null,null,null,null,0,1
+0,0,null,null,null,0,1
+0,1,null,null,null,0,1
+0,null,Transaction Filter,null,null,0,1
+0,null,Filter Test 1,null,null,0,1
+0,null,Filter Test 2,null,null,0,1
+0,null,Transaction Filter Test 1,null,null,0,1
+0,null,Transaction Filter Test 2,null,null,0,1
+0,0,Transaction Filter,null,null,0,1
+0,0,Filter Test 1,null,null,0,1
+0,0,Filter Test 2,null,null,0,1
+0,0,Transaction Filter Test 1,null,null,0,1
+0,0,Transaction Filter Test 2,null,null,0,1
+0,1,Transaction Filter,null,null,0,1
+0,1,Filter Test 1,null,null,0,1
+0,1,Filter Test 2,null,null,0,1
+0,1,Transaction Filter Test 1,null,null,0,1
+0,1,Transaction Filter Test 2,null,null,0,1
+0,null,Transaction Filter,0,null,0,1
+0,null,Filter Test 1,0,null,0,1
+0,null,Filter Test 2,0,null,0,1
+0,null,Transaction Filter Test 1,0,null,0,1
+0,null,Transaction Filter Test 2,0,null,0,1
+0,0,Transaction Filter,0,null,0,1
+0,0,Filter Test 1,0,null,0,1
+0,0,Filter Test 2,0,null,0,1
+0,0,Transaction Filter Test 1,0,null,0,1
+0,0,Transaction Filter Test 2,0,null,0,1
+0,1,Transaction Filter,0,null,0,1
+0,1,Filter Test 1,0,null,0,1
+0,1,Filter Test 2,0,null,0,1
+0,1,Transaction Filter Test 1,0,null,0,1
+0,1,Transaction Filter Test 2,0,null,0,1
+0,null,Transaction Filter,1,null,0,1
+0,null,Filter Test 1,1,null,0,1
+0,null,Filter Test 2,1,null,0,1
+0,null,Transaction Filter Test 1,1,null,0,1
+0,null,Transaction Filter Test 2,1,null,0,1
+0,0,Transaction Filter,1,null,0,1
+0,0,Filter Test 1,1,null,0,1
+0,0,Filter Test 2,1,null,0,1
+0,0,Transaction Filter Test 1,1,null,0,1
+0,0,Transaction Filter Test 2,1,null,0,1
+0,1,Transaction Filter,1,null,0,1
+0,1,Filter Test 1,1,null,0,1
+0,1,Filter Test 2,1,null,0,1
+0,1,Transaction Filter Test 1,1,null,0,1
+0,1,Transaction Filter Test 2,1,null,0,1
+0,null,null,null,0,0,1
+0,0,null,null,0,0,1
+0,1,null,null,0,0,1
+0,null,Transaction Filter,null,0,0,1
+0,null,Filter Test 1,null,0,0,1
+0,null,Filter Test 2,null,0,0,1
+0,null,Transaction Filter Test 1,null,0,0,1
+0,null,Transaction Filter Test 2,null,0,0,1
+0,0,Transaction Filter,null,0,0,1
+0,0,Filter Test 1,null,0,0,1
+0,0,Filter Test 2,null,0,0,1
+0,0,Transaction Filter Test 1,null,0,0,1
+0,0,Transaction Filter Test 2,null,0,0,1
+0,1,Transaction Filter,null,0,0,1
+0,1,Filter Test 1,null,0,0,1
+0,1,Filter Test 2,null,0,0,1
+0,1,Transaction Filter Test 1,null,0,0,1
+0,1,Transaction Filter Test 2,null,0,0,1
+0,null,Transaction Filter,0,0,0,1
+0,null,Filter Test 1,0,0,0,1
+0,null,Filter Test 2,0,0,0,1
+0,null,Transaction Filter Test 1,0,0,0,1
+0,null,Transaction Filter Test 2,0,0,0,1
+0,0,Transaction Filter,0,0,0,1
+0,0,Filter Test 1,0,0,0,1
+0,0,Filter Test 2,0,0,0,1
+0,0,Transaction Filter Test 1,0,0,0,1
+0,0,Transaction Filter Test 2,0,0,0,1
+0,1,Transaction Filter,0,0,0,1
+0,1,Filter Test 1,0,0,0,1
+0,1,Filter Test 2,0,0,0,1
+0,1,Transaction Filter Test 1,0,0,0,1
+0,1,Transaction Filter Test 2,0,0,0,1
+0,null,Transaction Filter,1,0,0,1
+0,null,Filter Test 1,1,0,0,1
+0,null,Filter Test 2,1,0,0,1
+0,null,Transaction Filter Test 1,1,0,0,1
+0,null,Transaction Filter Test 2,1,0,0,1
+0,0,Transaction Filter,1,0,0,1
+0,0,Filter Test 1,1,0,0,1
+0,0,Filter Test 2,1,0,0,1
+0,0,Transaction Filter Test 1,1,0,0,1
+0,0,Transaction Filter Test 2,1,0,0,1
+0,1,Transaction Filter,1,0,0,1
+0,1,Filter Test 1,1,0,0,1
+0,1,Filter Test 2,1,0,0,1
+0,1,Transaction Filter Test 1,1,0,0,1
+0,1,Transaction Filter Test 2,1,0,0,1
+0,null,null,null,1,0,1
+0,0,null,null,1,0,1
+0,1,null,null,1,0,1
+0,null,Transaction Filter,null,1,0,1
+0,null,Filter Test 1,null,1,0,1
+0,null,Filter Test 2,null,1,0,1
+0,null,Transaction Filter Test 1,null,1,0,1
+0,null,Transaction Filter Test 2,null,1,0,1
+0,0,Transaction Filter,null,1,0,1
+0,0,Filter Test 1,null,1,0,1
+0,0,Filter Test 2,null,1,0,1
+0,0,Transaction Filter Test 1,null,1,0,1
+0,0,Transaction Filter Test 2,null,1,0,1
+0,1,Transaction Filter,null,1,0,1
+0,1,Filter Test 1,null,1,0,1
+0,1,Filter Test 2,null,1,0,1
+0,1,Transaction Filter Test 1,null,1,0,1
+0,1,Transaction Filter Test 2,null,1,0,1
+0,null,Transaction Filter,0,1,0,1
+0,null,Filter Test 1,0,1,0,1
+0,null,Filter Test 2,0,1,0,1
+0,null,Transaction Filter Test 1,0,1,0,1
+0,null,Transaction Filter Test 2,0,1,0,1
+0,0,Transaction Filter,0,1,0,1
+0,0,Filter Test 1,0,1,0,1
+0,0,Filter Test 2,0,1,0,1
+0,0,Transaction Filter Test 1,0,1,0,1
+0,0,Transaction Filter Test 2,0,1,0,1
+0,1,Transaction Filter,0,1,0,1
+0,1,Filter Test 1,0,1,0,1
+0,1,Filter Test 2,0,1,0,1
+0,1,Transaction Filter Test 1,0,1,0,1
+0,1,Transaction Filter Test 2,0,1,0,1
+0,null,Transaction Filter,1,1,0,1
+0,null,Filter Test 1,1,1,0,1
+0,null,Filter Test 2,1,1,0,1
+0,null,Transaction Filter Test 1,1,1,0,1
+0,null,Transaction Filter Test 2,1,1,0,1
+0,0,Transaction Filter,1,1,0,1
+0,0,Filter Test 1,1,1,0,1
+0,0,Filter Test 2,1,1,0,1
+0,0,Transaction Filter Test 1,1,1,0,1
+0,0,Transaction Filter Test 2,1,1,0,1
+0,1,Transaction Filter,1,1,0,1
+0,1,Filter Test 1,1,1,0,1
+0,1,Filter Test 2,1,1,0,1
+0,1,Transaction Filter Test 1,1,1,0,1
+0,1,Transaction Filter Test 2,1,1,0,1
+0,null,null,null,null,1,1
+0,0,null,null,null,1,1
+0,1,null,null,null,1,1
+0,null,Transaction Filter,null,null,1,1
+0,null,Filter Test 1,null,null,1,1
+0,null,Filter Test 2,null,null,1,1
+0,null,Transaction Filter Test 1,null,null,1,1
+0,null,Transaction Filter Test 2,null,null,1,1
+0,0,Transaction Filter,null,null,1,1
+0,0,Filter Test 1,null,null,1,1
+0,0,Filter Test 2,null,null,1,1
+0,0,Transaction Filter Test 1,null,null,1,1
+0,0,Transaction Filter Test 2,null,null,1,1
+0,1,Transaction Filter,null,null,1,1
+0,1,Filter Test 1,null,null,1,1
+0,1,Filter Test 2,null,null,1,1
+0,1,Transaction Filter Test 1,null,null,1,1
+0,1,Transaction Filter Test 2,null,null,1,1
+0,null,Transaction Filter,0,null,1,1
+0,null,Filter Test 1,0,null,1,1
+0,null,Filter Test 2,0,null,1,1
+0,null,Transaction Filter Test 1,0,null,1,1
+0,null,Transaction Filter Test 2,0,null,1,1
+0,0,Transaction Filter,0,null,1,1
+0,0,Filter Test 1,0,null,1,1
+0,0,Filter Test 2,0,null,1,1
+0,0,Transaction Filter Test 1,0,null,1,1
+0,0,Transaction Filter Test 2,0,null,1,1
+0,1,Transaction Filter,0,null,1,1
+0,1,Filter Test 1,0,null,1,1
+0,1,Filter Test 2,0,null,1,1
+0,1,Transaction Filter Test 1,0,null,1,1
+0,1,Transaction Filter Test 2,0,null,1,1
+0,null,Transaction Filter,1,null,1,1
+0,null,Filter Test 1,1,null,1,1
+0,null,Filter Test 2,1,null,1,1
+0,null,Transaction Filter Test 1,1,null,1,1
+0,null,Transaction Filter Test 2,1,null,1,1
+0,0,Transaction Filter,1,null,1,1
+0,0,Filter Test 1,1,null,1,1
+0,0,Filter Test 2,1,null,1,1
+0,0,Transaction Filter Test 1,1,null,1,1
+0,0,Transaction Filter Test 2,1,null,1,1
+0,1,Transaction Filter,1,null,1,1
+0,1,Filter Test 1,1,null,1,1
+0,1,Filter Test 2,1,null,1,1
+0,1,Transaction Filter Test 1,1,null,1,1
+0,1,Transaction Filter Test 2,1,null,1,1
+0,null,null,null,0,1,1
+0,0,null,null,0,1,1
+0,1,null,null,0,1,1
+0,null,Transaction Filter,null,0,1,1
+0,null,Filter Test 1,null,0,1,1
+0,null,Filter Test 2,null,0,1,1
+0,null,Transaction Filter Test 1,null,0,1,1
+0,null,Transaction Filter Test 2,null,0,1,1
+0,0,Transaction Filter,null,0,1,1
+0,0,Filter Test 1,null,0,1,1
+0,0,Filter Test 2,null,0,1,1
+0,0,Transaction Filter Test 1,null,0,1,1
+0,0,Transaction Filter Test 2,null,0,1,1
+0,1,Transaction Filter,null,0,1,1
+0,1,Filter Test 1,null,0,1,1
+0,1,Filter Test 2,null,0,1,1
+0,1,Transaction Filter Test 1,null,0,1,1
+0,1,Transaction Filter Test 2,null,0,1,1
+0,null,Transaction Filter,0,0,1,1
+0,null,Filter Test 1,0,0,1,1
+0,null,Filter Test 2,0,0,1,1
+0,null,Transaction Filter Test 1,0,0,1,1
+0,null,Transaction Filter Test 2,0,0,1,1
+0,0,Transaction Filter,0,0,1,1
+0,0,Filter Test 1,0,0,1,1
+0,0,Filter Test 2,0,0,1,1
+0,0,Transaction Filter Test 1,0,0,1,1
+0,0,Transaction Filter Test 2,0,0,1,1
+0,1,Transaction Filter,0,0,1,1
+0,1,Filter Test 1,0,0,1,1
+0,1,Filter Test 2,0,0,1,1
+0,1,Transaction Filter Test 1,0,0,1,1
+0,1,Transaction Filter Test 2,0,0,1,1
+0,null,Transaction Filter,1,0,1,1
+0,null,Filter Test 1,1,0,1,1
+0,null,Filter Test 2,1,0,1,1
+0,null,Transaction Filter Test 1,1,0,1,1
+0,null,Transaction Filter Test 2,1,0,1,1
+0,0,Transaction Filter,1,0,1,1
+0,0,Filter Test 1,1,0,1,1
+0,0,Filter Test 2,1,0,1,1
+0,0,Transaction Filter Test 1,1,0,1,1
+0,0,Transaction Filter Test 2,1,0,1,1
+0,1,Transaction Filter,1,0,1,1
+0,1,Filter Test 1,1,0,1,1
+0,1,Filter Test 2,1,0,1,1
+0,1,Transaction Filter Test 1,1,0,1,1
+0,1,Transaction Filter Test 2,1,0,1,1
+0,null,null,null,1,1,1
+0,0,null,null,1,1,1
+0,1,null,null,1,1,1
+0,null,Transaction Filter,null,1,1,1
+0,null,Filter Test 1,null,1,1,1
+0,null,Filter Test 2,null,1,1,1
+0,null,Transaction Filter Test 1,null,1,1,1
+0,null,Transaction Filter Test 2,null,1,1,1
+0,0,Transaction Filter,null,1,1,1
+0,0,Filter Test 1,null,1,1,1
+0,0,Filter Test 2,null,1,1,1
+0,0,Transaction Filter Test 1,null,1,1,1
+0,0,Transaction Filter Test 2,null,1,1,1
+0,1,Transaction Filter,null,1,1,1
+0,1,Filter Test 1,null,1,1,1
+0,1,Filter Test 2,null,1,1,1
+0,1,Transaction Filter Test 1,null,1,1,1
+0,1,Transaction Filter Test 2,null,1,1,1
+0,null,Transaction Filter,0,1,1,1
+0,null,Filter Test 1,0,1,1,1
+0,null,Filter Test 2,0,1,1,1
+0,null,Transaction Filter Test 1,0,1,1,1
+0,null,Transaction Filter Test 2,0,1,1,1
+0,0,Transaction Filter,0,1,1,1
+0,0,Filter Test 1,0,1,1,1
+0,0,Filter Test 2,0,1,1,1
+0,0,Transaction Filter Test 1,0,1,1,1
+0,0,Transaction Filter Test 2,0,1,1,1
+0,1,Transaction Filter,0,1,1,1
+0,1,Filter Test 1,0,1,1,1
+0,1,Filter Test 2,0,1,1,1
+0,1,Transaction Filter Test 1,0,1,1,1
+0,1,Transaction Filter Test 2,0,1,1,1
+0,null,Transaction Filter,1,1,1,1
+0,null,Filter Test 1,1,1,1,1
+0,null,Filter Test 2,1,1,1,1
+0,null,Transaction Filter Test 1,1,1,1,1
+0,null,Transaction Filter Test 2,1,1,1,1
+0,0,Transaction Filter,1,1,1,1
+0,0,Filter Test 1,1,1,1,1
+0,0,Filter Test 2,1,1,1,1
+0,0,Transaction Filter Test 1,1,1,1,1
+0,0,Transaction Filter Test 2,1,1,1,1
+0,1,Transaction Filter,1,1,1,1
+0,1,Filter Test 1,1,1,1,1
+0,1,Filter Test 2,1,1,1,1
+0,1,Transaction Filter Test 1,1,1,1,1
+0,1,Transaction Filter Test 2,1,1,1,1
+0,null,null,null,null,2,1
+0,0,null,null,null,2,1
+0,1,null,null,null,2,1
+0,null,Transaction Filter,null,null,2,1
+0,null,Filter Test 1,null,null,2,1
+0,null,Filter Test 2,null,null,2,1
+0,null,Transaction Filter Test 1,null,null,2,1
+0,null,Transaction Filter Test 2,null,null,2,1
+0,0,Transaction Filter,null,null,2,1
+0,0,Filter Test 1,null,null,2,1
+0,0,Filter Test 2,null,null,2,1
+0,0,Transaction Filter Test 1,null,null,2,1
+0,0,Transaction Filter Test 2,null,null,2,1
+0,1,Transaction Filter,null,null,2,1
+0,1,Filter Test 1,null,null,2,1
+0,1,Filter Test 2,null,null,2,1
+0,1,Transaction Filter Test 1,null,null,2,1
+0,1,Transaction Filter Test 2,null,null,2,1
+0,null,Transaction Filter,0,null,2,1
+0,null,Filter Test 1,0,null,2,1
+0,null,Filter Test 2,0,null,2,1
+0,null,Transaction Filter Test 1,0,null,2,1
+0,null,Transaction Filter Test 2,0,null,2,1
+0,0,Transaction Filter,0,null,2,1
+0,0,Filter Test 1,0,null,2,1
+0,0,Filter Test 2,0,null,2,1
+0,0,Transaction Filter Test 1,0,null,2,1
+0,0,Transaction Filter Test 2,0,null,2,1
+0,1,Transaction Filter,0,null,2,1
+0,1,Filter Test 1,0,null,2,1
+0,1,Filter Test 2,0,null,2,1
+0,1,Transaction Filter Test 1,0,null,2,1
+0,1,Transaction Filter Test 2,0,null,2,1
+0,null,Transaction Filter,1,null,2,1
+0,null,Filter Test 1,1,null,2,1
+0,null,Filter Test 2,1,null,2,1
+0,null,Transaction Filter Test 1,1,null,2,1
+0,null,Transaction Filter Test 2,1,null,2,1
+0,0,Transaction Filter,1,null,2,1
+0,0,Filter Test 1,1,null,2,1
+0,0,Filter Test 2,1,null,2,1
+0,0,Transaction Filter Test 1,1,null,2,1
+0,0,Transaction Filter Test 2,1,null,2,1
+0,1,Transaction Filter,1,null,2,1
+0,1,Filter Test 1,1,null,2,1
+0,1,Filter Test 2,1,null,2,1
+0,1,Transaction Filter Test 1,1,null,2,1
+0,1,Transaction Filter Test 2,1,null,2,1
+0,null,null,null,0,2,1
+0,0,null,null,0,2,1
+0,1,null,null,0,2,1
+0,null,Transaction Filter,null,0,2,1
+0,null,Filter Test 1,null,0,2,1
+0,null,Filter Test 2,null,0,2,1
+0,null,Transaction Filter Test 1,null,0,2,1
+0,null,Transaction Filter Test 2,null,0,2,1
+0,0,Transaction Filter,null,0,2,1
+0,0,Filter Test 1,null,0,2,1
+0,0,Filter Test 2,null,0,2,1
+0,0,Transaction Filter Test 1,null,0,2,1
+0,0,Transaction Filter Test 2,null,0,2,1
+0,1,Transaction Filter,null,0,2,1
+0,1,Filter Test 1,null,0,2,1
+0,1,Filter Test 2,null,0,2,1
+0,1,Transaction Filter Test 1,null,0,2,1
+0,1,Transaction Filter Test 2,null,0,2,1
+0,null,Transaction Filter,0,0,2,1
+0,null,Filter Test 1,0,0,2,1
+0,null,Filter Test 2,0,0,2,1
+0,null,Transaction Filter Test 1,0,0,2,1
+0,null,Transaction Filter Test 2,0,0,2,1
+0,0,Transaction Filter,0,0,2,1
+0,0,Filter Test 1,0,0,2,1
+0,0,Filter Test 2,0,0,2,1
+0,0,Transaction Filter Test 1,0,0,2,1
+0,0,Transaction Filter Test 2,0,0,2,1
+0,1,Transaction Filter,0,0,2,1
+0,1,Filter Test 1,0,0,2,1
+0,1,Filter Test 2,0,0,2,1
+0,1,Transaction Filter Test 1,0,0,2,1
+0,1,Transaction Filter Test 2,0,0,2,1
+0,null,Transaction Filter,1,0,2,1
+0,null,Filter Test 1,1,0,2,1
+0,null,Filter Test 2,1,0,2,1
+0,null,Transaction Filter Test 1,1,0,2,1
+0,null,Transaction Filter Test 2,1,0,2,1
+0,0,Transaction Filter,1,0,2,1
+0,0,Filter Test 1,1,0,2,1
+0,0,Filter Test 2,1,0,2,1
+0,0,Transaction Filter Test 1,1,0,2,1
+0,0,Transaction Filter Test 2,1,0,2,1
+0,1,Transaction Filter,1,0,2,1
+0,1,Filter Test 1,1,0,2,1
+0,1,Filter Test 2,1,0,2,1
+0,1,Transaction Filter Test 1,1,0,2,1
+0,1,Transaction Filter Test 2,1,0,2,1
+0,null,null,null,1,2,1
+0,0,null,null,1,2,1
+0,1,null,null,1,2,1
+0,null,Transaction Filter,null,1,2,1
+0,null,Filter Test 1,null,1,2,1
+0,null,Filter Test 2,null,1,2,1
+0,null,Transaction Filter Test 1,null,1,2,1
+0,null,Transaction Filter Test 2,null,1,2,1
+0,0,Transaction Filter,null,1,2,1
+0,0,Filter Test 1,null,1,2,1
+0,0,Filter Test 2,null,1,2,1
+0,0,Transaction Filter Test 1,null,1,2,1
+0,0,Transaction Filter Test 2,null,1,2,1
+0,1,Transaction Filter,null,1,2,1
+0,1,Filter Test 1,null,1,2,1
+0,1,Filter Test 2,null,1,2,1
+0,1,Transaction Filter Test 1,null,1,2,1
+0,1,Transaction Filter Test 2,null,1,2,1
+0,null,Transaction Filter,0,1,2,1
+0,null,Filter Test 1,0,1,2,1
+0,null,Filter Test 2,0,1,2,1
+0,null,Transaction Filter Test 1,0,1,2,1
+0,null,Transaction Filter Test 2,0,1,2,1
+0,0,Transaction Filter,0,1,2,1
+0,0,Filter Test 1,0,1,2,1
+0,0,Filter Test 2,0,1,2,1
+0,0,Transaction Filter Test 1,0,1,2,1
+0,0,Transaction Filter Test 2,0,1,2,1
+0,1,Transaction Filter,0,1,2,1
+0,1,Filter Test 1,0,1,2,1
+0,1,Filter Test 2,0,1,2,1
+0,1,Transaction Filter Test 1,0,1,2,1
+0,1,Transaction Filter Test 2,0,1,2,1
+0,null,Transaction Filter,1,1,2,1
+0,null,Filter Test 1,1,1,2,1
+0,null,Filter Test 2,1,1,2,1
+0,null,Transaction Filter Test 1,1,1,2,1
+0,null,Transaction Filter Test 2,1,1,2,1
+0,0,Transaction Filter,1,1,2,1
+0,0,Filter Test 1,1,1,2,1
+0,0,Filter Test 2,1,1,2,1
+0,0,Transaction Filter Test 1,1,1,2,1
+0,0,Transaction Filter Test 2,1,1,2,1
+0,1,Transaction Filter,1,1,2,1
+0,1,Filter Test 1,1,1,2,1
+0,1,Filter Test 2,1,1,2,1
+0,1,Transaction Filter Test 1,1,1,2,1
+0,1,Transaction Filter Test 2,1,1,2,1
+0,null,null,null,null,0,2
+0,0,null,null,null,0,2
+0,1,null,null,null,0,2
+0,null,Transaction Filter,null,null,0,2
+0,null,Filter Test 1,null,null,0,2
+0,null,Filter Test 2,null,null,0,2
+0,null,Transaction Filter Test 1,null,null,0,2
+0,null,Transaction Filter Test 2,null,null,0,2
+0,0,Transaction Filter,null,null,0,2
+0,0,Filter Test 1,null,null,0,2
+0,0,Filter Test 2,null,null,0,2
+0,0,Transaction Filter Test 1,null,null,0,2
+0,0,Transaction Filter Test 2,null,null,0,2
+0,1,Transaction Filter,null,null,0,2
+0,1,Filter Test 1,null,null,0,2
+0,1,Filter Test 2,null,null,0,2
+0,1,Transaction Filter Test 1,null,null,0,2
+0,1,Transaction Filter Test 2,null,null,0,2
+0,null,Transaction Filter,0,null,0,2
+0,null,Filter Test 1,0,null,0,2
+0,null,Filter Test 2,0,null,0,2
+0,null,Transaction Filter Test 1,0,null,0,2
+0,null,Transaction Filter Test 2,0,null,0,2
+0,0,Transaction Filter,0,null,0,2
+0,0,Filter Test 1,0,null,0,2
+0,0,Filter Test 2,0,null,0,2
+0,0,Transaction Filter Test 1,0,null,0,2
+0,0,Transaction Filter Test 2,0,null,0,2
+0,1,Transaction Filter,0,null,0,2
+0,1,Filter Test 1,0,null,0,2
+0,1,Filter Test 2,0,null,0,2
+0,1,Transaction Filter Test 1,0,null,0,2
+0,1,Transaction Filter Test 2,0,null,0,2
+0,null,Transaction Filter,1,null,0,2
+0,null,Filter Test 1,1,null,0,2
+0,null,Filter Test 2,1,null,0,2
+0,null,Transaction Filter Test 1,1,null,0,2
+0,null,Transaction Filter Test 2,1,null,0,2
+0,0,Transaction Filter,1,null,0,2
+0,0,Filter Test 1,1,null,0,2
+0,0,Filter Test 2,1,null,0,2
+0,0,Transaction Filter Test 1,1,null,0,2
+0,0,Transaction Filter Test 2,1,null,0,2
+0,1,Transaction Filter,1,null,0,2
+0,1,Filter Test 1,1,null,0,2
+0,1,Filter Test 2,1,null,0,2
+0,1,Transaction Filter Test 1,1,null,0,2
+0,1,Transaction Filter Test 2,1,null,0,2
+0,null,null,null,0,0,2
+0,0,null,null,0,0,2
+0,1,null,null,0,0,2
+0,null,Transaction Filter,null,0,0,2
+0,null,Filter Test 1,null,0,0,2
+0,null,Filter Test 2,null,0,0,2
+0,null,Transaction Filter Test 1,null,0,0,2
+0,null,Transaction Filter Test 2,null,0,0,2
+0,0,Transaction Filter,null,0,0,2
+0,0,Filter Test 1,null,0,0,2
+0,0,Filter Test 2,null,0,0,2
+0,0,Transaction Filter Test 1,null,0,0,2
+0,0,Transaction Filter Test 2,null,0,0,2
+0,1,Transaction Filter,null,0,0,2
+0,1,Filter Test 1,null,0,0,2
+0,1,Filter Test 2,null,0,0,2
+0,1,Transaction Filter Test 1,null,0,0,2
+0,1,Transaction Filter Test 2,null,0,0,2
+0,null,Transaction Filter,0,0,0,2
+0,null,Filter Test 1,0,0,0,2
+0,null,Filter Test 2,0,0,0,2
+0,null,Transaction Filter Test 1,0,0,0,2
+0,null,Transaction Filter Test 2,0,0,0,2
+0,0,Transaction Filter,0,0,0,2
+0,0,Filter Test 1,0,0,0,2
+0,0,Filter Test 2,0,0,0,2
+0,0,Transaction Filter Test 1,0,0,0,2
+0,0,Transaction Filter Test 2,0,0,0,2
+0,1,Transaction Filter,0,0,0,2
+0,1,Filter Test 1,0,0,0,2
+0,1,Filter Test 2,0,0,0,2
+0,1,Transaction Filter Test 1,0,0,0,2
+0,1,Transaction Filter Test 2,0,0,0,2
+0,null,Transaction Filter,1,0,0,2
+0,null,Filter Test 1,1,0,0,2
+0,null,Filter Test 2,1,0,0,2
+0,null,Transaction Filter Test 1,1,0,0,2
+0,null,Transaction Filter Test 2,1,0,0,2
+0,0,Transaction Filter,1,0,0,2
+0,0,Filter Test 1,1,0,0,2
+0,0,Filter Test 2,1,0,0,2
+0,0,Transaction Filter Test 1,1,0,0,2
+0,0,Transaction Filter Test 2,1,0,0,2
+0,1,Transaction Filter,1,0,0,2
+0,1,Filter Test 1,1,0,0,2
+0,1,Filter Test 2,1,0,0,2
+0,1,Transaction Filter Test 1,1,0,0,2
+0,1,Transaction Filter Test 2,1,0,0,2
+0,null,null,null,1,0,2
+0,0,null,null,1,0,2
+0,1,null,null,1,0,2
+0,null,Transaction Filter,null,1,0,2
+0,null,Filter Test 1,null,1,0,2
+0,null,Filter Test 2,null,1,0,2
+0,null,Transaction Filter Test 1,null,1,0,2
+0,null,Transaction Filter Test 2,null,1,0,2
+0,0,Transaction Filter,null,1,0,2
+0,0,Filter Test 1,null,1,0,2
+0,0,Filter Test 2,null,1,0,2
+0,0,Transaction Filter Test 1,null,1,0,2
+0,0,Transaction Filter Test 2,null,1,0,2
+0,1,Transaction Filter,null,1,0,2
+0,1,Filter Test 1,null,1,0,2
+0,1,Filter Test 2,null,1,0,2
+0,1,Transaction Filter Test 1,null,1,0,2
+0,1,Transaction Filter Test 2,null,1,0,2
+0,null,Transaction Filter,0,1,0,2
+0,null,Filter Test 1,0,1,0,2
+0,null,Filter Test 2,0,1,0,2
+0,null,Transaction Filter Test 1,0,1,0,2
+0,null,Transaction Filter Test 2,0,1,0,2
+0,0,Transaction Filter,0,1,0,2
+0,0,Filter Test 1,0,1,0,2
+0,0,Filter Test 2,0,1,0,2
+0,0,Transaction Filter Test 1,0,1,0,2
+0,0,Transaction Filter Test 2,0,1,0,2
+0,1,Transaction Filter,0,1,0,2
+0,1,Filter Test 1,0,1,0,2
+0,1,Filter Test 2,0,1,0,2
+0,1,Transaction Filter Test 1,0,1,0,2
+0,1,Transaction Filter Test 2,0,1,0,2
+0,null,Transaction Filter,1,1,0,2
+0,null,Filter Test 1,1,1,0,2
+0,null,Filter Test 2,1,1,0,2
+0,null,Transaction Filter Test 1,1,1,0,2
+0,null,Transaction Filter Test 2,1,1,0,2
+0,0,Transaction Filter,1,1,0,2
+0,0,Filter Test 1,1,1,0,2
+0,0,Filter Test 2,1,1,0,2
+0,0,Transaction Filter Test 1,1,1,0,2
+0,0,Transaction Filter Test 2,1,1,0,2
+0,1,Transaction Filter,1,1,0,2
+0,1,Filter Test 1,1,1,0,2
+0,1,Filter Test 2,1,1,0,2
+0,1,Transaction Filter Test 1,1,1,0,2
+0,1,Transaction Filter Test 2,1,1,0,2
+0,null,null,null,null,1,2
+0,0,null,null,null,1,2
+0,1,null,null,null,1,2
+0,null,Transaction Filter,null,null,1,2
+0,null,Filter Test 1,null,null,1,2
+0,null,Filter Test 2,null,null,1,2
+0,null,Transaction Filter Test 1,null,null,1,2
+0,null,Transaction Filter Test 2,null,null,1,2
+0,0,Transaction Filter,null,null,1,2
+0,0,Filter Test 1,null,null,1,2
+0,0,Filter Test 2,null,null,1,2
+0,0,Transaction Filter Test 1,null,null,1,2
+0,0,Transaction Filter Test 2,null,null,1,2
+0,1,Transaction Filter,null,null,1,2
+0,1,Filter Test 1,null,null,1,2
+0,1,Filter Test 2,null,null,1,2
+0,1,Transaction Filter Test 1,null,null,1,2
+0,1,Transaction Filter Test 2,null,null,1,2
+0,null,Transaction Filter,0,null,1,2
+0,null,Filter Test 1,0,null,1,2
+0,null,Filter Test 2,0,null,1,2
+0,null,Transaction Filter Test 1,0,null,1,2
+0,null,Transaction Filter Test 2,0,null,1,2
+0,0,Transaction Filter,0,null,1,2
+0,0,Filter Test 1,0,null,1,2
+0,0,Filter Test 2,0,null,1,2
+0,0,Transaction Filter Test 1,0,null,1,2
+0,0,Transaction Filter Test 2,0,null,1,2
+0,1,Transaction Filter,0,null,1,2
+0,1,Filter Test 1,0,null,1,2
+0,1,Filter Test 2,0,null,1,2
+0,1,Transaction Filter Test 1,0,null,1,2
+0,1,Transaction Filter Test 2,0,null,1,2
+0,null,Transaction Filter,1,null,1,2
+0,null,Filter Test 1,1,null,1,2
+0,null,Filter Test 2,1,null,1,2
+0,null,Transaction Filter Test 1,1,null,1,2
+0,null,Transaction Filter Test 2,1,null,1,2
+0,0,Transaction Filter,1,null,1,2
+0,0,Filter Test 1,1,null,1,2
+0,0,Filter Test 2,1,null,1,2
+0,0,Transaction Filter Test 1,1,null,1,2
+0,0,Transaction Filter Test 2,1,null,1,2
+0,1,Transaction Filter,1,null,1,2
+0,1,Filter Test 1,1,null,1,2
+0,1,Filter Test 2,1,null,1,2
+0,1,Transaction Filter Test 1,1,null,1,2
+0,1,Transaction Filter Test 2,1,null,1,2
+0,null,null,null,0,1,2
+0,0,null,null,0,1,2
+0,1,null,null,0,1,2
+0,null,Transaction Filter,null,0,1,2
+0,null,Filter Test 1,null,0,1,2
+0,null,Filter Test 2,null,0,1,2
+0,null,Transaction Filter Test 1,null,0,1,2
+0,null,Transaction Filter Test 2,null,0,1,2
+0,0,Transaction Filter,null,0,1,2
+0,0,Filter Test 1,null,0,1,2
+0,0,Filter Test 2,null,0,1,2
+0,0,Transaction Filter Test 1,null,0,1,2
+0,0,Transaction Filter Test 2,null,0,1,2
+0,1,Transaction Filter,null,0,1,2
+0,1,Filter Test 1,null,0,1,2
+0,1,Filter Test 2,null,0,1,2
+0,1,Transaction Filter Test 1,null,0,1,2
+0,1,Transaction Filter Test 2,null,0,1,2
+0,null,Transaction Filter,0,0,1,2
+0,null,Filter Test 1,0,0,1,2
+0,null,Filter Test 2,0,0,1,2
+0,null,Transaction Filter Test 1,0,0,1,2
+0,null,Transaction Filter Test 2,0,0,1,2
+0,0,Transaction Filter,0,0,1,2
+0,0,Filter Test 1,0,0,1,2
+0,0,Filter Test 2,0,0,1,2
+0,0,Transaction Filter Test 1,0,0,1,2
+0,0,Transaction Filter Test 2,0,0,1,2
+0,1,Transaction Filter,0,0,1,2
+0,1,Filter Test 1,0,0,1,2
+0,1,Filter Test 2,0,0,1,2
+0,1,Transaction Filter Test 1,0,0,1,2
+0,1,Transaction Filter Test 2,0,0,1,2
+0,null,Transaction Filter,1,0,1,2
+0,null,Filter Test 1,1,0,1,2
+0,null,Filter Test 2,1,0,1,2
+0,null,Transaction Filter Test 1,1,0,1,2
+0,null,Transaction Filter Test 2,1,0,1,2
+0,0,Transaction Filter,1,0,1,2
+0,0,Filter Test 1,1,0,1,2
+0,0,Filter Test 2,1,0,1,2
+0,0,Transaction Filter Test 1,1,0,1,2
+0,0,Transaction Filter Test 2,1,0,1,2
+0,1,Transaction Filter,1,0,1,2
+0,1,Filter Test 1,1,0,1,2
+0,1,Filter Test 2,1,0,1,2
+0,1,Transaction Filter Test 1,1,0,1,2
+0,1,Transaction Filter Test 2,1,0,1,2
+0,null,null,null,1,1,2
+0,0,null,null,1,1,2
+0,1,null,null,1,1,2
+0,null,Transaction Filter,null,1,1,2
+0,null,Filter Test 1,null,1,1,2
+0,null,Filter Test 2,null,1,1,2
+0,null,Transaction Filter Test 1,null,1,1,2
+0,null,Transaction Filter Test 2,null,1,1,2
+0,0,Transaction Filter,null,1,1,2
+0,0,Filter Test 1,null,1,1,2
+0,0,Filter Test 2,null,1,1,2
+0,0,Transaction Filter Test 1,null,1,1,2
+0,0,Transaction Filter Test 2,null,1,1,2
+0,1,Transaction Filter,null,1,1,2
+0,1,Filter Test 1,null,1,1,2
+0,1,Filter Test 2,null,1,1,2
+0,1,Transaction Filter Test 1,null,1,1,2
+0,1,Transaction Filter Test 2,null,1,1,2
+0,null,Transaction Filter,0,1,1,2
+0,null,Filter Test 1,0,1,1,2
+0,null,Filter Test 2,0,1,1,2
+0,null,Transaction Filter Test 1,0,1,1,2
+0,null,Transaction Filter Test 2,0,1,1,2
+0,0,Transaction Filter,0,1,1,2
+0,0,Filter Test 1,0,1,1,2
+0,0,Filter Test 2,0,1,1,2
+0,0,Transaction Filter Test 1,0,1,1,2
+0,0,Transaction Filter Test 2,0,1,1,2
+0,1,Transaction Filter,0,1,1,2
+0,1,Filter Test 1,0,1,1,2
+0,1,Filter Test 2,0,1,1,2
+0,1,Transaction Filter Test 1,0,1,1,2
+0,1,Transaction Filter Test 2,0,1,1,2
+0,null,Transaction Filter,1,1,1,2
+0,null,Filter Test 1,1,1,1,2
+0,null,Filter Test 2,1,1,1,2
+0,null,Transaction Filter Test 1,1,1,1,2
+0,null,Transaction Filter Test 2,1,1,1,2
+0,0,Transaction Filter,1,1,1,2
+0,0,Filter Test 1,1,1,1,2
+0,0,Filter Test 2,1,1,1,2
+0,0,Transaction Filter Test 1,1,1,1,2
+0,0,Transaction Filter Test 2,1,1,1,2
+0,1,Transaction Filter,1,1,1,2
+0,1,Filter Test 1,1,1,1,2
+0,1,Filter Test 2,1,1,1,2
+0,1,Transaction Filter Test 1,1,1,1,2
+0,1,Transaction Filter Test 2,1,1,1,2
+0,null,null,null,null,2,2
+0,0,null,null,null,2,2
+0,1,null,null,null,2,2
+0,null,Transaction Filter,null,null,2,2
+0,null,Filter Test 1,null,null,2,2
+0,null,Filter Test 2,null,null,2,2
+0,null,Transaction Filter Test 1,null,null,2,2
+0,null,Transaction Filter Test 2,null,null,2,2
+0,0,Transaction Filter,null,null,2,2
+0,0,Filter Test 1,null,null,2,2
+0,0,Filter Test 2,null,null,2,2
+0,0,Transaction Filter Test 1,null,null,2,2
+0,0,Transaction Filter Test 2,null,null,2,2
+0,1,Transaction Filter,null,null,2,2
+0,1,Filter Test 1,null,null,2,2
+0,1,Filter Test 2,null,null,2,2
+0,1,Transaction Filter Test 1,null,null,2,2
+0,1,Transaction Filter Test 2,null,null,2,2
+0,null,Transaction Filter,0,null,2,2
+0,null,Filter Test 1,0,null,2,2
+0,null,Filter Test 2,0,null,2,2
+0,null,Transaction Filter Test 1,0,null,2,2
+0,null,Transaction Filter Test 2,0,null,2,2
+0,0,Transaction Filter,0,null,2,2
+0,0,Filter Test 1,0,null,2,2
+0,0,Filter Test 2,0,null,2,2
+0,0,Transaction Filter Test 1,0,null,2,2
+0,0,Transaction Filter Test 2,0,null,2,2
+0,1,Transaction Filter,0,null,2,2
+0,1,Filter Test 1,0,null,2,2
+0,1,Filter Test 2,0,null,2,2
+0,1,Transaction Filter Test 1,0,null,2,2
+0,1,Transaction Filter Test 2,0,null,2,2
+0,null,Transaction Filter,1,null,2,2
+0,null,Filter Test 1,1,null,2,2
+0,null,Filter Test 2,1,null,2,2
+0,null,Transaction Filter Test 1,1,null,2,2
+0,null,Transaction Filter Test 2,1,null,2,2
+0,0,Transaction Filter,1,null,2,2
+0,0,Filter Test 1,1,null,2,2
+0,0,Filter Test 2,1,null,2,2
+0,0,Transaction Filter Test 1,1,null,2,2
+0,0,Transaction Filter Test 2,1,null,2,2
+0,1,Transaction Filter,1,null,2,2
+0,1,Filter Test 1,1,null,2,2
+0,1,Filter Test 2,1,null,2,2
+0,1,Transaction Filter Test 1,1,null,2,2
+0,1,Transaction Filter Test 2,1,null,2,2
+0,null,null,null,0,2,2
+0,0,null,null,0,2,2
+0,1,null,null,0,2,2
+0,null,Transaction Filter,null,0,2,2
+0,null,Filter Test 1,null,0,2,2
+0,null,Filter Test 2,null,0,2,2
+0,null,Transaction Filter Test 1,null,0,2,2
+0,null,Transaction Filter Test 2,null,0,2,2
+0,0,Transaction Filter,null,0,2,2
+0,0,Filter Test 1,null,0,2,2
+0,0,Filter Test 2,null,0,2,2
+0,0,Transaction Filter Test 1,null,0,2,2
+0,0,Transaction Filter Test 2,null,0,2,2
+0,1,Transaction Filter,null,0,2,2
+0,1,Filter Test 1,null,0,2,2
+0,1,Filter Test 2,null,0,2,2
+0,1,Transaction Filter Test 1,null,0,2,2
+0,1,Transaction Filter Test 2,null,0,2,2
+0,null,Transaction Filter,0,0,2,2
+0,null,Filter Test 1,0,0,2,2
+0,null,Filter Test 2,0,0,2,2
+0,null,Transaction Filter Test 1,0,0,2,2
+0,null,Transaction Filter Test 2,0,0,2,2
+0,0,Transaction Filter,0,0,2,2
+0,0,Filter Test 1,0,0,2,2
+0,0,Filter Test 2,0,0,2,2
+0,0,Transaction Filter Test 1,0,0,2,2
+0,0,Transaction Filter Test 2,0,0,2,2
+0,1,Transaction Filter,0,0,2,2
+0,1,Filter Test 1,0,0,2,2
+0,1,Filter Test 2,0,0,2,2
+0,1,Transaction Filter Test 1,0,0,2,2
+0,1,Transaction Filter Test 2,0,0,2,2
+0,null,Transaction Filter,1,0,2,2
+0,null,Filter Test 1,1,0,2,2
+0,null,Filter Test 2,1,0,2,2
+0,null,Transaction Filter Test 1,1,0,2,2
+0,null,Transaction Filter Test 2,1,0,2,2
+0,0,Transaction Filter,1,0,2,2
+0,0,Filter Test 1,1,0,2,2
+0,0,Filter Test 2,1,0,2,2
+0,0,Transaction Filter Test 1,1,0,2,2
+0,0,Transaction Filter Test 2,1,0,2,2
+0,1,Transaction Filter,1,0,2,2
+0,1,Filter Test 1,1,0,2,2
+0,1,Filter Test 2,1,0,2,2
+0,1,Transaction Filter Test 1,1,0,2,2
+0,1,Transaction Filter Test 2,1,0,2,2
+0,null,null,null,1,2,2
+0,0,null,null,1,2,2
+0,1,null,null,1,2,2
+0,null,Transaction Filter,null,1,2,2
+0,null,Filter Test 1,null,1,2,2
+0,null,Filter Test 2,null,1,2,2
+0,null,Transaction Filter Test 1,null,1,2,2
+0,null,Transaction Filter Test 2,null,1,2,2
+0,0,Transaction Filter,null,1,2,2
+0,0,Filter Test 1,null,1,2,2
+0,0,Filter Test 2,null,1,2,2
+0,0,Transaction Filter Test 1,null,1,2,2
+0,0,Transaction Filter Test 2,null,1,2,2
+0,1,Transaction Filter,null,1,2,2
+0,1,Filter Test 1,null,1,2,2
+0,1,Filter Test 2,null,1,2,2
+0,1,Transaction Filter Test 1,null,1,2,2
+0,1,Transaction Filter Test 2,null,1,2,2
+0,null,Transaction Filter,0,1,2,2
+0,null,Filter Test 1,0,1,2,2
+0,null,Filter Test 2,0,1,2,2
+0,null,Transaction Filter Test 1,0,1,2,2
+0,null,Transaction Filter Test 2,0,1,2,2
+0,0,Transaction Filter,0,1,2,2
+0,0,Filter Test 1,0,1,2,2
+0,0,Filter Test 2,0,1,2,2
+0,0,Transaction Filter Test 1,0,1,2,2
+0,0,Transaction Filter Test 2,0,1,2,2
+0,1,Transaction Filter,0,1,2,2
+0,1,Filter Test 1,0,1,2,2
+0,1,Filter Test 2,0,1,2,2
+0,1,Transaction Filter Test 1,0,1,2,2
+0,1,Transaction Filter Test 2,0,1,2,2
+0,null,Transaction Filter,1,1,2,2
+0,null,Filter Test 1,1,1,2,2
+0,null,Filter Test 2,1,1,2,2
+0,null,Transaction Filter Test 1,1,1,2,2
+0,null,Transaction Filter Test 2,1,1,2,2
+0,0,Transaction Filter,1,1,2,2
+0,0,Filter Test 1,1,1,2,2
+0,0,Filter Test 2,1,1,2,2
+0,0,Transaction Filter Test 1,1,1,2,2
+0,0,Transaction Filter Test 2,1,1,2,2
+0,1,Transaction Filter,1,1,2,2
+0,1,Filter Test 1,1,1,2,2
+0,1,Filter Test 2,1,1,2,2
+0,1,Transaction Filter Test 1,1,1,2,2
+0,1,Transaction Filter Test 2,1,1,2,2
+1,null,null,null,null,0,0
+1,0,null,null,null,0,0
+1,1,null,null,null,0,0
+1,null,Transaction Filter,null,null,0,0
+1,null,Filter Test 1,null,null,0,0
+1,null,Filter Test 2,null,null,0,0
+1,null,Transaction Filter Test 1,null,null,0,0
+1,null,Transaction Filter Test 2,null,null,0,0
+1,0,Transaction Filter,null,null,0,0
+1,0,Filter Test 1,null,null,0,0
+1,0,Filter Test 2,null,null,0,0
+1,0,Transaction Filter Test 1,null,null,0,0
+1,0,Transaction Filter Test 2,null,null,0,0
+1,1,Transaction Filter,null,null,0,0
+1,1,Filter Test 1,null,null,0,0
+1,1,Filter Test 2,null,null,0,0
+1,1,Transaction Filter Test 1,null,null,0,0
+1,1,Transaction Filter Test 2,null,null,0,0
+1,null,Transaction Filter,0,null,0,0
+1,null,Filter Test 1,0,null,0,0
+1,null,Filter Test 2,0,null,0,0
+1,null,Transaction Filter Test 1,0,null,0,0
+1,null,Transaction Filter Test 2,0,null,0,0
+1,0,Transaction Filter,0,null,0,0
+1,0,Filter Test 1,0,null,0,0
+1,0,Filter Test 2,0,null,0,0
+1,0,Transaction Filter Test 1,0,null,0,0
+1,0,Transaction Filter Test 2,0,null,0,0
+1,1,Transaction Filter,0,null,0,0
+1,1,Filter Test 1,0,null,0,0
+1,1,Filter Test 2,0,null,0,0
+1,1,Transaction Filter Test 1,0,null,0,0
+1,1,Transaction Filter Test 2,0,null,0,0
+1,null,Transaction Filter,1,null,0,0
+1,null,Filter Test 1,1,null,0,0
+1,null,Filter Test 2,1,null,0,0
+1,null,Transaction Filter Test 1,1,null,0,0
+1,null,Transaction Filter Test 2,1,null,0,0
+1,0,Transaction Filter,1,null,0,0
+1,0,Filter Test 1,1,null,0,0
+1,0,Filter Test 2,1,null,0,0
+1,0,Transaction Filter Test 1,1,null,0,0
+1,0,Transaction Filter Test 2,1,null,0,0
+1,1,Transaction Filter,1,null,0,0
+1,1,Filter Test 1,1,null,0,0
+1,1,Filter Test 2,1,null,0,0
+1,1,Transaction Filter Test 1,1,null,0,0
+1,1,Transaction Filter Test 2,1,null,0,0
+1,null,null,null,0,0,0
+1,0,null,null,0,0,0
+1,1,null,null,0,0,0
+1,null,Transaction Filter,null,0,0,0
+1,null,Filter Test 1,null,0,0,0
+1,null,Filter Test 2,null,0,0,0
+1,null,Transaction Filter Test 1,null,0,0,0
+1,null,Transaction Filter Test 2,null,0,0,0
+1,0,Transaction Filter,null,0,0,0
+1,0,Filter Test 1,null,0,0,0
+1,0,Filter Test 2,null,0,0,0
+1,0,Transaction Filter Test 1,null,0,0,0
+1,0,Transaction Filter Test 2,null,0,0,0
+1,1,Transaction Filter,null,0,0,0
+1,1,Filter Test 1,null,0,0,0
+1,1,Filter Test 2,null,0,0,0
+1,1,Transaction Filter Test 1,null,0,0,0
+1,1,Transaction Filter Test 2,null,0,0,0
+1,null,Transaction Filter,0,0,0,0
+1,null,Filter Test 1,0,0,0,0
+1,null,Filter Test 2,0,0,0,0
+1,null,Transaction Filter Test 1,0,0,0,0
+1,null,Transaction Filter Test 2,0,0,0,0
+1,0,Transaction Filter,0,0,0,0
+1,0,Filter Test 1,0,0,0,0
+1,0,Filter Test 2,0,0,0,0
+1,0,Transaction Filter Test 1,0,0,0,0
+1,0,Transaction Filter Test 2,0,0,0,0
+1,1,Transaction Filter,0,0,0,0
+1,1,Filter Test 1,0,0,0,0
+1,1,Filter Test 2,0,0,0,0
+1,1,Transaction Filter Test 1,0,0,0,0
+1,1,Transaction Filter Test 2,0,0,0,0
+1,null,Transaction Filter,1,0,0,0
+1,null,Filter Test 1,1,0,0,0
+1,null,Filter Test 2,1,0,0,0
+1,null,Transaction Filter Test 1,1,0,0,0
+1,null,Transaction Filter Test 2,1,0,0,0
+1,0,Transaction Filter,1,0,0,0
+1,0,Filter Test 1,1,0,0,0
+1,0,Filter Test 2,1,0,0,0
+1,0,Transaction Filter Test 1,1,0,0,0
+1,0,Transaction Filter Test 2,1,0,0,0
+1,1,Transaction Filter,1,0,0,0
+1,1,Filter Test 1,1,0,0,0
+1,1,Filter Test 2,1,0,0,0
+1,1,Transaction Filter Test 1,1,0,0,0
+1,1,Transaction Filter Test 2,1,0,0,0
+1,null,null,null,1,0,0
+1,0,null,null,1,0,0
+1,1,null,null,1,0,0
+1,null,Transaction Filter,null,1,0,0
+1,null,Filter Test 1,null,1,0,0
+1,null,Filter Test 2,null,1,0,0
+1,null,Transaction Filter Test 1,null,1,0,0
+1,null,Transaction Filter Test 2,null,1,0,0
+1,0,Transaction Filter,null,1,0,0
+1,0,Filter Test 1,null,1,0,0
+1,0,Filter Test 2,null,1,0,0
+1,0,Transaction Filter Test 1,null,1,0,0
+1,0,Transaction Filter Test 2,null,1,0,0
+1,1,Transaction Filter,null,1,0,0
+1,1,Filter Test 1,null,1,0,0
+1,1,Filter Test 2,null,1,0,0
+1,1,Transaction Filter Test 1,null,1,0,0
+1,1,Transaction Filter Test 2,null,1,0,0
+1,null,Transaction Filter,0,1,0,0
+1,null,Filter Test 1,0,1,0,0
+1,null,Filter Test 2,0,1,0,0
+1,null,Transaction Filter Test 1,0,1,0,0
+1,null,Transaction Filter Test 2,0,1,0,0
+1,0,Transaction Filter,0,1,0,0
+1,0,Filter Test 1,0,1,0,0
+1,0,Filter Test 2,0,1,0,0
+1,0,Transaction Filter Test 1,0,1,0,0
+1,0,Transaction Filter Test 2,0,1,0,0
+1,1,Transaction Filter,0,1,0,0
+1,1,Filter Test 1,0,1,0,0
+1,1,Filter Test 2,0,1,0,0
+1,1,Transaction Filter Test 1,0,1,0,0
+1,1,Transaction Filter Test 2,0,1,0,0
+1,null,Transaction Filter,1,1,0,0
+1,null,Filter Test 1,1,1,0,0
+1,null,Filter Test 2,1,1,0,0
+1,null,Transaction Filter Test 1,1,1,0,0
+1,null,Transaction Filter Test 2,1,1,0,0
+1,0,Transaction Filter,1,1,0,0
+1,0,Filter Test 1,1,1,0,0
+1,0,Filter Test 2,1,1,0,0
+1,0,Transaction Filter Test 1,1,1,0,0
+1,0,Transaction Filter Test 2,1,1,0,0
+1,1,Transaction Filter,1,1,0,0
+1,1,Filter Test 1,1,1,0,0
+1,1,Filter Test 2,1,1,0,0
+1,1,Transaction Filter Test 1,1,1,0,0
+1,1,Transaction Filter Test 2,1,1,0,0
+1,null,null,null,null,1,0
+1,0,null,null,null,1,0
+1,1,null,null,null,1,0
+1,null,Transaction Filter,null,null,1,0
+1,null,Filter Test 1,null,null,1,0
+1,null,Filter Test 2,null,null,1,0
+1,null,Transaction Filter Test 1,null,null,1,0
+1,null,Transaction Filter Test 2,null,null,1,0
+1,0,Transaction Filter,null,null,1,0
+1,0,Filter Test 1,null,null,1,0
+1,0,Filter Test 2,null,null,1,0
+1,0,Transaction Filter Test 1,null,null,1,0
+1,0,Transaction Filter Test 2,null,null,1,0
+1,1,Transaction Filter,null,null,1,0
+1,1,Filter Test 1,null,null,1,0
+1,1,Filter Test 2,null,null,1,0
+1,1,Transaction Filter Test 1,null,null,1,0
+1,1,Transaction Filter Test 2,null,null,1,0
+1,null,Transaction Filter,0,null,1,0
+1,null,Filter Test 1,0,null,1,0
+1,null,Filter Test 2,0,null,1,0
+1,null,Transaction Filter Test 1,0,null,1,0
+1,null,Transaction Filter Test 2,0,null,1,0
+1,0,Transaction Filter,0,null,1,0
+1,0,Filter Test 1,0,null,1,0
+1,0,Filter Test 2,0,null,1,0
+1,0,Transaction Filter Test 1,0,null,1,0
+1,0,Transaction Filter Test 2,0,null,1,0
+1,1,Transaction Filter,0,null,1,0
+1,1,Filter Test 1,0,null,1,0
+1,1,Filter Test 2,0,null,1,0
+1,1,Transaction Filter Test 1,0,null,1,0
+1,1,Transaction Filter Test 2,0,null,1,0
+1,null,Transaction Filter,1,null,1,0
+1,null,Filter Test 1,1,null,1,0
+1,null,Filter Test 2,1,null,1,0
+1,null,Transaction Filter Test 1,1,null,1,0
+1,null,Transaction Filter Test 2,1,null,1,0
+1,0,Transaction Filter,1,null,1,0
+1,0,Filter Test 1,1,null,1,0
+1,0,Filter Test 2,1,null,1,0
+1,0,Transaction Filter Test 1,1,null,1,0
+1,0,Transaction Filter Test 2,1,null,1,0
+1,1,Transaction Filter,1,null,1,0
+1,1,Filter Test 1,1,null,1,0
+1,1,Filter Test 2,1,null,1,0
+1,1,Transaction Filter Test 1,1,null,1,0
+1,1,Transaction Filter Test 2,1,null,1,0
+1,null,null,null,0,1,0
+1,0,null,null,0,1,0
+1,1,null,null,0,1,0
+1,null,Transaction Filter,null,0,1,0
+1,null,Filter Test 1,null,0,1,0
+1,null,Filter Test 2,null,0,1,0
+1,null,Transaction Filter Test 1,null,0,1,0
+1,null,Transaction Filter Test 2,null,0,1,0
+1,0,Transaction Filter,null,0,1,0
+1,0,Filter Test 1,null,0,1,0
+1,0,Filter Test 2,null,0,1,0
+1,0,Transaction Filter Test 1,null,0,1,0
+1,0,Transaction Filter Test 2,null,0,1,0
+1,1,Transaction Filter,null,0,1,0
+1,1,Filter Test 1,null,0,1,0
+1,1,Filter Test 2,null,0,1,0
+1,1,Transaction Filter Test 1,null,0,1,0
+1,1,Transaction Filter Test 2,null,0,1,0
+1,null,Transaction Filter,0,0,1,0
+1,null,Filter Test 1,0,0,1,0
+1,null,Filter Test 2,0,0,1,0
+1,null,Transaction Filter Test 1,0,0,1,0
+1,null,Transaction Filter Test 2,0,0,1,0
+1,0,Transaction Filter,0,0,1,0
+1,0,Filter Test 1,0,0,1,0
+1,0,Filter Test 2,0,0,1,0
+1,0,Transaction Filter Test 1,0,0,1,0
+1,0,Transaction Filter Test 2,0,0,1,0
+1,1,Transaction Filter,0,0,1,0
+1,1,Filter Test 1,0,0,1,0
+1,1,Filter Test 2,0,0,1,0
+1,1,Transaction Filter Test 1,0,0,1,0
+1,1,Transaction Filter Test 2,0,0,1,0
+1,null,Transaction Filter,1,0,1,0
+1,null,Filter Test 1,1,0,1,0
+1,null,Filter Test 2,1,0,1,0
+1,null,Transaction Filter Test 1,1,0,1,0
+1,null,Transaction Filter Test 2,1,0,1,0
+1,0,Transaction Filter,1,0,1,0
+1,0,Filter Test 1,1,0,1,0
+1,0,Filter Test 2,1,0,1,0
+1,0,Transaction Filter Test 1,1,0,1,0
+1,0,Transaction Filter Test 2,1,0,1,0
+1,1,Transaction Filter,1,0,1,0
+1,1,Filter Test 1,1,0,1,0
+1,1,Filter Test 2,1,0,1,0
+1,1,Transaction Filter Test 1,1,0,1,0
+1,1,Transaction Filter Test 2,1,0,1,0
+1,null,null,null,1,1,0
+1,0,null,null,1,1,0
+1,1,null,null,1,1,0
+1,null,Transaction Filter,null,1,1,0
+1,null,Filter Test 1,null,1,1,0
+1,null,Filter Test 2,null,1,1,0
+1,null,Transaction Filter Test 1,null,1,1,0
+1,null,Transaction Filter Test 2,null,1,1,0
+1,0,Transaction Filter,null,1,1,0
+1,0,Filter Test 1,null,1,1,0
+1,0,Filter Test 2,null,1,1,0
+1,0,Transaction Filter Test 1,null,1,1,0
+1,0,Transaction Filter Test 2,null,1,1,0
+1,1,Transaction Filter,null,1,1,0
+1,1,Filter Test 1,null,1,1,0
+1,1,Filter Test 2,null,1,1,0
+1,1,Transaction Filter Test 1,null,1,1,0
+1,1,Transaction Filter Test 2,null,1,1,0
+1,null,Transaction Filter,0,1,1,0
+1,null,Filter Test 1,0,1,1,0
+1,null,Filter Test 2,0,1,1,0
+1,null,Transaction Filter Test 1,0,1,1,0
+1,null,Transaction Filter Test 2,0,1,1,0
+1,0,Transaction Filter,0,1,1,0
+1,0,Filter Test 1,0,1,1,0
+1,0,Filter Test 2,0,1,1,0
+1,0,Transaction Filter Test 1,0,1,1,0
+1,0,Transaction Filter Test 2,0,1,1,0
+1,1,Transaction Filter,0,1,1,0
+1,1,Filter Test 1,0,1,1,0
+1,1,Filter Test 2,0,1,1,0
+1,1,Transaction Filter Test 1,0,1,1,0
+1,1,Transaction Filter Test 2,0,1,1,0
+1,null,Transaction Filter,1,1,1,0
+1,null,Filter Test 1,1,1,1,0
+1,null,Filter Test 2,1,1,1,0
+1,null,Transaction Filter Test 1,1,1,1,0
+1,null,Transaction Filter Test 2,1,1,1,0
+1,0,Transaction Filter,1,1,1,0
+1,0,Filter Test 1,1,1,1,0
+1,0,Filter Test 2,1,1,1,0
+1,0,Transaction Filter Test 1,1,1,1,0
+1,0,Transaction Filter Test 2,1,1,1,0
+1,1,Transaction Filter,1,1,1,0
+1,1,Filter Test 1,1,1,1,0
+1,1,Filter Test 2,1,1,1,0
+1,1,Transaction Filter Test 1,1,1,1,0
+1,1,Transaction Filter Test 2,1,1,1,0
+1,null,null,null,null,2,0
+1,0,null,null,null,2,0
+1,1,null,null,null,2,0
+1,null,Transaction Filter,null,null,2,0
+1,null,Filter Test 1,null,null,2,0
+1,null,Filter Test 2,null,null,2,0
+1,null,Transaction Filter Test 1,null,null,2,0
+1,null,Transaction Filter Test 2,null,null,2,0
+1,0,Transaction Filter,null,null,2,0
+1,0,Filter Test 1,null,null,2,0
+1,0,Filter Test 2,null,null,2,0
+1,0,Transaction Filter Test 1,null,null,2,0
+1,0,Transaction Filter Test 2,null,null,2,0
+1,1,Transaction Filter,null,null,2,0
+1,1,Filter Test 1,null,null,2,0
+1,1,Filter Test 2,null,null,2,0
+1,1,Transaction Filter Test 1,null,null,2,0
+1,1,Transaction Filter Test 2,null,null,2,0
+1,null,Transaction Filter,0,null,2,0
+1,null,Filter Test 1,0,null,2,0
+1,null,Filter Test 2,0,null,2,0
+1,null,Transaction Filter Test 1,0,null,2,0
+1,null,Transaction Filter Test 2,0,null,2,0
+1,0,Transaction Filter,0,null,2,0
+1,0,Filter Test 1,0,null,2,0
+1,0,Filter Test 2,0,null,2,0
+1,0,Transaction Filter Test 1,0,null,2,0
+1,0,Transaction Filter Test 2,0,null,2,0
+1,1,Transaction Filter,0,null,2,0
+1,1,Filter Test 1,0,null,2,0
+1,1,Filter Test 2,0,null,2,0
+1,1,Transaction Filter Test 1,0,null,2,0
+1,1,Transaction Filter Test 2,0,null,2,0
+1,null,Transaction Filter,1,null,2,0
+1,null,Filter Test 1,1,null,2,0
+1,null,Filter Test 2,1,null,2,0
+1,null,Transaction Filter Test 1,1,null,2,0
+1,null,Transaction Filter Test 2,1,null,2,0
+1,0,Transaction Filter,1,null,2,0
+1,0,Filter Test 1,1,null,2,0
+1,0,Filter Test 2,1,null,2,0
+1,0,Transaction Filter Test 1,1,null,2,0
+1,0,Transaction Filter Test 2,1,null,2,0
+1,1,Transaction Filter,1,null,2,0
+1,1,Filter Test 1,1,null,2,0
+1,1,Filter Test 2,1,null,2,0
+1,1,Transaction Filter Test 1,1,null,2,0
+1,1,Transaction Filter Test 2,1,null,2,0
+1,null,null,null,0,2,0
+1,0,null,null,0,2,0
+1,1,null,null,0,2,0
+1,null,Transaction Filter,null,0,2,0
+1,null,Filter Test 1,null,0,2,0
+1,null,Filter Test 2,null,0,2,0
+1,null,Transaction Filter Test 1,null,0,2,0
+1,null,Transaction Filter Test 2,null,0,2,0
+1,0,Transaction Filter,null,0,2,0
+1,0,Filter Test 1,null,0,2,0
+1,0,Filter Test 2,null,0,2,0
+1,0,Transaction Filter Test 1,null,0,2,0
+1,0,Transaction Filter Test 2,null,0,2,0
+1,1,Transaction Filter,null,0,2,0
+1,1,Filter Test 1,null,0,2,0
+1,1,Filter Test 2,null,0,2,0
+1,1,Transaction Filter Test 1,null,0,2,0
+1,1,Transaction Filter Test 2,null,0,2,0
+1,null,Transaction Filter,0,0,2,0
+1,null,Filter Test 1,0,0,2,0
+1,null,Filter Test 2,0,0,2,0
+1,null,Transaction Filter Test 1,0,0,2,0
+1,null,Transaction Filter Test 2,0,0,2,0
+1,0,Transaction Filter,0,0,2,0
+1,0,Filter Test 1,0,0,2,0
+1,0,Filter Test 2,0,0,2,0
+1,0,Transaction Filter Test 1,0,0,2,0
+1,0,Transaction Filter Test 2,0,0,2,0
+1,1,Transaction Filter,0,0,2,0
+1,1,Filter Test 1,0,0,2,0
+1,1,Filter Test 2,0,0,2,0
+1,1,Transaction Filter Test 1,0,0,2,0
+1,1,Transaction Filter Test 2,0,0,2,0
+1,null,Transaction Filter,1,0,2,0
+1,null,Filter Test 1,1,0,2,0
+1,null,Filter Test 2,1,0,2,0
+1,null,Transaction Filter Test 1,1,0,2,0
+1,null,Transaction Filter Test 2,1,0,2,0
+1,0,Transaction Filter,1,0,2,0
+1,0,Filter Test 1,1,0,2,0
+1,0,Filter Test 2,1,0,2,0
+1,0,Transaction Filter Test 1,1,0,2,0
+1,0,Transaction Filter Test 2,1,0,2,0
+1,1,Transaction Filter,1,0,2,0
+1,1,Filter Test 1,1,0,2,0
+1,1,Filter Test 2,1,0,2,0
+1,1,Transaction Filter Test 1,1,0,2,0
+1,1,Transaction Filter Test 2,1,0,2,0
+1,null,null,null,1,2,0
+1,0,null,null,1,2,0
+1,1,null,null,1,2,0
+1,null,Transaction Filter,null,1,2,0
+1,null,Filter Test 1,null,1,2,0
+1,null,Filter Test 2,null,1,2,0
+1,null,Transaction Filter Test 1,null,1,2,0
+1,null,Transaction Filter Test 2,null,1,2,0
+1,0,Transaction Filter,null,1,2,0
+1,0,Filter Test 1,null,1,2,0
+1,0,Filter Test 2,null,1,2,0
+1,0,Transaction Filter Test 1,null,1,2,0
+1,0,Transaction Filter Test 2,null,1,2,0
+1,1,Transaction Filter,null,1,2,0
+1,1,Filter Test 1,null,1,2,0
+1,1,Filter Test 2,null,1,2,0
+1,1,Transaction Filter Test 1,null,1,2,0
+1,1,Transaction Filter Test 2,null,1,2,0
+1,null,Transaction Filter,0,1,2,0
+1,null,Filter Test 1,0,1,2,0
+1,null,Filter Test 2,0,1,2,0
+1,null,Transaction Filter Test 1,0,1,2,0
+1,null,Transaction Filter Test 2,0,1,2,0
+1,0,Transaction Filter,0,1,2,0
+1,0,Filter Test 1,0,1,2,0
+1,0,Filter Test 2,0,1,2,0
+1,0,Transaction Filter Test 1,0,1,2,0
+1,0,Transaction Filter Test 2,0,1,2,0
+1,1,Transaction Filter,0,1,2,0
+1,1,Filter Test 1,0,1,2,0
+1,1,Filter Test 2,0,1,2,0
+1,1,Transaction Filter Test 1,0,1,2,0
+1,1,Transaction Filter Test 2,0,1,2,0
+1,null,Transaction Filter,1,1,2,0
+1,null,Filter Test 1,1,1,2,0
+1,null,Filter Test 2,1,1,2,0
+1,null,Transaction Filter Test 1,1,1,2,0
+1,null,Transaction Filter Test 2,1,1,2,0
+1,0,Transaction Filter,1,1,2,0
+1,0,Filter Test 1,1,1,2,0
+1,0,Filter Test 2,1,1,2,0
+1,0,Transaction Filter Test 1,1,1,2,0
+1,0,Transaction Filter Test 2,1,1,2,0
+1,1,Transaction Filter,1,1,2,0
+1,1,Filter Test 1,1,1,2,0
+1,1,Filter Test 2,1,1,2,0
+1,1,Transaction Filter Test 1,1,1,2,0
+1,1,Transaction Filter Test 2,1,1,2,0
+1,null,null,null,null,0,1
+1,0,null,null,null,0,1
+1,1,null,null,null,0,1
+1,null,Transaction Filter,null,null,0,1
+1,null,Filter Test 1,null,null,0,1
+1,null,Filter Test 2,null,null,0,1
+1,null,Transaction Filter Test 1,null,null,0,1
+1,null,Transaction Filter Test 2,null,null,0,1
+1,0,Transaction Filter,null,null,0,1
+1,0,Filter Test 1,null,null,0,1
+1,0,Filter Test 2,null,null,0,1
+1,0,Transaction Filter Test 1,null,null,0,1
+1,0,Transaction Filter Test 2,null,null,0,1
+1,1,Transaction Filter,null,null,0,1
+1,1,Filter Test 1,null,null,0,1
+1,1,Filter Test 2,null,null,0,1
+1,1,Transaction Filter Test 1,null,null,0,1
+1,1,Transaction Filter Test 2,null,null,0,1
+1,null,Transaction Filter,0,null,0,1
+1,null,Filter Test 1,0,null,0,1
+1,null,Filter Test 2,0,null,0,1
+1,null,Transaction Filter Test 1,0,null,0,1
+1,null,Transaction Filter Test 2,0,null,0,1
+1,0,Transaction Filter,0,null,0,1
+1,0,Filter Test 1,0,null,0,1
+1,0,Filter Test 2,0,null,0,1
+1,0,Transaction Filter Test 1,0,null,0,1
+1,0,Transaction Filter Test 2,0,null,0,1
+1,1,Transaction Filter,0,null,0,1
+1,1,Filter Test 1,0,null,0,1
+1,1,Filter Test 2,0,null,0,1
+1,1,Transaction Filter Test 1,0,null,0,1
+1,1,Transaction Filter Test 2,0,null,0,1
+1,null,Transaction Filter,1,null,0,1
+1,null,Filter Test 1,1,null,0,1
+1,null,Filter Test 2,1,null,0,1
+1,null,Transaction Filter Test 1,1,null,0,1
+1,null,Transaction Filter Test 2,1,null,0,1
+1,0,Transaction Filter,1,null,0,1
+1,0,Filter Test 1,1,null,0,1
+1,0,Filter Test 2,1,null,0,1
+1,0,Transaction Filter Test 1,1,null,0,1
+1,0,Transaction Filter Test 2,1,null,0,1
+1,1,Transaction Filter,1,null,0,1
+1,1,Filter Test 1,1,null,0,1
+1,1,Filter Test 2,1,null,0,1
+1,1,Transaction Filter Test 1,1,null,0,1
+1,1,Transaction Filter Test 2,1,null,0,1
+1,null,null,null,0,0,1
+1,0,null,null,0,0,1
+1,1,null,null,0,0,1
+1,null,Transaction Filter,null,0,0,1
+1,null,Filter Test 1,null,0,0,1
+1,null,Filter Test 2,null,0,0,1
+1,null,Transaction Filter Test 1,null,0,0,1
+1,null,Transaction Filter Test 2,null,0,0,1
+1,0,Transaction Filter,null,0,0,1
+1,0,Filter Test 1,null,0,0,1
+1,0,Filter Test 2,null,0,0,1
+1,0,Transaction Filter Test 1,null,0,0,1
+1,0,Transaction Filter Test 2,null,0,0,1
+1,1,Transaction Filter,null,0,0,1
+1,1,Filter Test 1,null,0,0,1
+1,1,Filter Test 2,null,0,0,1
+1,1,Transaction Filter Test 1,null,0,0,1
+1,1,Transaction Filter Test 2,null,0,0,1
+1,null,Transaction Filter,0,0,0,1
+1,null,Filter Test 1,0,0,0,1
+1,null,Filter Test 2,0,0,0,1
+1,null,Transaction Filter Test 1,0,0,0,1
+1,null,Transaction Filter Test 2,0,0,0,1
+1,0,Transaction Filter,0,0,0,1
+1,0,Filter Test 1,0,0,0,1
+1,0,Filter Test 2,0,0,0,1
+1,0,Transaction Filter Test 1,0,0,0,1
+1,0,Transaction Filter Test 2,0,0,0,1
+1,1,Transaction Filter,0,0,0,1
+1,1,Filter Test 1,0,0,0,1
+1,1,Filter Test 2,0,0,0,1
+1,1,Transaction Filter Test 1,0,0,0,1
+1,1,Transaction Filter Test 2,0,0,0,1
+1,null,Transaction Filter,1,0,0,1
+1,null,Filter Test 1,1,0,0,1
+1,null,Filter Test 2,1,0,0,1
+1,null,Transaction Filter Test 1,1,0,0,1
+1,null,Transaction Filter Test 2,1,0,0,1
+1,0,Transaction Filter,1,0,0,1
+1,0,Filter Test 1,1,0,0,1
+1,0,Filter Test 2,1,0,0,1
+1,0,Transaction Filter Test 1,1,0,0,1
+1,0,Transaction Filter Test 2,1,0,0,1
+1,1,Transaction Filter,1,0,0,1
+1,1,Filter Test 1,1,0,0,1
+1,1,Filter Test 2,1,0,0,1
+1,1,Transaction Filter Test 1,1,0,0,1
+1,1,Transaction Filter Test 2,1,0,0,1
+1,null,null,null,1,0,1
+1,0,null,null,1,0,1
+1,1,null,null,1,0,1
+1,null,Transaction Filter,null,1,0,1
+1,null,Filter Test 1,null,1,0,1
+1,null,Filter Test 2,null,1,0,1
+1,null,Transaction Filter Test 1,null,1,0,1
+1,null,Transaction Filter Test 2,null,1,0,1
+1,0,Transaction Filter,null,1,0,1
+1,0,Filter Test 1,null,1,0,1
+1,0,Filter Test 2,null,1,0,1
+1,0,Transaction Filter Test 1,null,1,0,1
+1,0,Transaction Filter Test 2,null,1,0,1
+1,1,Transaction Filter,null,1,0,1
+1,1,Filter Test 1,null,1,0,1
+1,1,Filter Test 2,null,1,0,1
+1,1,Transaction Filter Test 1,null,1,0,1
+1,1,Transaction Filter Test 2,null,1,0,1
+1,null,Transaction Filter,0,1,0,1
+1,null,Filter Test 1,0,1,0,1
+1,null,Filter Test 2,0,1,0,1
+1,null,Transaction Filter Test 1,0,1,0,1
+1,null,Transaction Filter Test 2,0,1,0,1
+1,0,Transaction Filter,0,1,0,1
+1,0,Filter Test 1,0,1,0,1
+1,0,Filter Test 2,0,1,0,1
+1,0,Transaction Filter Test 1,0,1,0,1
+1,0,Transaction Filter Test 2,0,1,0,1
+1,1,Transaction Filter,0,1,0,1
+1,1,Filter Test 1,0,1,0,1
+1,1,Filter Test 2,0,1,0,1
+1,1,Transaction Filter Test 1,0,1,0,1
+1,1,Transaction Filter Test 2,0,1,0,1
+1,null,Transaction Filter,1,1,0,1
+1,null,Filter Test 1,1,1,0,1
+1,null,Filter Test 2,1,1,0,1
+1,null,Transaction Filter Test 1,1,1,0,1
+1,null,Transaction Filter Test 2,1,1,0,1
+1,0,Transaction Filter,1,1,0,1
+1,0,Filter Test 1,1,1,0,1
+1,0,Filter Test 2,1,1,0,1
+1,0,Transaction Filter Test 1,1,1,0,1
+1,0,Transaction Filter Test 2,1,1,0,1
+1,1,Transaction Filter,1,1,0,1
+1,1,Filter Test 1,1,1,0,1
+1,1,Filter Test 2,1,1,0,1
+1,1,Transaction Filter Test 1,1,1,0,1
+1,1,Transaction Filter Test 2,1,1,0,1
+1,null,null,null,null,1,1
+1,0,null,null,null,1,1
+1,1,null,null,null,1,1
+1,null,Transaction Filter,null,null,1,1
+1,null,Filter Test 1,null,null,1,1
+1,null,Filter Test 2,null,null,1,1
+1,null,Transaction Filter Test 1,null,null,1,1
+1,null,Transaction Filter Test 2,null,null,1,1
+1,0,Transaction Filter,null,null,1,1
+1,0,Filter Test 1,null,null,1,1
+1,0,Filter Test 2,null,null,1,1
+1,0,Transaction Filter Test 1,null,null,1,1
+1,0,Transaction Filter Test 2,null,null,1,1
+1,1,Transaction Filter,null,null,1,1
+1,1,Filter Test 1,null,null,1,1
+1,1,Filter Test 2,null,null,1,1
+1,1,Transaction Filter Test 1,null,null,1,1
+1,1,Transaction Filter Test 2,null,null,1,1
+1,null,Transaction Filter,0,null,1,1
+1,null,Filter Test 1,0,null,1,1
+1,null,Filter Test 2,0,null,1,1
+1,null,Transaction Filter Test 1,0,null,1,1
+1,null,Transaction Filter Test 2,0,null,1,1
+1,0,Transaction Filter,0,null,1,1
+1,0,Filter Test 1,0,null,1,1
+1,0,Filter Test 2,0,null,1,1
+1,0,Transaction Filter Test 1,0,null,1,1
+1,0,Transaction Filter Test 2,0,null,1,1
+1,1,Transaction Filter,0,null,1,1
+1,1,Filter Test 1,0,null,1,1
+1,1,Filter Test 2,0,null,1,1
+1,1,Transaction Filter Test 1,0,null,1,1
+1,1,Transaction Filter Test 2,0,null,1,1
+1,null,Transaction Filter,1,null,1,1
+1,null,Filter Test 1,1,null,1,1
+1,null,Filter Test 2,1,null,1,1
+1,null,Transaction Filter Test 1,1,null,1,1
+1,null,Transaction Filter Test 2,1,null,1,1
+1,0,Transaction Filter,1,null,1,1
+1,0,Filter Test 1,1,null,1,1
+1,0,Filter Test 2,1,null,1,1
+1,0,Transaction Filter Test 1,1,null,1,1
+1,0,Transaction Filter Test 2,1,null,1,1
+1,1,Transaction Filter,1,null,1,1
+1,1,Filter Test 1,1,null,1,1
+1,1,Filter Test 2,1,null,1,1
+1,1,Transaction Filter Test 1,1,null,1,1
+1,1,Transaction Filter Test 2,1,null,1,1
+1,null,null,null,0,1,1
+1,0,null,null,0,1,1
+1,1,null,null,0,1,1
+1,null,Transaction Filter,null,0,1,1
+1,null,Filter Test 1,null,0,1,1
+1,null,Filter Test 2,null,0,1,1
+1,null,Transaction Filter Test 1,null,0,1,1
+1,null,Transaction Filter Test 2,null,0,1,1
+1,0,Transaction Filter,null,0,1,1
+1,0,Filter Test 1,null,0,1,1
+1,0,Filter Test 2,null,0,1,1
+1,0,Transaction Filter Test 1,null,0,1,1
+1,0,Transaction Filter Test 2,null,0,1,1
+1,1,Transaction Filter,null,0,1,1
+1,1,Filter Test 1,null,0,1,1
+1,1,Filter Test 2,null,0,1,1
+1,1,Transaction Filter Test 1,null,0,1,1
+1,1,Transaction Filter Test 2,null,0,1,1
+1,null,Transaction Filter,0,0,1,1
+1,null,Filter Test 1,0,0,1,1
+1,null,Filter Test 2,0,0,1,1
+1,null,Transaction Filter Test 1,0,0,1,1
+1,null,Transaction Filter Test 2,0,0,1,1
+1,0,Transaction Filter,0,0,1,1
+1,0,Filter Test 1,0,0,1,1
+1,0,Filter Test 2,0,0,1,1
+1,0,Transaction Filter Test 1,0,0,1,1
+1,0,Transaction Filter Test 2,0,0,1,1
+1,1,Transaction Filter,0,0,1,1
+1,1,Filter Test 1,0,0,1,1
+1,1,Filter Test 2,0,0,1,1
+1,1,Transaction Filter Test 1,0,0,1,1
+1,1,Transaction Filter Test 2,0,0,1,1
+1,null,Transaction Filter,1,0,1,1
+1,null,Filter Test 1,1,0,1,1
+1,null,Filter Test 2,1,0,1,1
+1,null,Transaction Filter Test 1,1,0,1,1
+1,null,Transaction Filter Test 2,1,0,1,1
+1,0,Transaction Filter,1,0,1,1
+1,0,Filter Test 1,1,0,1,1
+1,0,Filter Test 2,1,0,1,1
+1,0,Transaction Filter Test 1,1,0,1,1
+1,0,Transaction Filter Test 2,1,0,1,1
+1,1,Transaction Filter,1,0,1,1
+1,1,Filter Test 1,1,0,1,1
+1,1,Filter Test 2,1,0,1,1
+1,1,Transaction Filter Test 1,1,0,1,1
+1,1,Transaction Filter Test 2,1,0,1,1
+1,null,null,null,1,1,1
+1,0,null,null,1,1,1
+1,1,null,null,1,1,1
+1,null,Transaction Filter,null,1,1,1
+1,null,Filter Test 1,null,1,1,1
+1,null,Filter Test 2,null,1,1,1
+1,null,Transaction Filter Test 1,null,1,1,1
+1,null,Transaction Filter Test 2,null,1,1,1
+1,0,Transaction Filter,null,1,1,1
+1,0,Filter Test 1,null,1,1,1
+1,0,Filter Test 2,null,1,1,1
+1,0,Transaction Filter Test 1,null,1,1,1
+1,0,Transaction Filter Test 2,null,1,1,1
+1,1,Transaction Filter,null,1,1,1
+1,1,Filter Test 1,null,1,1,1
+1,1,Filter Test 2,null,1,1,1
+1,1,Transaction Filter Test 1,null,1,1,1
+1,1,Transaction Filter Test 2,null,1,1,1
+1,null,Transaction Filter,0,1,1,1
+1,null,Filter Test 1,0,1,1,1
+1,null,Filter Test 2,0,1,1,1
+1,null,Transaction Filter Test 1,0,1,1,1
+1,null,Transaction Filter Test 2,0,1,1,1
+1,0,Transaction Filter,0,1,1,1
+1,0,Filter Test 1,0,1,1,1
+1,0,Filter Test 2,0,1,1,1
+1,0,Transaction Filter Test 1,0,1,1,1
+1,0,Transaction Filter Test 2,0,1,1,1
+1,1,Transaction Filter,0,1,1,1
+1,1,Filter Test 1,0,1,1,1
+1,1,Filter Test 2,0,1,1,1
+1,1,Transaction Filter Test 1,0,1,1,1
+1,1,Transaction Filter Test 2,0,1,1,1
+1,null,Transaction Filter,1,1,1,1
+1,null,Filter Test 1,1,1,1,1
+1,null,Filter Test 2,1,1,1,1
+1,null,Transaction Filter Test 1,1,1,1,1
+1,null,Transaction Filter Test 2,1,1,1,1
+1,0,Transaction Filter,1,1,1,1
+1,0,Filter Test 1,1,1,1,1
+1,0,Filter Test 2,1,1,1,1
+1,0,Transaction Filter Test 1,1,1,1,1
+1,0,Transaction Filter Test 2,1,1,1,1
+1,1,Transaction Filter,1,1,1,1
+1,1,Filter Test 1,1,1,1,1
+1,1,Filter Test 2,1,1,1,1
+1,1,Transaction Filter Test 1,1,1,1,1
+1,1,Transaction Filter Test 2,1,1,1,1
+1,null,null,null,null,2,1
+1,0,null,null,null,2,1
+1,1,null,null,null,2,1
+1,null,Transaction Filter,null,null,2,1
+1,null,Filter Test 1,null,null,2,1
+1,null,Filter Test 2,null,null,2,1
+1,null,Transaction Filter Test 1,null,null,2,1
+1,null,Transaction Filter Test 2,null,null,2,1
+1,0,Transaction Filter,null,null,2,1
+1,0,Filter Test 1,null,null,2,1
+1,0,Filter Test 2,null,null,2,1
+1,0,Transaction Filter Test 1,null,null,2,1
+1,0,Transaction Filter Test 2,null,null,2,1
+1,1,Transaction Filter,null,null,2,1
+1,1,Filter Test 1,null,null,2,1
+1,1,Filter Test 2,null,null,2,1
+1,1,Transaction Filter Test 1,null,null,2,1
+1,1,Transaction Filter Test 2,null,null,2,1
+1,null,Transaction Filter,0,null,2,1
+1,null,Filter Test 1,0,null,2,1
+1,null,Filter Test 2,0,null,2,1
+1,null,Transaction Filter Test 1,0,null,2,1
+1,null,Transaction Filter Test 2,0,null,2,1
+1,0,Transaction Filter,0,null,2,1
+1,0,Filter Test 1,0,null,2,1
+1,0,Filter Test 2,0,null,2,1
+1,0,Transaction Filter Test 1,0,null,2,1
+1,0,Transaction Filter Test 2,0,null,2,1
+1,1,Transaction Filter,0,null,2,1
+1,1,Filter Test 1,0,null,2,1
+1,1,Filter Test 2,0,null,2,1
+1,1,Transaction Filter Test 1,0,null,2,1
+1,1,Transaction Filter Test 2,0,null,2,1
+1,null,Transaction Filter,1,null,2,1
+1,null,Filter Test 1,1,null,2,1
+1,null,Filter Test 2,1,null,2,1
+1,null,Transaction Filter Test 1,1,null,2,1
+1,null,Transaction Filter Test 2,1,null,2,1
+1,0,Transaction Filter,1,null,2,1
+1,0,Filter Test 1,1,null,2,1
+1,0,Filter Test 2,1,null,2,1
+1,0,Transaction Filter Test 1,1,null,2,1
+1,0,Transaction Filter Test 2,1,null,2,1
+1,1,Transaction Filter,1,null,2,1
+1,1,Filter Test 1,1,null,2,1
+1,1,Filter Test 2,1,null,2,1
+1,1,Transaction Filter Test 1,1,null,2,1
+1,1,Transaction Filter Test 2,1,null,2,1
+1,null,null,null,0,2,1
+1,0,null,null,0,2,1
+1,1,null,null,0,2,1
+1,null,Transaction Filter,null,0,2,1
+1,null,Filter Test 1,null,0,2,1
+1,null,Filter Test 2,null,0,2,1
+1,null,Transaction Filter Test 1,null,0,2,1
+1,null,Transaction Filter Test 2,null,0,2,1
+1,0,Transaction Filter,null,0,2,1
+1,0,Filter Test 1,null,0,2,1
+1,0,Filter Test 2,null,0,2,1
+1,0,Transaction Filter Test 1,null,0,2,1
+1,0,Transaction Filter Test 2,null,0,2,1
+1,1,Transaction Filter,null,0,2,1
+1,1,Filter Test 1,null,0,2,1
+1,1,Filter Test 2,null,0,2,1
+1,1,Transaction Filter Test 1,null,0,2,1
+1,1,Transaction Filter Test 2,null,0,2,1
+1,null,Transaction Filter,0,0,2,1
+1,null,Filter Test 1,0,0,2,1
+1,null,Filter Test 2,0,0,2,1
+1,null,Transaction Filter Test 1,0,0,2,1
+1,null,Transaction Filter Test 2,0,0,2,1
+1,0,Transaction Filter,0,0,2,1
+1,0,Filter Test 1,0,0,2,1
+1,0,Filter Test 2,0,0,2,1
+1,0,Transaction Filter Test 1,0,0,2,1
+1,0,Transaction Filter Test 2,0,0,2,1
+1,1,Transaction Filter,0,0,2,1
+1,1,Filter Test 1,0,0,2,1
+1,1,Filter Test 2,0,0,2,1
+1,1,Transaction Filter Test 1,0,0,2,1
+1,1,Transaction Filter Test 2,0,0,2,1
+1,null,Transaction Filter,1,0,2,1
+1,null,Filter Test 1,1,0,2,1
+1,null,Filter Test 2,1,0,2,1
+1,null,Transaction Filter Test 1,1,0,2,1
+1,null,Transaction Filter Test 2,1,0,2,1
+1,0,Transaction Filter,1,0,2,1
+1,0,Filter Test 1,1,0,2,1
+1,0,Filter Test 2,1,0,2,1
+1,0,Transaction Filter Test 1,1,0,2,1
+1,0,Transaction Filter Test 2,1,0,2,1
+1,1,Transaction Filter,1,0,2,1
+1,1,Filter Test 1,1,0,2,1
+1,1,Filter Test 2,1,0,2,1
+1,1,Transaction Filter Test 1,1,0,2,1
+1,1,Transaction Filter Test 2,1,0,2,1
+1,null,null,null,1,2,1
+1,0,null,null,1,2,1
+1,1,null,null,1,2,1
+1,null,Transaction Filter,null,1,2,1
+1,null,Filter Test 1,null,1,2,1
+1,null,Filter Test 2,null,1,2,1
+1,null,Transaction Filter Test 1,null,1,2,1
+1,null,Transaction Filter Test 2,null,1,2,1
+1,0,Transaction Filter,null,1,2,1
+1,0,Filter Test 1,null,1,2,1
+1,0,Filter Test 2,null,1,2,1
+1,0,Transaction Filter Test 1,null,1,2,1
+1,0,Transaction Filter Test 2,null,1,2,1
+1,1,Transaction Filter,null,1,2,1
+1,1,Filter Test 1,null,1,2,1
+1,1,Filter Test 2,null,1,2,1
+1,1,Transaction Filter Test 1,null,1,2,1
+1,1,Transaction Filter Test 2,null,1,2,1
+1,null,Transaction Filter,0,1,2,1
+1,null,Filter Test 1,0,1,2,1
+1,null,Filter Test 2,0,1,2,1
+1,null,Transaction Filter Test 1,0,1,2,1
+1,null,Transaction Filter Test 2,0,1,2,1
+1,0,Transaction Filter,0,1,2,1
+1,0,Filter Test 1,0,1,2,1
+1,0,Filter Test 2,0,1,2,1
+1,0,Transaction Filter Test 1,0,1,2,1
+1,0,Transaction Filter Test 2,0,1,2,1
+1,1,Transaction Filter,0,1,2,1
+1,1,Filter Test 1,0,1,2,1
+1,1,Filter Test 2,0,1,2,1
+1,1,Transaction Filter Test 1,0,1,2,1
+1,1,Transaction Filter Test 2,0,1,2,1
+1,null,Transaction Filter,1,1,2,1
+1,null,Filter Test 1,1,1,2,1
+1,null,Filter Test 2,1,1,2,1
+1,null,Transaction Filter Test 1,1,1,2,1
+1,null,Transaction Filter Test 2,1,1,2,1
+1,0,Transaction Filter,1,1,2,1
+1,0,Filter Test 1,1,1,2,1
+1,0,Filter Test 2,1,1,2,1
+1,0,Transaction Filter Test 1,1,1,2,1
+1,0,Transaction Filter Test 2,1,1,2,1
+1,1,Transaction Filter,1,1,2,1
+1,1,Filter Test 1,1,1,2,1
+1,1,Filter Test 2,1,1,2,1
+1,1,Transaction Filter Test 1,1,1,2,1
+1,1,Transaction Filter Test 2,1,1,2,1
+1,null,null,null,null,0,2
+1,0,null,null,null,0,2
+1,1,null,null,null,0,2
+1,null,Transaction Filter,null,null,0,2
+1,null,Filter Test 1,null,null,0,2
+1,null,Filter Test 2,null,null,0,2
+1,null,Transaction Filter Test 1,null,null,0,2
+1,null,Transaction Filter Test 2,null,null,0,2
+1,0,Transaction Filter,null,null,0,2
+1,0,Filter Test 1,null,null,0,2
+1,0,Filter Test 2,null,null,0,2
+1,0,Transaction Filter Test 1,null,null,0,2
+1,0,Transaction Filter Test 2,null,null,0,2
+1,1,Transaction Filter,null,null,0,2
+1,1,Filter Test 1,null,null,0,2
+1,1,Filter Test 2,null,null,0,2
+1,1,Transaction Filter Test 1,null,null,0,2
+1,1,Transaction Filter Test 2,null,null,0,2
+1,null,Transaction Filter,0,null,0,2
+1,null,Filter Test 1,0,null,0,2
+1,null,Filter Test 2,0,null,0,2
+1,null,Transaction Filter Test 1,0,null,0,2
+1,null,Transaction Filter Test 2,0,null,0,2
+1,0,Transaction Filter,0,null,0,2
+1,0,Filter Test 1,0,null,0,2
+1,0,Filter Test 2,0,null,0,2
+1,0,Transaction Filter Test 1,0,null,0,2
+1,0,Transaction Filter Test 2,0,null,0,2
+1,1,Transaction Filter,0,null,0,2
+1,1,Filter Test 1,0,null,0,2
+1,1,Filter Test 2,0,null,0,2
+1,1,Transaction Filter Test 1,0,null,0,2
+1,1,Transaction Filter Test 2,0,null,0,2
+1,null,Transaction Filter,1,null,0,2
+1,null,Filter Test 1,1,null,0,2
+1,null,Filter Test 2,1,null,0,2
+1,null,Transaction Filter Test 1,1,null,0,2
+1,null,Transaction Filter Test 2,1,null,0,2
+1,0,Transaction Filter,1,null,0,2
+1,0,Filter Test 1,1,null,0,2
+1,0,Filter Test 2,1,null,0,2
+1,0,Transaction Filter Test 1,1,null,0,2
+1,0,Transaction Filter Test 2,1,null,0,2
+1,1,Transaction Filter,1,null,0,2
+1,1,Filter Test 1,1,null,0,2
+1,1,Filter Test 2,1,null,0,2
+1,1,Transaction Filter Test 1,1,null,0,2
+1,1,Transaction Filter Test 2,1,null,0,2
+1,null,null,null,0,0,2
+1,0,null,null,0,0,2
+1,1,null,null,0,0,2
+1,null,Transaction Filter,null,0,0,2
+1,null,Filter Test 1,null,0,0,2
+1,null,Filter Test 2,null,0,0,2
+1,null,Transaction Filter Test 1,null,0,0,2
+1,null,Transaction Filter Test 2,null,0,0,2
+1,0,Transaction Filter,null,0,0,2
+1,0,Filter Test 1,null,0,0,2
+1,0,Filter Test 2,null,0,0,2
+1,0,Transaction Filter Test 1,null,0,0,2
+1,0,Transaction Filter Test 2,null,0,0,2
+1,1,Transaction Filter,null,0,0,2
+1,1,Filter Test 1,null,0,0,2
+1,1,Filter Test 2,null,0,0,2
+1,1,Transaction Filter Test 1,null,0,0,2
+1,1,Transaction Filter Test 2,null,0,0,2
+1,null,Transaction Filter,0,0,0,2
+1,null,Filter Test 1,0,0,0,2
+1,null,Filter Test 2,0,0,0,2
+1,null,Transaction Filter Test 1,0,0,0,2
+1,null,Transaction Filter Test 2,0,0,0,2
+1,0,Transaction Filter,0,0,0,2
+1,0,Filter Test 1,0,0,0,2
+1,0,Filter Test 2,0,0,0,2
+1,0,Transaction Filter Test 1,0,0,0,2
+1,0,Transaction Filter Test 2,0,0,0,2
+1,1,Transaction Filter,0,0,0,2
+1,1,Filter Test 1,0,0,0,2
+1,1,Filter Test 2,0,0,0,2
+1,1,Transaction Filter Test 1,0,0,0,2
+1,1,Transaction Filter Test 2,0,0,0,2
+1,null,Transaction Filter,1,0,0,2
+1,null,Filter Test 1,1,0,0,2
+1,null,Filter Test 2,1,0,0,2
+1,null,Transaction Filter Test 1,1,0,0,2
+1,null,Transaction Filter Test 2,1,0,0,2
+1,0,Transaction Filter,1,0,0,2
+1,0,Filter Test 1,1,0,0,2
+1,0,Filter Test 2,1,0,0,2
+1,0,Transaction Filter Test 1,1,0,0,2
+1,0,Transaction Filter Test 2,1,0,0,2
+1,1,Transaction Filter,1,0,0,2
+1,1,Filter Test 1,1,0,0,2
+1,1,Filter Test 2,1,0,0,2
+1,1,Transaction Filter Test 1,1,0,0,2
+1,1,Transaction Filter Test 2,1,0,0,2
+1,null,null,null,1,0,2
+1,0,null,null,1,0,2
+1,1,null,null,1,0,2
+1,null,Transaction Filter,null,1,0,2
+1,null,Filter Test 1,null,1,0,2
+1,null,Filter Test 2,null,1,0,2
+1,null,Transaction Filter Test 1,null,1,0,2
+1,null,Transaction Filter Test 2,null,1,0,2
+1,0,Transaction Filter,null,1,0,2
+1,0,Filter Test 1,null,1,0,2
+1,0,Filter Test 2,null,1,0,2
+1,0,Transaction Filter Test 1,null,1,0,2
+1,0,Transaction Filter Test 2,null,1,0,2
+1,1,Transaction Filter,null,1,0,2
+1,1,Filter Test 1,null,1,0,2
+1,1,Filter Test 2,null,1,0,2
+1,1,Transaction Filter Test 1,null,1,0,2
+1,1,Transaction Filter Test 2,null,1,0,2
+1,null,Transaction Filter,0,1,0,2
+1,null,Filter Test 1,0,1,0,2
+1,null,Filter Test 2,0,1,0,2
+1,null,Transaction Filter Test 1,0,1,0,2
+1,null,Transaction Filter Test 2,0,1,0,2
+1,0,Transaction Filter,0,1,0,2
+1,0,Filter Test 1,0,1,0,2
+1,0,Filter Test 2,0,1,0,2
+1,0,Transaction Filter Test 1,0,1,0,2
+1,0,Transaction Filter Test 2,0,1,0,2
+1,1,Transaction Filter,0,1,0,2
+1,1,Filter Test 1,0,1,0,2
+1,1,Filter Test 2,0,1,0,2
+1,1,Transaction Filter Test 1,0,1,0,2
+1,1,Transaction Filter Test 2,0,1,0,2
+1,null,Transaction Filter,1,1,0,2
+1,null,Filter Test 1,1,1,0,2
+1,null,Filter Test 2,1,1,0,2
+1,null,Transaction Filter Test 1,1,1,0,2
+1,null,Transaction Filter Test 2,1,1,0,2
+1,0,Transaction Filter,1,1,0,2
+1,0,Filter Test 1,1,1,0,2
+1,0,Filter Test 2,1,1,0,2
+1,0,Transaction Filter Test 1,1,1,0,2
+1,0,Transaction Filter Test 2,1,1,0,2
+1,1,Transaction Filter,1,1,0,2
+1,1,Filter Test 1,1,1,0,2
+1,1,Filter Test 2,1,1,0,2
+1,1,Transaction Filter Test 1,1,1,0,2
+1,1,Transaction Filter Test 2,1,1,0,2
+1,null,null,null,null,1,2
+1,0,null,null,null,1,2
+1,1,null,null,null,1,2
+1,null,Transaction Filter,null,null,1,2
+1,null,Filter Test 1,null,null,1,2
+1,null,Filter Test 2,null,null,1,2
+1,null,Transaction Filter Test 1,null,null,1,2
+1,null,Transaction Filter Test 2,null,null,1,2
+1,0,Transaction Filter,null,null,1,2
+1,0,Filter Test 1,null,null,1,2
+1,0,Filter Test 2,null,null,1,2
+1,0,Transaction Filter Test 1,null,null,1,2
+1,0,Transaction Filter Test 2,null,null,1,2
+1,1,Transaction Filter,null,null,1,2
+1,1,Filter Test 1,null,null,1,2
+1,1,Filter Test 2,null,null,1,2
+1,1,Transaction Filter Test 1,null,null,1,2
+1,1,Transaction Filter Test 2,null,null,1,2
+1,null,Transaction Filter,0,null,1,2
+1,null,Filter Test 1,0,null,1,2
+1,null,Filter Test 2,0,null,1,2
+1,null,Transaction Filter Test 1,0,null,1,2
+1,null,Transaction Filter Test 2,0,null,1,2
+1,0,Transaction Filter,0,null,1,2
+1,0,Filter Test 1,0,null,1,2
+1,0,Filter Test 2,0,null,1,2
+1,0,Transaction Filter Test 1,0,null,1,2
+1,0,Transaction Filter Test 2,0,null,1,2
+1,1,Transaction Filter,0,null,1,2
+1,1,Filter Test 1,0,null,1,2
+1,1,Filter Test 2,0,null,1,2
+1,1,Transaction Filter Test 1,0,null,1,2
+1,1,Transaction Filter Test 2,0,null,1,2
+1,null,Transaction Filter,1,null,1,2
+1,null,Filter Test 1,1,null,1,2
+1,null,Filter Test 2,1,null,1,2
+1,null,Transaction Filter Test 1,1,null,1,2
+1,null,Transaction Filter Test 2,1,null,1,2
+1,0,Transaction Filter,1,null,1,2
+1,0,Filter Test 1,1,null,1,2
+1,0,Filter Test 2,1,null,1,2
+1,0,Transaction Filter Test 1,1,null,1,2
+1,0,Transaction Filter Test 2,1,null,1,2
+1,1,Transaction Filter,1,null,1,2
+1,1,Filter Test 1,1,null,1,2
+1,1,Filter Test 2,1,null,1,2
+1,1,Transaction Filter Test 1,1,null,1,2
+1,1,Transaction Filter Test 2,1,null,1,2
+1,null,null,null,0,1,2
+1,0,null,null,0,1,2
+1,1,null,null,0,1,2
+1,null,Transaction Filter,null,0,1,2
+1,null,Filter Test 1,null,0,1,2
+1,null,Filter Test 2,null,0,1,2
+1,null,Transaction Filter Test 1,null,0,1,2
+1,null,Transaction Filter Test 2,null,0,1,2
+1,0,Transaction Filter,null,0,1,2
+1,0,Filter Test 1,null,0,1,2
+1,0,Filter Test 2,null,0,1,2
+1,0,Transaction Filter Test 1,null,0,1,2
+1,0,Transaction Filter Test 2,null,0,1,2
+1,1,Transaction Filter,null,0,1,2
+1,1,Filter Test 1,null,0,1,2
+1,1,Filter Test 2,null,0,1,2
+1,1,Transaction Filter Test 1,null,0,1,2
+1,1,Transaction Filter Test 2,null,0,1,2
+1,null,Transaction Filter,0,0,1,2
+1,null,Filter Test 1,0,0,1,2
+1,null,Filter Test 2,0,0,1,2
+1,null,Transaction Filter Test 1,0,0,1,2
+1,null,Transaction Filter Test 2,0,0,1,2
+1,0,Transaction Filter,0,0,1,2
+1,0,Filter Test 1,0,0,1,2
+1,0,Filter Test 2,0,0,1,2
+1,0,Transaction Filter Test 1,0,0,1,2
+1,0,Transaction Filter Test 2,0,0,1,2
+1,1,Transaction Filter,0,0,1,2
+1,1,Filter Test 1,0,0,1,2
+1,1,Filter Test 2,0,0,1,2
+1,1,Transaction Filter Test 1,0,0,1,2
+1,1,Transaction Filter Test 2,0,0,1,2
+1,null,Transaction Filter,1,0,1,2
+1,null,Filter Test 1,1,0,1,2
+1,null,Filter Test 2,1,0,1,2
+1,null,Transaction Filter Test 1,1,0,1,2
+1,null,Transaction Filter Test 2,1,0,1,2
+1,0,Transaction Filter,1,0,1,2
+1,0,Filter Test 1,1,0,1,2
+1,0,Filter Test 2,1,0,1,2
+1,0,Transaction Filter Test 1,1,0,1,2
+1,0,Transaction Filter Test 2,1,0,1,2
+1,1,Transaction Filter,1,0,1,2
+1,1,Filter Test 1,1,0,1,2
+1,1,Filter Test 2,1,0,1,2
+1,1,Transaction Filter Test 1,1,0,1,2
+1,1,Transaction Filter Test 2,1,0,1,2
+1,null,null,null,1,1,2
+1,0,null,null,1,1,2
+1,1,null,null,1,1,2
+1,null,Transaction Filter,null,1,1,2
+1,null,Filter Test 1,null,1,1,2
+1,null,Filter Test 2,null,1,1,2
+1,null,Transaction Filter Test 1,null,1,1,2
+1,null,Transaction Filter Test 2,null,1,1,2
+1,0,Transaction Filter,null,1,1,2
+1,0,Filter Test 1,null,1,1,2
+1,0,Filter Test 2,null,1,1,2
+1,0,Transaction Filter Test 1,null,1,1,2
+1,0,Transaction Filter Test 2,null,1,1,2
+1,1,Transaction Filter,null,1,1,2
+1,1,Filter Test 1,null,1,1,2
+1,1,Filter Test 2,null,1,1,2
+1,1,Transaction Filter Test 1,null,1,1,2
+1,1,Transaction Filter Test 2,null,1,1,2
+1,null,Transaction Filter,0,1,1,2
+1,null,Filter Test 1,0,1,1,2
+1,null,Filter Test 2,0,1,1,2
+1,null,Transaction Filter Test 1,0,1,1,2
+1,null,Transaction Filter Test 2,0,1,1,2
+1,0,Transaction Filter,0,1,1,2
+1,0,Filter Test 1,0,1,1,2
+1,0,Filter Test 2,0,1,1,2
+1,0,Transaction Filter Test 1,0,1,1,2
+1,0,Transaction Filter Test 2,0,1,1,2
+1,1,Transaction Filter,0,1,1,2
+1,1,Filter Test 1,0,1,1,2
+1,1,Filter Test 2,0,1,1,2
+1,1,Transaction Filter Test 1,0,1,1,2
+1,1,Transaction Filter Test 2,0,1,1,2
+1,null,Transaction Filter,1,1,1,2
+1,null,Filter Test 1,1,1,1,2
+1,null,Filter Test 2,1,1,1,2
+1,null,Transaction Filter Test 1,1,1,1,2
+1,null,Transaction Filter Test 2,1,1,1,2
+1,0,Transaction Filter,1,1,1,2
+1,0,Filter Test 1,1,1,1,2
+1,0,Filter Test 2,1,1,1,2
+1,0,Transaction Filter Test 1,1,1,1,2
+1,0,Transaction Filter Test 2,1,1,1,2
+1,1,Transaction Filter,1,1,1,2
+1,1,Filter Test 1,1,1,1,2
+1,1,Filter Test 2,1,1,1,2
+1,1,Transaction Filter Test 1,1,1,1,2
+1,1,Transaction Filter Test 2,1,1,1,2
+1,null,null,null,null,2,2
+1,0,null,null,null,2,2
+1,1,null,null,null,2,2
+1,null,Transaction Filter,null,null,2,2
+1,null,Filter Test 1,null,null,2,2
+1,null,Filter Test 2,null,null,2,2
+1,null,Transaction Filter Test 1,null,null,2,2
+1,null,Transaction Filter Test 2,null,null,2,2
+1,0,Transaction Filter,null,null,2,2
+1,0,Filter Test 1,null,null,2,2
+1,0,Filter Test 2,null,null,2,2
+1,0,Transaction Filter Test 1,null,null,2,2
+1,0,Transaction Filter Test 2,null,null,2,2
+1,1,Transaction Filter,null,null,2,2
+1,1,Filter Test 1,null,null,2,2
+1,1,Filter Test 2,null,null,2,2
+1,1,Transaction Filter Test 1,null,null,2,2
+1,1,Transaction Filter Test 2,null,null,2,2
+1,null,Transaction Filter,0,null,2,2
+1,null,Filter Test 1,0,null,2,2
+1,null,Filter Test 2,0,null,2,2
+1,null,Transaction Filter Test 1,0,null,2,2
+1,null,Transaction Filter Test 2,0,null,2,2
+1,0,Transaction Filter,0,null,2,2
+1,0,Filter Test 1,0,null,2,2
+1,0,Filter Test 2,0,null,2,2
+1,0,Transaction Filter Test 1,0,null,2,2
+1,0,Transaction Filter Test 2,0,null,2,2
+1,1,Transaction Filter,0,null,2,2
+1,1,Filter Test 1,0,null,2,2
+1,1,Filter Test 2,0,null,2,2
+1,1,Transaction Filter Test 1,0,null,2,2
+1,1,Transaction Filter Test 2,0,null,2,2
+1,null,Transaction Filter,1,null,2,2
+1,null,Filter Test 1,1,null,2,2
+1,null,Filter Test 2,1,null,2,2
+1,null,Transaction Filter Test 1,1,null,2,2
+1,null,Transaction Filter Test 2,1,null,2,2
+1,0,Transaction Filter,1,null,2,2
+1,0,Filter Test 1,1,null,2,2
+1,0,Filter Test 2,1,null,2,2
+1,0,Transaction Filter Test 1,1,null,2,2
+1,0,Transaction Filter Test 2,1,null,2,2
+1,1,Transaction Filter,1,null,2,2
+1,1,Filter Test 1,1,null,2,2
+1,1,Filter Test 2,1,null,2,2
+1,1,Transaction Filter Test 1,1,null,2,2
+1,1,Transaction Filter Test 2,1,null,2,2
+1,null,null,null,0,2,2
+1,0,null,null,0,2,2
+1,1,null,null,0,2,2
+1,null,Transaction Filter,null,0,2,2
+1,null,Filter Test 1,null,0,2,2
+1,null,Filter Test 2,null,0,2,2
+1,null,Transaction Filter Test 1,null,0,2,2
+1,null,Transaction Filter Test 2,null,0,2,2
+1,0,Transaction Filter,null,0,2,2
+1,0,Filter Test 1,null,0,2,2
+1,0,Filter Test 2,null,0,2,2
+1,0,Transaction Filter Test 1,null,0,2,2
+1,0,Transaction Filter Test 2,null,0,2,2
+1,1,Transaction Filter,null,0,2,2
+1,1,Filter Test 1,null,0,2,2
+1,1,Filter Test 2,null,0,2,2
+1,1,Transaction Filter Test 1,null,0,2,2
+1,1,Transaction Filter Test 2,null,0,2,2
+1,null,Transaction Filter,0,0,2,2
+1,null,Filter Test 1,0,0,2,2
+1,null,Filter Test 2,0,0,2,2
+1,null,Transaction Filter Test 1,0,0,2,2
+1,null,Transaction Filter Test 2,0,0,2,2
+1,0,Transaction Filter,0,0,2,2
+1,0,Filter Test 1,0,0,2,2
+1,0,Filter Test 2,0,0,2,2
+1,0,Transaction Filter Test 1,0,0,2,2
+1,0,Transaction Filter Test 2,0,0,2,2
+1,1,Transaction Filter,0,0,2,2
+1,1,Filter Test 1,0,0,2,2
+1,1,Filter Test 2,0,0,2,2
+1,1,Transaction Filter Test 1,0,0,2,2
+1,1,Transaction Filter Test 2,0,0,2,2
+1,null,Transaction Filter,1,0,2,2
+1,null,Filter Test 1,1,0,2,2
+1,null,Filter Test 2,1,0,2,2
+1,null,Transaction Filter Test 1,1,0,2,2
+1,null,Transaction Filter Test 2,1,0,2,2
+1,0,Transaction Filter,1,0,2,2
+1,0,Filter Test 1,1,0,2,2
+1,0,Filter Test 2,1,0,2,2
+1,0,Transaction Filter Test 1,1,0,2,2
+1,0,Transaction Filter Test 2,1,0,2,2
+1,1,Transaction Filter,1,0,2,2
+1,1,Filter Test 1,1,0,2,2
+1,1,Filter Test 2,1,0,2,2
+1,1,Transaction Filter Test 1,1,0,2,2
+1,1,Transaction Filter Test 2,1,0,2,2
+1,null,null,null,1,2,2
+1,0,null,null,1,2,2
+1,1,null,null,1,2,2
+1,null,Transaction Filter,null,1,2,2
+1,null,Filter Test 1,null,1,2,2
+1,null,Filter Test 2,null,1,2,2
+1,null,Transaction Filter Test 1,null,1,2,2
+1,null,Transaction Filter Test 2,null,1,2,2
+1,0,Transaction Filter,null,1,2,2
+1,0,Filter Test 1,null,1,2,2
+1,0,Filter Test 2,null,1,2,2
+1,0,Transaction Filter Test 1,null,1,2,2
+1,0,Transaction Filter Test 2,null,1,2,2
+1,1,Transaction Filter,null,1,2,2
+1,1,Filter Test 1,null,1,2,2
+1,1,Filter Test 2,null,1,2,2
+1,1,Transaction Filter Test 1,null,1,2,2
+1,1,Transaction Filter Test 2,null,1,2,2
+1,null,Transaction Filter,0,1,2,2
+1,null,Filter Test 1,0,1,2,2
+1,null,Filter Test 2,0,1,2,2
+1,null,Transaction Filter Test 1,0,1,2,2
+1,null,Transaction Filter Test 2,0,1,2,2
+1,0,Transaction Filter,0,1,2,2
+1,0,Filter Test 1,0,1,2,2
+1,0,Filter Test 2,0,1,2,2
+1,0,Transaction Filter Test 1,0,1,2,2
+1,0,Transaction Filter Test 2,0,1,2,2
+1,1,Transaction Filter,0,1,2,2
+1,1,Filter Test 1,0,1,2,2
+1,1,Filter Test 2,0,1,2,2
+1,1,Transaction Filter Test 1,0,1,2,2
+1,1,Transaction Filter Test 2,0,1,2,2
+1,null,Transaction Filter,1,1,2,2
+1,null,Filter Test 1,1,1,2,2
+1,null,Filter Test 2,1,1,2,2
+1,null,Transaction Filter Test 1,1,1,2,2
+1,null,Transaction Filter Test 2,1,1,2,2
+1,0,Transaction Filter,1,1,2,2
+1,0,Filter Test 1,1,1,2,2
+1,0,Filter Test 2,1,1,2,2
+1,0,Transaction Filter Test 1,1,1,2,2
+1,0,Transaction Filter Test 2,1,1,2,2
+1,1,Transaction Filter,1,1,2,2
+1,1,Filter Test 1,1,1,2,2
+1,1,Filter Test 2,1,1,2,2
+1,1,Transaction Filter Test 1,1,1,2,2
+1,1,Transaction Filter Test 2,1,1,2,2

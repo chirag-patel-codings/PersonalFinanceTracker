@@ -6,7 +6,7 @@ namespace PersonalFinanceTracker.Models
 {
     public class TransactionFilter
     {
-        [LessThan("TransactionEndDate", ErrorMessage = "Start date must be earlier than end date!")]
+        [LessThan("TransactionFilterEndDate", ErrorMessage = "Start date must be earlier than end date!")]
         [Required(ErrorMessage = "Start date is required!")]
         public DateOnly TransactionFilterStartDate { get; set; } = new DateOnly(DateTime.Now.Year, 1, 1);
 

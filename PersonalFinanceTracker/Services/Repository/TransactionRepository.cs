@@ -79,6 +79,8 @@ namespace PersonalFinanceTracker.Services.Repository
 
         
         // Gets Single Transaction Record based on supplied transactionId
+        // Excludes the "TransactionType". 
+        // Also, values from pft_trasactions_repeats table will be null as transaction_id would never be same in the pft_trasactions_repeats. (As that record will be moved to the pft_transactions table as a new record with a different transaction_id)
         public TransactionDataModel? GetTransaction(ulong userId, string transactionId, string? connString)
         {
             connString = connString ?? "pft_con_str";

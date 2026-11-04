@@ -1,0 +1,138 @@
+// pending
+[Test]
+/* CLEARED TEST
+[TestCase(true, -1, null, null, null, null, null, 0, 0, 0)]
+[TestCase(true, 1, null, null, null, null, null, 0, 0, 0)]
+[TestCase(true, 0, null, null, null, null, null, 0, 0, 6)]  // Valid Date Ranges
+*/
+[TestCaseSource(nameof(LoadTextRowData))]
+public async Task TransactionsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayloadForTransactionFilter
+    (bool isFirstRequest, int dateRanges, int? listIndexForCategories, int? listIndexForAccounts, string? transactionFilterDescription, int? listIndexForTags, int? listIndexForGoals, byte transactionFilterCategorization, byte transactionFilterType)
+{
+
+    
+    DateOnly transactionFilterStartDate = DateOnly.FromDateTime(DateTime.Now);
+    DateOnly transactionFilterEndDate = transactionFilterStartDate;
+
+    // ARRANGE
+    if (!_areDummyDataInsertedForTransactionFilterTest)
+    {
+        // Delete any existing record
+        DatabaseHelperForTests.DeleteRecordFromTableById("pft_transactions", "transaction_id", _transactionRecord?.TransactionId.ToString(), _tempConnection);
+        DatabaseHelperForTests.CleanupDummyDataInRelatedTables("transactions", _tempConnection, new string[] { "pft_recurring_schedules", "pft_trasactions_repeats" });
+        _lists = DatabaseHelperForTests.GenerateNewRecordsForTransactionFilterTestAndReturnLists(_userId, _tempConnection);
+        _areDummyDataInsertedForTransactionFilterTest = true;
+    }
+
+    if(dateRanges < 0)
+    {
+        transactionFilterStartDate = transactionFilterStartDate.AddDays(-30);
+        transactionFilterEndDate = transactionFilterEndDate.AddDays(-15);
+    }
+    else if (dateRanges > 0)
+    {
+        transactionFilterStartDate = transactionFilterStartDate.AddDays(15);
+        transactionFilterEndDate = transactionFilterEndDate.AddDays(30);
+    }
+
+    // Create a transaction filter to retrieve transaction record(s)
+    TransactionFilter transactionFilter = new TransactionFilter();
+    transactionFilter.TransactionFilterStartDate = transactionFilterStartDate;
+    transactionFilter.TransactionFilterEndDate = transactionFilterEndDate;
+    transactionFilter.TransactionFilterCategoryId = listIndexForCategories == null ? null : _lists.categoryIds[listIndexForCategories ?? 0];
+    transactionFilter.TransactionFilterAccountId = listIndexForAccounts == null ? null : _lists.accountIds[listIndexForAccounts ?? 0];
+    transactionFilter.TransactionFilterDescription = transactionFilterDescription;
+    transactionFilter.TransactionFilterTagId = listIndexForTags == null ? null : _lists.tagIds[listIndexForTags ?? 0];
+    transactionFilter.TransactionFilterGoalId = listIndexForGoals == null ? null : _lists.goalIds[listIndexForGoals ?? 0];
+    transactionFilter.TransactionFilterCategorization = transactionFilterCategorization;      // 0 = all, 1 = manual, 2 = auto;
+    transactionFilter.TransactionFilterType = transactionFilterType;                // 0 = all, 1 = Regular, 2 - Recurring
+
+
+    var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
+
+    var request = new HttpRequestMessage(HttpMethod.Post, "/transactions?connString=pft_con_str_testenv");
+
+    request.Headers.Add("Request-Verification-Token", token);
+    request.Headers.Add("Cookie", cookie);
+    request.Content = JsonContent.Create(new { pagination = new { }, transactionFilter = transactionFilter, firstRequest = isFirstRequest.ToString().ToLower() });
+
+
+    // ACT
+    var response = await _client.SendAsync(request);
+    var jsonResponse = await response.Content.ReadAsStringAsync();
+
+
+    // ASSERT
+    Assert.That(response.IsSuccessStatusCode, Is.True);
+
+    /*
+     * Parse the JSON tree:
+     * Using JsonDocument allows to peek into the exact raw JSON structure returned by the endpoint without needing to instantiate full lists 
+     * or worry about deserialization exceptions if a property happens to be null (like transactionTypes when firstRequest is false).
+     */
+    using var doc = JsonDocument.Parse(jsonResponse);
+    var root = doc.RootElement;
+
+    // Verify all three root properties exist in the first request's response   (transactions, pagination, standardTransactions, transactionTypes)
+    Assert.That(root.TryGetProperty("transactions", out var transactionsElement), Is.True);
+
+    // Assert.That(transactionsElement.ValueKind, Is.EqualTo(JsonValueKind.Array));
+    // Assert.That(transactionsElement.GetArrayLength(), Is.EqualTo(expectedNoOfRecords));
+
+
+    // Debug.WriteLine(@$"TestCase[(true, 0, {(listIndexForCategories == null ? "null" : listIndexForCategories)}, {(listIndexForAccounts == null ? "null" : listIndexForAccounts)}, {(transactionFilterDescription == null ? "null" :  "\"" + transactionFilterDescription + "\"")}, {(listIndexForTags == null ? "null" : listIndexForTags)}, {(listIndexForGoals == null ? "null" : listIndexForGoals)}, {transactionFilterCategorization}, {transactionFilterType}, {transactionsElement.GetArrayLength()}");
+
+    string testText = @$"TestCase[(true, 0, {(listIndexForCategories == null ? "null" : listIndexForCategories)}, {(listIndexForAccounts == null ? "null" : listIndexForAccounts)}, {(transactionFilterDescription == null ? "null" : "\"" + transactionFilterDescription + "\"")}, {(listIndexForTags == null ? "null" : listIndexForTags)}, {(listIndexForGoals == null ? "null" : listIndexForGoals)}, {transactionFilterCategorization}, {transactionFilterType}, {transactionsElement.GetArrayLength()} )]";
+
+    string filePath = "E:\\Chirag\\Learning\\TrueCoders\\repos\\Project_PersonalFinanceTracker_Research\\Tests_Output.txt";
+    File.AppendAllText(filePath, testText);
+
+}
+
+
+private static IEnumerable<TestCaseData> LoadTextRowData()
+{
+
+    string filePath = Path.Combine("E:\\Chirag\\Learning\\TrueCoders\\repos\\Project_PersonalFinanceTracker_Research", "ForTransactionControllerRowTestValues.txt");
+    int lineNumber = 0;
+
+    if (!File.Exists(filePath))
+    {
+        throw new FileNotFoundException($"Critical Error: Test data file missing at {filePath}");
+    }
+
+    foreach (var line in File.ReadLines(filePath))
+    {
+        lineNumber++;
+        if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue; // Skip empty lines and comments
+
+        // Using Pipe '|' instead of comma ',' to protect the text description field
+        var parts = line.Split(',');
+
+        // Parse every value safely, mapping empty strings to null for nullable types
+        bool isFirstRequest = true;
+        int dateRanges = 0;
+        int? listIndexForCategories = ParseNullableInt(parts[0]);
+        int? listIndexForAccounts = ParseNullableInt(parts[1]);
+        string? transactionFilterDescription = string.IsNullOrWhiteSpace(parts[2]) ? null : parts[2].Trim();
+        int? listIndexForTags = ParseNullableInt(parts[3]);
+        int? listIndexForGoals = ParseNullableInt(parts[4]);
+        byte transactionFilterCategorization = byte.Parse(parts[5].Trim());
+        byte transactionFilterType = byte.Parse(parts[6].Trim());
+
+        // Build the test case and name it dynamically for the Test Explorer tree
+        var testCase = new TestCaseData(
+            isFirstRequest, dateRanges, listIndexForCategories, listIndexForAccounts,
+            transactionFilterDescription, listIndexForTags, listIndexForGoals,
+            transactionFilterCategorization, transactionFilterType
+        ).SetName($"Row_{lineNumber}_{transactionFilterDescription ?? "NoDescription"}");
+
+        yield return testCase;
+    }
+}
+
+// Helper method to deal with empty columns mapping to null values
+private static int? ParseNullableInt(string value)
+{
+    return value == "null" ? null : int.Parse(value.Trim());
+}

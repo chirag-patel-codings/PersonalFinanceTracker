@@ -13,7 +13,9 @@ using System.Data.Common;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Transactions;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using TransactionDataModel = PersonalFinanceTracker.Models.Transaction;
 
 namespace PersonalFinanceTrackerTests
 {
@@ -51,11 +53,11 @@ namespace PersonalFinanceTrackerTests
                 sql = $"SET FOREIGN_KEY_CHECKS = 0; DELETE FROM {tableName} WHERE {fieldName} = @RecordId; SET FOREIGN_KEY_CHECKS = 1;";
             }
             
-
             _conn.Execute(sql, new
             {
                 RecordId = ulong.Parse(recordId)
             });
+
         }
 
         // Deletes a newly created user in test by username and useremail
@@ -79,7 +81,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = "SELECT COUNT(user_user_name) FROM pft_users WHERE user_user_name = @UserName AND user_email = @UserEmail";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.ExecuteScalar<int>(sql, new
             {
                 UserName = userName,
@@ -93,7 +95,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = "SELECT user_id FROM pft_users WHERE user_user_name = @UserName AND user_email = @UserEmail";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.ExecuteScalar<ulong>(sql, new
             {
                 UserName = userName,
@@ -121,7 +123,7 @@ namespace PersonalFinanceTrackerTests
 
             forTestName = forTestName.ToLower();
 
-            newAccountId = forTestName == "accounts" ? testRecIdInBaseTable : ExecuteSQLAndReturnId(GetInsertDummyAccountRecordAndRetrieveIdSQL(userId), _conn).ToString();
+            newAccountId = forTestName == "accounts" ? testRecIdInBaseTable : ExecuteSQLAndReturnId(GetInsertDummyAccountRecordAndOrRetrieveIdSQL(userId), _conn);
             newCategoryId = forTestName == "categories" ? testRecIdInBaseTable  : GetRecIdByName("pft_categories", "category_id", "category_name", getCategoryIdForCategory, userId, _conn).ToString();
 
             switch (forTestName)
@@ -130,7 +132,7 @@ namespace PersonalFinanceTrackerTests
                 case "accounts":
 
                     sql = GetInsertDummyImportTemplateRecordAndRetrieveIdSQL(userId, newAccountId);
-                    newImportTemplateId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                    newImportTemplateId = ExecuteSQLAndReturnId(sql, _conn);
                     break;
 
                 case "categories":
@@ -139,7 +141,7 @@ namespace PersonalFinanceTrackerTests
                     newBudgetId = GetRecIdByName("pft_budgets", "budget_id", "category_id", testRecIdInBaseTable, userId, _conn).ToString();
                     // Insert a new record in pft_budget_details
                     sql = GetInsertDummyBudgetDetailsRecordAndRetrieveIdSQL(newBudgetId);
-                    newBudgetId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                    newBudgetId = ExecuteSQLAndReturnId(sql, _conn);
                     break;
 
                 case "tags":
@@ -154,32 +156,44 @@ namespace PersonalFinanceTrackerTests
 
                 case "transactionrules":
 
-                    sql = GetInsertDummyGoalRecordAndRetrieveIdSQL(userId);
-                    newGoalId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                    sql = GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId);
+                    newGoalId = ExecuteSQLAndReturnId(sql, _conn);
                     break;
 
+                case "recurrings":
+                case "transactions":
+
+                    sql = GetInsertDummyTagRecordAndOrRetrieveIdSQL(userId);
+                    newTagId = ExecuteSQLAndReturnId(sql, _conn);
+
+                    sql = GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId);
+                    newGoalId = ExecuteSQLAndReturnId(sql, _conn);
+                    
+                    break;
 
             }
 
             // accounts, categories, goals, transactionrules
-            if (forTestName != "tags")
+            // forTestName != "tags" && forTestName != "recurrings"
+            if (new string[] { "tags", "recurrings", "transactions" }.Contains(forTestName) == false)
             {
                 sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
-                newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn);
             }
 
             if(forTestName != "transactionrules")
             {
                 
                 sql = GetInsertDummyTransactionRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId, newTagId);
-                newTransactionId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+                newTransactionId = ExecuteSQLAndReturnId(sql, _conn);
 
-                sql = GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(userId, newTransactionId);
-                newTransactionRepeatId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+
+                sql = GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(userId);
+                newTransactionRepeatId = ExecuteSQLAndReturnId(sql, _conn);
 
                 sql = GetInsertDummyRecurringScheuduleRecordAndRetrieveIdSQL(newTransactionRepeatId, 250, newAccountId, newCategoryId, newGoalId, newTagId);
-                newRecurringScheduleId = ExecuteSQLAndReturnId(sql, _conn).ToString();
-            
+                newRecurringScheduleId = ExecuteSQLAndReturnId(sql, _conn);
+
             }
 
         }
@@ -247,7 +261,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         // Performs straight off delete without any conditional checking!
-        public static void CleanupDummyDataInRelatedTables(string testName, IDbConnection _conn)
+        public static void CleanupDummyDataInRelatedTables(string testName, IDbConnection _conn, params string[] specificTables)
         {
 
             string sql = "";
@@ -256,7 +270,7 @@ namespace PersonalFinanceTrackerTests
             {
                 case "tags":
 
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_accounts");
+                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_accounts");
                     break;
 
                 case "goals":
@@ -270,33 +284,62 @@ namespace PersonalFinanceTrackerTests
                     break;
 
                 case "transactionrules":
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_goals", "pft_accounts");
+                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_goals", "pft_accounts");
                     break;
+                
+                case "recurrings":
+                    sql = GetDeleteStatementsForSuppliedTables("pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions", "pft_tags", "pft_goals", "pft_accounts");
+                    break;
+
+                case "transactions":
+                    if(specificTables.Length > 0)
+                    {
+                        sql = GetDeleteStatementsForSuppliedTables(specificTables);
+                    }
+                    else
+                    {
+                        // Pending
+                    }
+                    break;
+
             }
 
-            try
+
+            using (var transaction = _conn.BeginTransaction())
             {
-                _conn.Execute(sql);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.ToString());
+                try
+                {
+
+                    _conn.Execute(sql, transaction: transaction);
+
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+
+                    transaction.Rollback();
+                    throw new Exception(ex.ToString());
+
+                }
             }
 
         }
 
-        private static ulong ExecuteSQLAndReturnId(string sql, IDbConnection _conn)
+        public static string ExecuteSQLAndReturnId(string sql, IDbConnection _conn)
         {
             
-            return _conn.ExecuteScalar<ulong>(sql);
+            return _conn.ExecuteScalar<string>(sql);
         }
 
         // Accounts Table Dummy Record Insert SQL
-        private static string GetInsertDummyAccountRecordAndRetrieveIdSQL(string userId)
-        {
+        public static string GetInsertDummyAccountRecordAndOrRetrieveIdSQL(string userId, string? accountNameIndex = null, bool retrieveAccountId = true)
+        {   
+            string dummyAccountExt = accountNameIndex == null ? "" : (" " + accountNameIndex);
+
             return "INSERT INTO pft_accounts (account_id, user_id, account_name, account_institution_name, account_type_id, account_description, is_a_linked_account) " +
-                                $"VALUES (GeneratePrefixedId(2), {userId}, 'Dummy Account Name', 'Dummy Account Institute Name', '102', 'Dummy Account Description', '0');" + 
-                            " SELECT MAX(account_id) FROM pft_accounts WHERE account_name =  'Dummy Account Name'";       
+                                $"VALUES (GeneratePrefixedId(2), '{userId}', 'Dummy Account Name{dummyAccountExt}', 'Dummy Account Institute Name', '102', 'Dummy Account Description{dummyAccountExt}', '0');" + 
+                            (retrieveAccountId ? $" SELECT MAX(account_id) FROM pft_accounts WHERE account_name = 'Dummy Account Name{dummyAccountExt}'" : "");       
         }
 
         // Categories Table Dummy Record Insert SQL
@@ -309,11 +352,13 @@ namespace PersonalFinanceTrackerTests
         }
 
         // Goals Table Dummy Record Insert SQL
-        private static string GetInsertDummyGoalRecordAndRetrieveIdSQL(string userId)
+        private static string GetInsertDummyGoalRecordAndOrRetrieveIdSQL(string userId, string? goalNameIndex = null, bool retrieveGoalId = true)
         {
+            string dummyGoalExt = goalNameIndex == null ? "" : (" " + goalNameIndex);
+
             return "INSERT INTO pft_goals (goal_id, user_id, goal_name, goal_description, goal_type) " +
-                                $"VALUES (GeneratePrefixedId(7), '{userId}', 'Dummy Goal Name', 'Dummy Goal Description', '1');" + 
-                            " SELECT MAX(goal_id) FROM pft_goals WHERE goal_name =  'Dummy Goal Name'"; 
+                                $"VALUES (GeneratePrefixedId(7), '{userId}', 'Dummy Goal Name{dummyGoalExt}', 'Dummy Goal Description', '1');" + 
+                            (retrieveGoalId ? $" SELECT MAX(goal_id) FROM pft_goals WHERE goal_name =  'Dummy Goal Name{dummyGoalExt}'" : ""); 
         }
 
         // GoalDetails Table Dummy Record Insert SQL
@@ -326,15 +371,24 @@ namespace PersonalFinanceTrackerTests
         }
         
         // Tags Table Dummy Record Insert SQL
-        private static string GetInsertDummyTagRecordAndRetrieveIdSQL(string userId)
+        private static string GetInsertDummyTagRecordAndOrRetrieveIdSQL(string userId, string? tagNameIndex = null, bool retrieveTagId = true)
         {
+            string dummyTagExt = tagNameIndex == null ? "" : (" " + tagNameIndex);
 
             return "INSERT INTO pft_tags (tag_id, user_id, tag_name, tag_description, tag_color, is_tag_active) " +
-                                $"VALUES (GeneratePrefixedId(8), '{userId}', 'Dummy Tag Name', 'Dummy Tag Description', '#123456', '1');" +
-                            " SELECT MAX(tag_id) FROM pft_tags WHERE tag_name =  'Dummy Tag Name'";
+                                $"VALUES (GeneratePrefixedId(8), '{userId}', 'Dummy Tag Name{dummyTagExt}', 'Dummy Tag Description', '#123456', '1');" +
+                            (retrieveTagId ? $" SELECT MAX(tag_id) FROM pft_tags WHERE tag_name =  'Dummy Tag Name{dummyTagExt}'" : "");
 
         }
 
+        // To generate additional dummy transaction record (other than default records) for a user in test.
+        private static string GenerateAdditionalDummyTransactionRecords(string userId, DateOnly transactionDate, string transactionDescription, string accountId, string categoryId, string? goalId, string? tagId, byte TransactionCategorization, byte TransactionType)
+        {
+            
+            return "INSERT INTO pft_transactions (transaction_id, user_id, transaction_date, transaction_description, transaction_amount, account_id, category_id, goal_id, tag_id, transaction_categorization, transaction_type) " +
+                                $"VALUES (GeneratePrefixedId(3), '{userId}', '{transactionDate.ToString("yyyy-MM-dd")}', '{transactionDescription}', '123.45', '{accountId}', '{categoryId}', {(goalId ?? "null")}, {(tagId ?? "null")}, {TransactionCategorization}, {TransactionType});";
+
+        }
         // Transactions Table Dummy Record Insert SQL
         // Dummy Record Idenfier query field name = transaction_description
         private static string GetInsertDummyTransactionRecordAndRetrieveIdSQL(string userId, string accountId, string categoryId, string? goalId, string? tagId)
@@ -347,11 +401,11 @@ namespace PersonalFinanceTrackerTests
         }
 
         // TransactionRepeats Table Dummy Record Insert SQL
-        private static string GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(string userId, string transactionId)
+        private static string GetInsertDummyTransactionRepeatsRecordAndRetrieveIdSQL(string userId)
         {
             return "INSERT INTO pft_trasactions_repeats (transaction_id, user_id, transaction_repeat_interval, transaction_repeat_end_date, is_transaction_repeat_active) " +
-                                $"VALUES ('{transactionId}', '{userId}', '4', '{(DateOnly.FromDateTime(DateTime.Now.AddMonths(2)).ToString("yyyy-MM-dd"))}', '1');" + 
-                            $" SELECT MAX(transaction_repeat_id) FROM pft_trasactions_repeats WHERE transaction_id = {transactionId} AND user_id = {userId}";
+                                $"VALUES (GeneratePrefixedId(3), '{userId}', '1', '{(DateOnly.FromDateTime(DateTime.Now.AddMonths(1)).ToString("yyyy-MM-dd"))}', '1');" + 
+                            $" SELECT CONCAT(CAST(transaction_repeat_id AS CHAR), '-', CAST(transaction_id AS CHAR)) FROM pft_trasactions_repeats WHERE user_id = '{userId}' ORDER BY transaction_repeat_id DESC LIMIT 1";
         }
 
         // RecurringScheudule (Transactions) Table Dummy Record Insert SQL
@@ -359,7 +413,7 @@ namespace PersonalFinanceTrackerTests
         {
             // recurring_next_date: is assigned a random value here!!!
             return "INSERT INTO pft_recurring_schedules (transaction_recurring_id, transaction_repeat_id, recurring_description, recurring_next_date, recurring_amount, account_id, category_id, goal_id, tag_id, transaction_categorization) " +
-                                $"VALUES (GeneratePrefixedId(3), '{transactionRepeatId}', 'Dummy Transaction Recurring Description', '{(DateOnly.FromDateTime(DateTime.Now.AddMonths(3)).ToString("yyyy-MM-dd"))}', '{recurringAmount}', '{accountId}', '{categoryId}', {goalId ?? "null"}, {tagId ?? "null"}, '1');" + 
+                                $"VALUES ('{transactionRepeatId.Split("-")[1]}', '{transactionRepeatId.Split("-")[0]}', 'Dummy Transaction Recurring Description', '{(DateOnly.FromDateTime(DateTime.Now.AddDays(1)).ToString("yyyy-MM-dd"))}', '{recurringAmount}', '{accountId}', '{categoryId}', {goalId ?? "null"}, {tagId ?? "null"}, '1');" + 
                             $" SELECT MAX(transaction_recurring_id) FROM pft_recurring_schedules WHERE recurring_description = 'Dummy Transaction Recurring Description'";
         }
 
@@ -368,7 +422,7 @@ namespace PersonalFinanceTrackerTests
         {
             return "INSERT INTO pft_transactions_rules (transctions_rule_id, user_id, account_id, category_id, goal_id, tr_text_to_match, tr_text_match_comparison, tr_amount_match_comparison, tr_exact_amount, tr_description_override) " +
                                 $"VALUES (GeneratePrefixedId(4), '{userId}', '{accountId}', '{categoryId}', {goalId ?? "null"}, 'Dummy Transaction Rule Match Text', '0', '0', null, null);" + 
-                            $" SELECT MAX(transctions_rule_id) FROM pft_transactions_rules WHERE tr_text_to_match = 'Dummy Transaction Rule Match Text' AND user_id = {userId}";
+                            $" SELECT MAX(transctions_rule_id) FROM pft_transactions_rules WHERE tr_text_to_match = 'Dummy Transaction Rule Match Text' AND user_id = '{userId}'";
         }
 
         // Budget Table Dummy Record Insert SQL
@@ -429,12 +483,29 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"SELECT {queryFieldName} FROM {queryTableName} WHERE {searchFieldName} = @SearchValue AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.ExecuteScalar<ulong>(sql, new
             {
                 SearchValue = searchValue,
                 UserId = ulong.Parse(userId)
             });
+        }
+
+        // Checks if the record with supplied values exists in the table!!!
+        public static bool RecordExistsInTable(string queryTableName, string searchFieldName, string searchValue, string? userId, IDbConnection _conn)
+        {
+            string sql = $"SELECT 1 FROM {queryTableName} WHERE {searchFieldName} = @SearchValue";
+
+            if(userId != null)
+            {
+                sql = $"{sql} AND user_id = '{ulong.Parse(userId)}'";
+            }
+
+            // Get this value!!!
+            return (_conn.ExecuteScalar<ulong?>(sql, new
+            {
+                SearchValue = searchValue
+            }) ?? 0) > 0;
         }
 
         // Authentication Tests - Start
@@ -458,7 +529,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetUsersTableSelectStatementWithFieldNames()} WHERE user_id = @UserId LIMIT 1";
             
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<UserRegistration?>(sql, new
             {
                 UserId = ulong.Parse(userId)
@@ -471,7 +542,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetUsersTableSelectStatementWithFieldNames()} WHERE user_user_name = @UserName AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<UserRegistration?>(sql, new
             {
 
@@ -502,7 +573,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetAccountsTableSelectStatementWithFieldNames()} WHERE user_id = @UserId LIMIT 1";
             
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Account?>(sql, new
             {
                 UserId = ulong.Parse(userId)
@@ -515,7 +586,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetAccountsTableSelectStatementWithFieldNames()} WHERE account_name = @AccountName AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Account?>(sql, new
             {
                 AccountName = accountName,
@@ -542,7 +613,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetTagsTableSelectStatementWithFieldNames()} WHERE user_id = @UserId LIMIT 1";
             
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Tag?>(sql, new
             {
                 UserId = ulong.Parse(userId)
@@ -554,7 +625,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetTagsTableSelectStatementWithFieldNames()} WHERE tag_name = @TagName AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Tag?>(sql, new
             {
                 TagName = tagName,
@@ -572,7 +643,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = "SELECT category_id FROM pft_categories WHERE user_id = @UserId AND category_name = @CategoryName LIMIT 1";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.ExecuteScalar<ulong>(sql, new
             {
                 UserId = ulong.Parse(userId),
@@ -605,7 +676,7 @@ namespace PersonalFinanceTrackerTests
                 UserId = userId,
                 categoryId = categoryId
             });
-            
+
         }
 
         // Get the any one record from a table for a user_id
@@ -613,7 +684,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetCategoriesTableSelectStatementWithFieldNames()} WHERE user_id = @UserId AND category_id <> standard_category_id LIMIT 1";
             
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Category?>(sql, new
             {
                 UserId = ulong.Parse(userId)
@@ -625,7 +696,7 @@ namespace PersonalFinanceTrackerTests
         {
             string sql = $"{GetCategoriesTableSelectStatementWithFieldNames()} WHERE category_name = @CategoryName AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<Category?>(sql, new
             {
                 CategoryName = categoryName,
@@ -699,7 +770,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetGoalsTableSelectStatementWithFieldNames()} WHERE goal_name = @GoalName AND user_id = @UserId LIMIT 1";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             Goal? goal = _conn.QuerySingleOrDefault<Goal?> (sql, new
             {
                 GoalName = goalName,
@@ -715,7 +786,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetGoalDetailsTableSelectStatementWithFieldNames()} JOIN pft_goals g ON g.goal_id = gd.goal_id WHERE g.goal_name = @GoalName AND g.user_id = @UserId LIMIT 1";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             IEnumerable<GoalDetails>? goalDetails = _conn.Query<GoalDetails>(sql, new
             {
                 GoalName = goalName,
@@ -747,6 +818,7 @@ namespace PersonalFinanceTrackerTests
         // Select statement for budget table with field names that maps to the Category model class
         private static string GetBudgetDetailsSelectStatementWithFieldNames()
         {
+
             return "SELECT b.user_id AS userId, " +
                             "b.budget_id AS BudgetId, " +
                             "b.category_id AS CategoryId, " + 
@@ -760,6 +832,7 @@ namespace PersonalFinanceTrackerTests
                             "ON b.budget_id = bd.budget_id " +
                             "JOIN pft_categories c ON " +
                             "b.category_id = c.category_id ";
+
         }
 
         
@@ -769,7 +842,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetBudgetSettingsSelectStatementWithFieldNames()} WHERE b.user_id = @UserId AND c.category_name = @CategoryName LIMIT 1";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             Budget? budget = _conn.QuerySingleOrDefault<Budget?> (sql, new
             {
                 UserId = ulong.Parse(userId),
@@ -785,7 +858,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"SELECT b.budget_id, c.category_id FROM pft_budgets b JOIN pft_categories c ON c.category_id = b.category_id AND c.user_id = b.user_id WHERE c.category_name = @CategoryName;";   // GOAL CAN HAVE MORE THAN ONE RECORD WITH SAME NAME
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<ulong?> (sql, new
             {
                 CategoryName = categoryName
@@ -799,7 +872,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetBudgetDetailsSelectStatementWithFieldNames()} WHERE bd.budget_id = @BudgetId AND b.user_id = @UserId ORDER BY bd.budget_for_month_year DESC LIMIT 1;";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<BudgetDetails>(sql, new
             {
                 BudgetId = budgetId,
@@ -813,7 +886,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetBudgetDetailsSelectStatementWithFieldNames()} WHERE bd.budget_id = @BudgetId AND b.user_id = @UserId AND bd.budget_for_month_year = @BudgetMonthYear ORDER BY bd.budget_for_month_year DESC LIMIT 1;";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<BudgetDetails>(sql, new
             {
                 BudgetId = budgetId,
@@ -828,7 +901,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"SELECT b.budget_base_amount FROM pft_budgets b WHERE b.budget_id = @BudgetId AND b.user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.ExecuteScalar<double?>(sql, new
             {
                 BudgetId = budgetId,
@@ -862,7 +935,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetTransactionRulesTableSelectStatementWithFieldNames()} WHERE user_id = @UserId LIMIT 1";
             
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<TransactionRule?>(sql, new
             {
                 UserId = ulong.Parse(userId)
@@ -876,7 +949,7 @@ namespace PersonalFinanceTrackerTests
 
             string sql = $"{GetTransactionRulesTableSelectStatementWithFieldNames()} WHERE tr_text_to_match = @TextToMatch AND user_id = @UserId";
 
-            // Get this value and then delete the record!!!
+            // Get this value!!!
             return _conn.QuerySingleOrDefault<TransactionRule?>(sql, new
             {
                 TextToMatch = textToMatch,
@@ -952,17 +1025,182 @@ namespace PersonalFinanceTrackerTests
         public static (string newAccountId, string newGoalId) GenerateNewAccountAndGoalRecords(string userId, IDbConnection _conn)
         {
 
-            string sql = GetInsertDummyAccountRecordAndRetrieveIdSQL(userId);
-            string newAccountId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+            string sql = GetInsertDummyAccountRecordAndOrRetrieveIdSQL(userId);
+            string newAccountId = ExecuteSQLAndReturnId(sql, _conn);
 
-            sql = GetInsertDummyGoalRecordAndRetrieveIdSQL(userId);
-            string newGoalId = ExecuteSQLAndReturnId(sql, _conn).ToString();
+            sql = GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId);
+            string newGoalId = ExecuteSQLAndReturnId(sql, _conn);
 
             return (newAccountId, newGoalId);
 
         }
 
         // TransactionRules Tests - End
+
+
+        // Recurrings Tests - Start
+        private static string GetRecurringsTableSelectStatementWithFieldNames()
+        {
+            return "SELECT CAST(trs.transaction_recurring_id AS CHAR) AS RecurringId, " +
+                    "tr.transaction_repeat_id AS TransactionRepeatId, " +
+                    "trs.recurring_description AS RecurringDescription, " + 
+                    "trs.recurring_next_date AS RecurringNextDate, " + 
+                    "trs.recurring_amount AS RecurringAmount, " +
+                    "CAST(trs.account_id AS CHAR) AS AccountId, " + "" +
+                    "CAST(trs.category_id AS CHAR) AS CategoryId, " + 
+                    "CAST(trs.goal_id AS CHAR) AS GoalId, " + 
+                    "CAST(trs.tag_id AS CHAR) AS TagId, " +
+                    "trs.transaction_categorization AS TransactionCategorization, " +
+                    "tr.transaction_repeat_interval AS TransactionRepeatInterval, " +
+                    "tr.transaction_repeat_end_date AS TransactionRepeatEndDate, " + 
+                    "tr.is_transaction_repeat_active AS IsTransactionRepeatActive " + 
+                    "FROM pft_recurring_schedules trs " + 
+                    "JOIN pft_trasactions_repeats tr " + 
+                    "ON trs.transaction_repeat_id = tr.transaction_repeat_id ";
+        }
+        
+        // Get the any one record from a table for a user_id
+        public static Recurring? GetSingleRecordFromRecurringsTable(string userId, IDbConnection _conn)
+        {
+            string sql = $"{GetRecurringsTableSelectStatementWithFieldNames()} WHERE tr.user_id = @UserId LIMIT 1";
+            
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<Recurring?>(sql, new
+            {
+                UserId = ulong.Parse(userId)
+            });
+        }
+
+        // Get the specific record from a table for a user_id using a search field name and value
+        public static Recurring? GetRecurringRecordByDescription(string recurringDescription, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetRecurringsTableSelectStatementWithFieldNames()} WHERE trs.recurring_description = @RecurringDescription AND tr.user_id = @UserId";
+
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<Recurring?>(sql, new
+            {
+                RecurringDescription = recurringDescription,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        // Recurrings Tests - End
+
+        // Transactions Tests - Start
+        private static string GetTransactionsTableSelectStatementWithFieldNames()
+        {
+            // Fields for FOR TRANSACTION REPEAT will not be required until save transactions
+            return "SELECT t.transaction_id AS TransactionId, " +
+                           "t.transaction_date AS TransactionDate, " +
+                           "t.transaction_description AS TransactionDescription, " +
+                           "t.transaction_amount AS TransactionAmount, " +
+                           "t.account_id AS AccountId, " +
+                           "t.category_id AS CategoryId, " +
+                           "t.tag_id AS TagId, " +
+                           "t.goal_id AS GoalId, " +
+                           "t.transaction_categorization AS TransactionCategorization, " +
+                           "t.transaction_type AS TransactionType " +
+                           "FROM pft_transactions t";
+        }
+        
+        // Get the any one record from a table for a user_id
+        public static TransactionDataModel? GetSingleRecordFromTransactionsTable(string userId, IDbConnection _conn)
+        {
+            string sql = $"{GetTransactionsTableSelectStatementWithFieldNames()} WHERE t.user_id = @UserId LIMIT 1";
+            
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<TransactionDataModel?>(sql, new
+            {
+                UserId = ulong.Parse(userId)
+            });
+        }
+
+        // Get the specific record from a table for a user_id using a search field name and value
+        public static TransactionDataModel? GetTransactionRecordByDescription(string transactionDescription, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetTransactionsTableSelectStatementWithFieldNames()} WHERE t.transaction_description = @TransactionDescription AND t.user_id = @UserId";
+
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<TransactionDataModel?>(sql, new
+            {
+                TransactionDescription = transactionDescription,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        // Check if a new record exists in the transactions repeat table for a user_id. Required when a new transction record is inserted.
+        public static bool AreNewRecordsCreatedInTransactionRepeatsAndRecurringSchedules(string transactionDescription, string userId, IDbConnection _conn)
+        {
+
+            var recurringRecord = GetRecurringRecordByDescription(transactionDescription, userId, _conn);
+            
+            return recurringRecord != null;
+
+        }
+        
+        // Returns the records as list of string for a specific field from a table for a user_id
+        private static List<string> GetIdsAsStringListFromTable(string tableName, string fieldName, string userId, IDbConnection _conn)
+        {
+            string sql = $"SELECT CAST({fieldName} AS CHAR) FROM {tableName} WHERE user_id = @UserId";
+            return _conn.Query<string>(sql, new { UserId = ulong.Parse(userId) }).ToList();
+        }
+
+        // This function generates the additional records those are not created by "GenerateDummyDataInRelatedTablesForUser" function. 
+        // These records will be required for testing the transaction filter functionality.
+        public static (string[] accountIds, string[] categoryIds, string[] goalIds, string[] tagIds) GenerateNewRecordsForTransactionFilterTestAndReturnLists(string userId, IDbConnection _conn)
+        {
+            
+            // Generate additional related records
+            string sql = "START TRANSACTION;";
+            sql = $"{sql} {GetInsertDummyAccountRecordAndOrRetrieveIdSQL(userId, "2", false)}";
+            sql = $"{sql} {GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId, "2", false)}";
+            sql = $"{sql} {GetInsertDummyTagRecordAndOrRetrieveIdSQL(userId, "2", false)}";
+            sql = $"{sql} COMMIT;";
+
+            _conn.Execute(sql);
+
+            sql = "";
+            string otherIncomeCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Other Income", userId, _conn).ToString();
+            string educationCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Education", userId, _conn).ToString();
+            
+            var categoryIds = new string[] { otherIncomeCategoryId, educationCategoryId };
+            var accountIds = GetIdsAsStringListFromTable("pft_accounts", "account_id", userId, _conn).ToArray();
+            var goalIds = GetIdsAsStringListFromTable("pft_goals", "goal_id", userId, _conn).ToArray();
+            var tagIds = GetIdsAsStringListFromTable("pft_tags", "tag_id", userId, _conn).ToArray();
+
+            var descriptions = new string[] { "Transaction Filter Test 1", "Transaction Filter Test 2" };
+            var filterTypeValues = new byte[] { 1, 2 };
+            var categorizationValues = new byte[] { 0, 1, 2 };
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    int indexFromList = j % 2 == 0 ? 0 : 1;
+
+                    string accountId = accountIds[indexFromList];
+                    string categoryId = categoryIds[indexFromList];
+                    string goalId = goalIds[indexFromList];
+                    string tagId = tagIds[indexFromList];
+                    string description = descriptions[indexFromList];
+                    byte filterTypeValue = filterTypeValues[indexFromList];    // 1 = Regular, 2 - Recurring
+                    byte categorizationValue = categorizationValues[i];              // 1 = manual, 2 = CSV upload , 3 = auto (Linked)
+
+                    sql = $"{sql} {GenerateAdditionalDummyTransactionRecords(userId, DateOnly.FromDateTime(DateTime.Now), description, accountId, categoryId, goalId, tagId, categorizationValue, filterTypeValue)}";
+                }
+            }
+
+            _conn.Execute(sql);
+
+            return (accountIds, categoryIds, goalIds, tagIds);
+
+        }
+
+        // Transactions Tests - End
 
     }
 }

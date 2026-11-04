@@ -122,12 +122,16 @@ namespace PersonalFinanceTrackerTests
         public void OneTimeTeardown()
         {
 
-            _connection.Close();
-            _connection.Dispose();
-
             _controller.Dispose();
             _testScope.Dispose();
 
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _connection.Close();
+            _connection.Dispose();
         }
 
         /*
