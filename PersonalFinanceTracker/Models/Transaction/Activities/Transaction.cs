@@ -12,6 +12,7 @@ namespace PersonalFinanceTracker.Models
 
         [DateGteTodayIfRepeatActive("IsTransactionRepeatActive", ErrorMessage = "The date must be today or greater to generate a transaction recurrings!")]
         [LessThan("TransactionRepeatEndDate", ErrorMessage = "The date must be earlier than recurring end date!")]
+        [Range(typeof(DateOnly), "0002-01-01", "9999-12-31", ErrorMessage = "Please provide transaction date!")]    // Avoids the default value of DateOnly.MinValue (0001-01-01) for empty supplied values!
         [Required(ErrorMessage = "Please provide transaction date!")]
         public DateOnly TransactionDate { get; set; }
 

@@ -40,7 +40,6 @@ namespace PersonalFinanceTrackerTests
         private Transaction? _transactionRecord = null;
 
         private (string[] accountIds, string[] categoryIds, string[] goalIds, string[] tagIds) _lists = new(new string[] { }, new string[] { }, new string[] { }, new string[] { });
-        private bool _areDummyDataInsertedForTransactionFilterTest = false;
         IDbConnection _tempConnection;
 
         [OneTimeSetUp]
@@ -288,8 +287,6 @@ namespace PersonalFinanceTrackerTests
 
 
         [Test]
-
-        
         // transactionDate + transactionRepeatEndDate
         [TestCase("", "0002-01-01", "Test Transaction Description", 150, "123", "123", null, null, (byte) 1, (byte)1, "1", null, (byte) 0, (byte)1, "0001-01-01", 400, "TransactionDate", "The date must be earlier than recurring end date!")]
         [TestCase(null, "0002-01-01", "Test Transaction Description", 150, "123", "123", null, null, (byte) 1, (byte)1, "1", null, (byte) 0, (byte)1, "0001-01-01", 400, "TransactionDate", "The date must be earlier than recurring end date!")]
@@ -476,7 +473,7 @@ namespace PersonalFinanceTrackerTests
             _transactionRecord.TagId = null;
             _transactionRecord.TransactionCategorization = (byte)2;
             
-            _transactionRecord.TransactionType = (byte)2;
+            _transactionRecord.TransactionType = (byte)1;
             _transactionRecord.CategoryType = "";
             _transactionRecord.TransactionRepeatId = null;
             _transactionRecord.IsTransactionRepeatActive = (byte)0;
@@ -498,7 +495,7 @@ namespace PersonalFinanceTrackerTests
             updatedTransaction.TransactionCategorization = _transactionRecord.TransactionCategorization;
             updatedTransaction.TransactionType = _transactionRecord.TransactionType;
             
-            /*
+            /* NOT UPDATED
                 updatedTransaction.CategoryType = _transactionRecord.CategoryType;
                 updatedTransaction.TransactionRepeatId  = _transactionRecord.TransactionRepeatId;
                 updatedTransaction.IsTransactionRepeatActive = _transactionRecord.IsTransactionRepeatActive;
@@ -547,6 +544,10 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
+            // Reset to original when as changed in update!
+            _transactionRecord.TransactionCategorization = (byte)1;
+            _transactionRecord.TransactionType = (byte)1;
+
             var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Transaction/GetTransaction?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter
@@ -606,7 +607,6 @@ namespace PersonalFinanceTrackerTests
         {
 
             // ARRANGE
-
             var (token, cookie) = await GetAntiforgeryTokensAsync(_factory, _userId);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/Transaction/DeleteTransaction?connString=pft_con_str_testenv");   // As [FromBody] can only accept one parameter

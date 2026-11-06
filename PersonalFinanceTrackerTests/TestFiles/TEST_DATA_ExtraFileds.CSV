@@ -1,0 +1,6 @@
+"Details","Posting Date","Description","Amount","Type","Balance","Check or Slip #","MyTesField-1","MyTesField-2"
+"CREDIT",06/09/26,"Business Income",973.66,"ACH_CREDIT"," ",,,
+"DEBIT",06/08/26,"Education",-633.78,"ACH_DEBIT",235.6,,,
+"CREDIT",06/03/26,"Test Description",46.92,"ACH_CREDIT",869.38,,,
+"CREDIT",06/02/26,"Test Description",797.78,"ACH_CREDIT",822.46,,,
+"DEBIT",06/01/26,"Education",-2000,"CHASE_TO_PARTNERFI",24.68,,,

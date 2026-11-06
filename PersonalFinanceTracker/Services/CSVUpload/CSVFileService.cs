@@ -153,13 +153,13 @@ namespace PersonalFinanceTracker.Services.CSVUpload
                     // Check for more than required fields!!!
                     if (dataRows.Any(f => f.Split(",").Count() > 8))
                     {
-                        return (false, "File has more than 8 columns");
+                        return (false, "File has more than 8 columns!");
                     }
 
                     // If quoted file then all the lines must be start with '"'
                     if (dataRows[0].StartsWith(@"""") && dataRows.Any(r => !r.StartsWith(@"""")))      // !dataRows[1].StartsWith(@"""")
                     {
-                        return (false, "Not all the records is in quoted string format");
+                        return (false, "All records in this file are NOT in quoted string format!");
                     }
                 }
             }

@@ -128,7 +128,7 @@ namespace PersonalFinanceTrackerTests
         [TestCase("/Tag/GetTag")]
         [TestCase("/Tag/SaveTag")]
         [TestCase("/Tag/DeleteTag")]
-        public async Task AccountsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
+        public async Task TagsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
         {
 

@@ -708,17 +708,26 @@ const isValidCSVFileData = function (dataHeaderRowIndex = 0) {
                 validationErrors.push('Date value is NOT valid at line ... ' + (i + 1) + ' (in actual data file!)');
                 break;
             }
+
             transactionDescriptionLength = csvFileContentAsData[i][descriptionColumnIndex].trim().length;
             if ( transactionDescriptionLength == 0 || transactionDescriptionLength > 255) {
                 validationErrors.push('Description value is NOT valid at line ... ' + (i + 1) + ' (in actual data file!)');
                 break;
             }
 
-            amountValueColumnIndex = amountColumnIndex != -1 ? amountColumnIndex : (debitColumnIndex != -1 ? debitColumnIndex : creditColumnIndex);
-            
-            if (!isValidAmount(csvFileContentAsData[i][amountValueColumnIndex])) {
-                validationErrors.push('Amount value is NOT valid at line ... ' + (i + 1) + ' (in actual data file!)');
-                break;
+            if (amountColumnIndex != -1){
+                if (!isValidAmount(csvFileContentAsData[i][amountColumnIndex])) {
+                    validationErrors.push('Amount value is NOT valid at line ... ' + (i + 1) + ' (in actual data file!)');
+                    break;
+                }
+            }
+            else{
+
+                if ( !(isValidAmount(csvFileContentAsData[i][debitColumnIndex]) || isValidAmount(csvFileContentAsData[i][creditColumnIndex])) ) {
+                    validationErrors.push('Amount value is NOT valid at line ... ' + (i + 1) + ' (in actual data file!)');
+                    break;
+                }
+
             }
 
         }

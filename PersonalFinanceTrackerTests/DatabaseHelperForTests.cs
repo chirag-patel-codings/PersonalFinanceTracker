@@ -118,18 +118,23 @@ namespace PersonalFinanceTrackerTests
             string newRecurringScheduleId;
             string newTransactionRuleId;
             string newImportTemplateId;
-            string getCategoryIdForCategory = forTestName == "transactionrules" ? "Payments" : "Business Income";
+            string categoryNameForCategoryId = forTestName == "transactionrules" ? "Payments" : "Business Income";
             string sql = "";
 
             forTestName = forTestName.ToLower();
 
             newAccountId = forTestName == "accounts" ? testRecIdInBaseTable : ExecuteSQLAndReturnId(GetInsertDummyAccountRecordAndOrRetrieveIdSQL(userId), _conn);
-            newCategoryId = forTestName == "categories" ? testRecIdInBaseTable  : GetRecIdByName("pft_categories", "category_id", "category_name", getCategoryIdForCategory, userId, _conn).ToString();
+            
+            if(forTestName != "bulkimport")
+            {
+                newCategoryId = forTestName == "categories" ? testRecIdInBaseTable  : GetRecIdByName("pft_categories", "category_id", "category_name", categoryNameForCategoryId, userId, _conn).ToString();
+            }
 
             switch (forTestName)
             {
 
                 case "accounts":
+                case "bulkimport":
 
                     sql = GetInsertDummyImportTemplateRecordAndRetrieveIdSQL(userId, newAccountId);
                     newImportTemplateId = ExecuteSQLAndReturnId(sql, _conn);
@@ -168,20 +173,19 @@ namespace PersonalFinanceTrackerTests
 
                     sql = GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId);
                     newGoalId = ExecuteSQLAndReturnId(sql, _conn);
-                    
                     break;
 
             }
 
             // accounts, categories, goals, transactionrules
             // forTestName != "tags" && forTestName != "recurrings"
-            if (new string[] { "tags", "recurrings", "transactions" }.Contains(forTestName) == false)
+            if (new string[] { "tags", "recurrings", "transactions", "bulkimport" }.Contains(forTestName) == false)
             {
                 sql = GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId);
                 newTransactionRuleId = ExecuteSQLAndReturnId(sql, _conn);
             }
 
-            if(forTestName != "transactionrules")
+            if(new string[] { "transactionrules", "bulkimport" }.Contains(forTestName) == false)
             {
                 
                 sql = GetInsertDummyTransactionRecordAndRetrieveIdSQL(userId, newAccountId, newCategoryId, newGoalId, newTagId);
@@ -302,6 +306,11 @@ namespace PersonalFinanceTrackerTests
                     }
                     break;
 
+                default:    
+                    // Delete records from the supplied tables only.
+                    sql = GetDeleteStatementsForSuppliedTables(specificTables);
+                    break;
+
             }
 
 
@@ -326,10 +335,11 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        public static string ExecuteSQLAndReturnId(string sql, IDbConnection _conn)
+        public static string? ExecuteSQLAndReturnId(string sql, IDbConnection _conn)
         {
-            
-            return _conn.ExecuteScalar<string>(sql);
+
+            return _conn.ExecuteScalar<string?>(sql);
+
         }
 
         // Accounts Table Dummy Record Insert SQL
@@ -418,11 +428,11 @@ namespace PersonalFinanceTrackerTests
         }
 
         // TransctionRule Table Dummy Record Insert SQL
-        private static string GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(string userId, string accountId, string categoryId, string? goalId)
+        private static string GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(string userId, string accountId, string categoryId, string? goalId, string? textToMatch = null, bool retrieveTransactionRuleId = true)
         {
             return "INSERT INTO pft_transactions_rules (transctions_rule_id, user_id, account_id, category_id, goal_id, tr_text_to_match, tr_text_match_comparison, tr_amount_match_comparison, tr_exact_amount, tr_description_override) " +
-                                $"VALUES (GeneratePrefixedId(4), '{userId}', '{accountId}', '{categoryId}', {goalId ?? "null"}, 'Dummy Transaction Rule Match Text', '0', '0', null, null);" + 
-                            $" SELECT MAX(transctions_rule_id) FROM pft_transactions_rules WHERE tr_text_to_match = 'Dummy Transaction Rule Match Text' AND user_id = '{userId}'";
+                                $"VALUES (GeneratePrefixedId(4), '{userId}', '{accountId}', '{categoryId}', {goalId ?? "null"}, '{textToMatch ?? "Dummy Transaction Rule Match Text"}', '0', '0', null, {(textToMatch == null ? "null" : "'" + textToMatch + " - Overwritten'")});" + 
+                            $"{(retrieveTransactionRuleId ? $" SELECT MAX(transctions_rule_id) FROM pft_transactions_rules WHERE tr_text_to_match = '{textToMatch ?? "Dummy Transaction Rule Match Text"}' AND user_id = '{userId}'" : "")}";
         }
 
         // Budget Table Dummy Record Insert SQL
@@ -444,7 +454,7 @@ namespace PersonalFinanceTrackerTests
         private static string GetInsertDummyImportTemplateRecordAndRetrieveIdSQL(string userId, string accountId)
         {
             return "INSERT INTO pft_import_templates (user_id, account_id, import_template_name, import_type, import_header_row_index, import_template_date_field_index, import_template_description_field_index, import_template_amount_field_index, import_template_debit_field_index, import_template_credit_field_index) " +
-                                $"VALUES ('{userId}', '{accountId}', 'Dummy Import Template Name', '1', '0', '1', '2', '3', '4','5');" + 
+                                $"VALUES ('{userId}', '{accountId}', 'Dummy Import Template Name', '1', '0', '1', '2', '3', '-1','-1');" + 
                             $" SELECT MAX(import_template_id) FROM pft_import_templates WHERE import_template_name = '{"Dummy Import Template Name"}'";
         }
 
@@ -1201,6 +1211,151 @@ namespace PersonalFinanceTrackerTests
         }
 
         // Transactions Tests - End
+
+        // Bulk Import Tests - START
+        private static string GetBulkImportTableSelectStatementWithFieldNames(bool isForBlankTemplateRecord)
+        {
+            string sql = "";
+
+            if (isForBlankTemplateRecord)
+            {
+                sql = "SELECT null AS ImportTemplateId, " +
+						   "null AS AccountId, " +
+						   "'' AS ImportTemplateName, " +
+						   "1 AS ImportType, " +
+						   "0 AS HeaderRowIndex, " +
+						   "CAST(-1 AS SIGNED) AS DateFieldIndex, " +
+						   "CAST(-1 AS SIGNED) AS DescriptionFieldIndex, " +
+						   "CAST(-1 AS SIGNED) AS AmountFieldIndex, " +
+						   "CAST(-1 AS SIGNED) AS DebitFieldIndex, " +
+						   "CAST(-1 AS SIGNED) AS CreditFieldIndex";
+					  
+            }
+            else
+            {
+                sql = "SELECT i.import_template_id AS ImportTemplateId, " +
+						   "i.account_id AS AccountId, " +
+						   "i.import_template_name AS ImportTemplateName, " +
+						   "i.import_type AS ImportType, " +
+						   "i.import_header_row_index AS HeaderRowIndex, " +
+						   "i.import_template_date_field_index AS DateFieldIndex, " +
+						   "i.import_template_description_field_index AS DescriptionFieldIndex, " +
+						   "i.import_template_amount_field_index AS AmountFieldIndex, " +
+						   "i.import_template_debit_field_index AS DebitFieldIndex, " +
+						   "i.import_template_credit_field_index AS CreditFieldIndex " +
+					  "FROM pft_import_templates i";
+            }
+            
+            return sql;
+
+        }
+
+        public static BulkImportTemplate? GetSingleRecordFromBulkImportTemplateTable(string userId, IDbConnection _conn, bool isForBlankTemplateRecord = false)
+        {
+
+            string sql = $"{GetBulkImportTableSelectStatementWithFieldNames(isForBlankTemplateRecord)}{(isForBlankTemplateRecord == false ? " WHERE i.user_id = @UserId LIMIT 1" : "")}";
+
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<BulkImportTemplate?>(sql, new
+            {
+                UserId = ulong.Parse(userId)
+            });
+        }
+
+         public static BulkImportTemplate? GetBulkImportTemplateRecordByName(string importTemplateName, string userId, IDbConnection _conn)
+        {
+
+            string sql = $"{GetBulkImportTableSelectStatementWithFieldNames(false)} WHERE i.import_template_name = @ImportTemplateName AND i.user_id = @UserId";
+
+            // Get this value!!!
+            return _conn.QuerySingleOrDefault<BulkImportTemplate?>(sql, new
+            {
+                ImportTemplateName = importTemplateName,
+                UserId = ulong.Parse(userId)
+            });
+
+        }
+
+        public static string GenerateAdditionalAccountRecordAndGetId(string userId, IDbConnection _conn, string? accountNameIndex = null)
+        {
+
+            string sql = GetInsertDummyAccountRecordAndOrRetrieveIdSQL(userId, accountNameIndex, true);
+            return ExecuteSQLAndReturnId(sql, _conn).ToString();
+
+        }
+
+        // Generates the goal and transaction rules records for the CSV upload tests. 
+        public static void GenerateGoalAndRulesRecordsForCSVUploadTests(string userId, string accountId, IDbConnection _conn)
+        {
+
+            string sql = "START TRANSACTION;";
+            sql = $"{sql} DELETE FROM pft_transactions_rules WHERE user_id = '{userId}';";
+            sql = $"{sql} DELETE FROM pft_goals WHERE user_id = '{userId}';";
+            sql = $"{sql} {GetInsertDummyGoalRecordAndOrRetrieveIdSQL(userId, "2", true)}";
+            sql = $"{sql}; COMMIT;";
+            string newGoalId = ExecuteSQLAndReturnId(sql, _conn);
+
+            string businessIncomeCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Business Income", userId, _conn).ToString();
+            string educationCategoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Education", userId, _conn).ToString();
+
+            sql = $"{GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, accountId, businessIncomeCategoryId, newGoalId, "Business Income", false)}";
+            sql = $"{sql} {GetInsertDummyTransctionRuleRecordAndRetrieveIdSQL(userId, accountId, educationCategoryId, newGoalId, "Education", false)}";
+            
+            ExecuteSQLAndReturnId(sql, _conn);
+            
+        }
+
+        // Checks the no of records in the transactions table uploaded through CSV file that has rules assigned!
+        public static int GetNoOfRecordsInsertedInTransactionTable(string userId, string accountId, string? transactionDescription, IDbConnection _conn)
+        {
+
+            string categoryId = "";
+            string? descriptionToCheck = null;
+            TransactionRule? transactionRule = null;            
+            string? goalId = null;
+
+            if(transactionDescription == "Business Income")
+            {
+                transactionRule = GetTransactionRuleRecordByTransactionTextToMatch(transactionDescription, userId, _conn);
+                categoryId = transactionRule.CategoryId;
+                goalId = transactionRule.GoalId;
+                descriptionToCheck = transactionRule.TransactionDescriptionOverride;
+                // descriptionToCheck = "Business Income - Overwritten";
+                
+            }
+            else if(transactionDescription == "Education")
+            {
+                transactionRule = GetTransactionRuleRecordByTransactionTextToMatch(transactionDescription, userId, _conn);
+                categoryId = transactionRule.CategoryId;
+                goalId = transactionRule.GoalId;
+                descriptionToCheck = transactionRule.TransactionDescriptionOverride;
+                // descriptionToCheck = "Education - Overwritten";
+            }
+            else
+            {
+                categoryId = GetRecIdByName("pft_categories", "category_id", "category_name", "Uncategorized", userId, _conn).ToString();
+            }
+
+            string sql = $"SELECT COUNT(*) FROM pft_transactions t WHERE t.user_id = @UserId AND t.account_id = @AccountId AND t.category_id = @CategoryId";
+            
+            if(goalId != null)
+            {
+                sql = $"{sql} AND t.goal_id = '{goalId}'";
+            }
+
+            if(descriptionToCheck != null)
+            {
+                sql = $"{sql} AND transaction_description LIKE '%{descriptionToCheck}%' ";
+            }
+
+            return _conn.ExecuteScalar<int>(sql, new {
+                    UserId = userId,
+                    AccountId = accountId,
+                    CategoryId = categoryId
+                });
+
+        }
+        // Bulk Import Tests - End
 
     }
 }

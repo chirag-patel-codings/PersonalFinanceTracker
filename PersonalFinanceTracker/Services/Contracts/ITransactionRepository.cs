@@ -19,12 +19,11 @@ namespace PersonalFinanceTracker.Services.Contracts
         // Bulk Import
         public (List<ValidationResult>? modelValidationResults, List<Transaction>? transactions) GenerateTransactionRecordsWithRulesApplied(ulong userId, BulkImportTemplate bulkImportTemplate, List<string[]> transactionDataList, string defaultCategoryId, byte transactionCategorization, string? connString);
         public ulong GetDefaultCateogryId(ulong userId, string? connString);    // When bulk upload or linked account
-        public bool BulkUploadTransactions(ulong userId, IEnumerable<Transaction> transaction, string? connString);
+        public bool BulkUploadTransactions(ulong userId, IEnumerable<Transaction> transaction, string importTemplateId, string? connString);
         
         // Apply Rule
         public IEnumerable<Transaction> GetCSVAndBankLinkTransactionsForUser(ulong userID, string? connString);
         public void UpdateTransactionRecordFromRule(ulong userID, Transaction transaction, string? connString);
 
-        
     }
 }

@@ -1,0 +1,6 @@
+"Details","Posting Date","Description","Amount","Type","Balance","Check or Slip #"
+"CREDIT",09/17/2026,"",973.66,"ACH_CREDIT"," ",
+"DEBIT",09/17/2026,"Investment Income",633.78,"ACH_DEBIT",235.6,
+"CREDIT",09/17/2026,"Other Income",46.92,"ACH_CREDIT",869.38,
+"CREDIT",09/17/2026,"Retirement Income",234.45,"ACH_CREDIT",822.46,
+"DEBIT",09/17/2026,"Education",-2000,"CHASE_TO_PARTNERFI",24.68,

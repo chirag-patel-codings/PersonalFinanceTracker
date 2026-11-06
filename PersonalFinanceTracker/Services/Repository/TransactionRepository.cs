@@ -310,11 +310,27 @@ namespace PersonalFinanceTracker.Services.Repository
                 string originalDate = transactionDataList[i][bulkImportTemplate.DateFieldIndex];
 
                 (bool isRuleApplied, TransactionDataModel transaction) transactionForRuleApplication = ( false, new TransactionDataModel() );
-                transactionForRuleApplication.transaction.TransactionDate = DateOnly.ParseExact( originalDate, ["MM/dd/yyyy", "M/d/yyyy", "MM/dd/yy", "M/d/yy"], CultureInfo.InvariantCulture);
+                transactionForRuleApplication.transaction.TransactionDate = originalDate.Trim() == "" ? DateOnly.MinValue : DateOnly.ParseExact( originalDate, ["MM/dd/yyyy", "M/d/yyyy", "MM/dd/yy", "M/d/yy"], CultureInfo.InvariantCulture);
                 transactionForRuleApplication.transaction.TransactionDescription = originalDescription;
 
-                transactionForRuleApplication.transaction.TransactionAmount = double.Parse((transactionDataList[i][bulkImportTemplate.AmountFieldIndex].ToString().Trim()) != "" ? transactionDataList[i][bulkImportTemplate.AmountFieldIndex].Trim() :
-                     (transactionDataList[i][bulkImportTemplate.DebitFieldIndex].Trim() != "" ? transactionDataList[i][bulkImportTemplate.DebitFieldIndex].Trim() : transactionDataList[i][bulkImportTemplate.CreditFieldIndex].Trim()));
+                if (bulkImportTemplate.AmountFieldIndex != (sbyte)-1)
+                {
+
+                    transactionForRuleApplication.transaction.TransactionAmount = double.Parse(transactionDataList[i][bulkImportTemplate.AmountFieldIndex].ToString().Trim());
+                
+                }
+                else
+                {
+                    if(transactionDataList[i][bulkImportTemplate.DebitFieldIndex].ToString().Trim() != "")
+                    {
+                        transactionForRuleApplication.transaction.TransactionAmount = double.Parse(transactionDataList[i][bulkImportTemplate.DebitFieldIndex].ToString().Trim());
+                    }
+                    else
+                    {
+                        transactionForRuleApplication.transaction.TransactionAmount = double.Parse(transactionDataList[i][bulkImportTemplate.CreditFieldIndex].ToString().Trim());
+                    }
+
+                }
 
                 transactionForRuleApplication.transaction.AccountId = bulkImportTemplate.AccountId;
                 transactionForRuleApplication.transaction.CategoryId = defaultCategoryId;
@@ -352,7 +368,7 @@ namespace PersonalFinanceTracker.Services.Repository
         // Complete
         // Inserts transaction record(s) from CSV or Linked Bank Account!!!
         // transactionCategorization: 2 = CSV upload , 3 = auto (Bank) 
-        public bool BulkUploadTransactions(ulong userId, IEnumerable<TransactionDataModel> transactions, string? connString)
+        public bool BulkUploadTransactions(ulong userId, IEnumerable<TransactionDataModel> transactions, string importTemplateId, string? connString)
         {
 
             int rowsInserted = 0;
@@ -362,12 +378,31 @@ namespace PersonalFinanceTracker.Services.Repository
 
             string sql = "INSERT INTO pft_transactions (transaction_id, user_id, transaction_date, transaction_description, transaction_amount, account_id, category_id, goal_id, tag_id, transaction_categorization, transaction_type) " +
                           "VALUES ";
-
             sql = string.Concat(sql, PrepareValuesStatementForBulkInsert(userId, transactions, connString));
 
-            rowsInserted = _conn.Execute(sql);
 
-            return rowsInserted > 0 ? true : false;
+            if (importTemplateId != null)
+            {
+                sql = string.Concat(sql, $"; INSERT INTO pft_trans_import (user_id, import_template_id) VALUES ('{userId}', '{importTemplateId}');");
+            }
+
+            using (var transaction = _conn.BeginTransaction())
+            {
+
+                try
+                {
+                    rowsInserted = _conn.Execute(sql, transaction: transaction);
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            
+            }
+
+            return rowsInserted > 0;
 
         }
 

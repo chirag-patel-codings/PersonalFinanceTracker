@@ -233,10 +233,11 @@ namespace PersonalFinanceTracker.Controllers
 
         }
 
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Saves the csv file to the server and retruns the data to client for validations!
+        // Saves the uploaded CSV File data to the database!
         public IActionResult ImportCsvFileData([FromBody] BulkImportTemplate bulkImportTemplate, string? connString = null)
         {
             
@@ -248,7 +249,7 @@ namespace PersonalFinanceTracker.Controllers
 
             if (validationErrorsOrTransactions.transactions != null)    // If the data returned
             {
-                bool result = _transactionRepository.BulkUploadTransactions(_currentUserId, (IEnumerable<TransactionDataModel>)validationErrorsOrTransactions.transactions, connString);
+                bool result = _transactionRepository.BulkUploadTransactions(_currentUserId, (IEnumerable<TransactionDataModel>)validationErrorsOrTransactions.transactions, bulkImportTemplate.ImportTemplateId, connString);
                 return Ok(new { success = result });
             }
             else
@@ -282,7 +283,7 @@ namespace PersonalFinanceTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         // Gets all the Bulk Import Templates for the current user from a 'Post' request...
-        public IActionResult GetBulkImportTemplateNames(string? connString)
+        public IActionResult GetBulkImportTemplateNames(string? connString = null)
         {
 
             var bulkImportTemplateNames = _bulkImportTemplateRepository.GetBulkImportTemplateNames(_currentUserId, connString);

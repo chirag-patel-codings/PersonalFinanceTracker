@@ -1,0 +1,12 @@
+AddedLine1,,,,,,
+AddedLine2,,,,,,
+AddedLine3,,,,,,
+AddedLine4,,,,,,
+AddedLine5,,,,,,
+Details,Posting Date,Description,Amount,Type,Balance,Check or Slip #
+CREDIT,06/09/2026,"ORIG CO NAME:Rasier, LLC      CO ENTRY DESCR:PARTNER    SEC:PPD                        ORIG ID:2452647441",973.66,ACH_CREDIT, ,
+DEBIT,06/08/2026,HMF              HMFUSA.com                 PPD ID: 9200704262,-633.78,ACH_DEBIT,235.6,
+CREDIT,06/03/2026,STRIPE           Lyft 06-02 ST-C8H9M2E7V9N7 CCD ID: 1800948598,46.92,ACH_CREDIT,869.38,
+CREDIT,06/02/2026,RAISER 6795      EDI PAYMNT 5UNFE5V1C54GTT8 CCD ID: 3800896455,797.78,ACH_CREDIT,822.46,
+DEBIT,06/01/2026,Zelle payment to ChaitaliPatelAllyBnkZeleMntExpns JPM99cj32ic0,-2000,CHASE_TO_PARTNERFI,24.68,
+DEBIT,06/01/2026,Online Transfer 29431693417 to Discover Checking Account ######1473 transaction #: 29431693417 06/01,-350,ACCT_XFER,2024.68,
