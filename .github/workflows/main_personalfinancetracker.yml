@@ -1,4 +1,4 @@
-name: Deploy Raw Source to Azure App Service
+name: Deploy Raw Source to Azure
 
 on:
   push:
@@ -9,14 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: windows-latest
-    permissions:
-      contents: read
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login via Publish Profile
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'PersonalFinanceTracker'
