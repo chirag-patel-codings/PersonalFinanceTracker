@@ -23,5 +23,15 @@ namespace PersonalFinanceTracker.Models
 
         [Required(ErrorMessage = "Is A Linked Account Flag is required!")]  // Kept for the Consistency from front end. Not required by the model as it will fail if not provided.
         public byte IsALinkedAccount { get; set; } = 0; // Will be programattically set
+
+        // For Plaid Integration - Start
+        // These fields will be set in the backend after successful linking of the account with Plaid
+        public string? PlaidAccessToken { get; set; } = null; 
+        public string? PlaidItemId { get; set; } = null;  
+        public string? PlaidInstitutionId { get; set; } = null;  
+        public string? PlaidAccountId { get; set; } = null; // May not be useful but keeping it for future use if needed.
+        
+        // For Plaid Integration - End
+
     }
 }

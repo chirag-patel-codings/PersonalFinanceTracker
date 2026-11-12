@@ -225,7 +225,7 @@ namespace PersonalFinanceTracker.Services.Repository
 
             }
 
-            string sql = $"SELECT CAST(t.{idColumn} AS CHAR) AS listOptionId, t.{nameColumn} AS listOptionName{ (typeColumn != "" ? ", " + typeColumn + " AS listOptionType" : "" ) } FROM {tableName} t WHERE t.user_id = @UserId;";
+            string sql = $"SELECT CAST(t.{idColumn} AS CHAR) AS listOptionId, t.{nameColumn} AS listOptionName{ (typeColumn != "" ? ", " + typeColumn + " AS listOptionType" : "" ) } FROM {tableName} t WHERE t.user_id = @UserId{(selectFor == "accounts" ? " AND plaid_is_account_active = '1'" : "")};";
 
             return _conn.Query<ListOptionStringId>(sql, new { UserId = userId });
         }

@@ -18,6 +18,8 @@ const displayAccountData = function (accountsData, pagination) {
         const row = document.createElement("tr");
         //data-secure
         row.setAttribute("data-secure-index", item.accountId);
+        // For Linked Accounts
+        row.setAttribute("data-is-a-linked-account", item.isALinkedAccount);
 
         // Populate the row with specific cell data
         row.innerHTML = `<td>${item.accountName}</td>
@@ -229,6 +231,7 @@ document.querySelector('tbody').addEventListener('click', function (event) {
     // Check if the clicked element (or its parent) has a title of "Edit" or "Delete"
     const clickedAction = event.target.closest('span[title="Edit"], span[title="Delete"]');
 
+    
     // If the click wasn't on one of those spans, ignore it
     if (!clickedAction) return;
 
@@ -241,6 +244,7 @@ document.querySelector('tbody').addEventListener('click', function (event) {
     if (row) {
         // Grab the hidden ID from that specific row
         const recordId = row.getAttribute('data-secure-index');
+        const isALinkedAccount = row.getAttribute('data-is-a-linked-account');
 
         // Get the encrypted record and display or  process!!!
         const actionType = clickedAction.getAttribute('title');
@@ -249,17 +253,37 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         // Execute specific logic depending on what was clicked
         if (actionType === "Edit") {
 
-            if (recordId === prevQueriedRecordId) {
-                showAddEditAccountModal(null); // Show the existing details
+            if (isALinkedAccount === "1") {
+                // For Linked Accounts, we will not show the modal, instead we will open the Plaid Link to update the account details!
+                setupPlaidLink("edit", recordId, null);
             }
             else {
-                getAccountRecord(recordId);
-                prevQueriedRecordId = recordId;
+
+                if (recordId === prevQueriedRecordId) {
+                    showAddEditAccountModal(null); // Show the existing details
+                }
+                else {
+                    getAccountRecord(recordId);
+                    prevQueriedRecordId = recordId;
+                }
+
             }
 
         } else if (actionType === "Delete") {
-            if (confirm("Do you want to delete the account?\nDeleting this account, will delete all of it's related records from transactions!")) {
-                deleteAccountRecord(recordId);
+
+            if (isALinkedAccount === "1") {
+                // For Linked Accounts, we will not show the modal, instead we will open the Plaid Link to update the account details
+                if (confirm("To delete this account, you must unselect it in the next screen!\nPlease select another account if it is the only account linked and other accounts available for selection!\n\nYou may NOT be able to un-select, if it's the only account from an institution!\n\nDeleting this account, will delete all of it's related records from your account permanently!\n\nDo you want to proceed?")){
+                    
+                    setupPlaidLink("delete", recordId, () => {
+                        deleteAccountRecord(recordId);
+                    });
+                }
+            }
+            else {
+                if (confirm("Do you want to delete the account?\nDeleting this account, will delete all of it's related records from your account permanently!")) {
+                    deleteAccountRecord(recordId);
+                }
             }
         }
 
@@ -273,12 +297,121 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
     clearFormData('#addEditAccountForm');
     rebindValidation($("#addEditAccountForm"));
     const record = getFormEntries('addEditAccountForm');    // Retrieve a blank record!!!
+    record.isALinkedAccount = 0; // Account Created By User is not a linked account, so set it to 0
     showAddEditAccountModal(record);
 });
 
 
-// Load the first time data!!!
-doNavigation(null, 'first', true);
+// Plaid Create Token - Start
+
+// Attach directly to your button click event
+document.getElementById('addLinkedAccount').onclick = function () {
+    
+    setupPlaidLink("add", null, null);
+    
+};
+
+// Define a global handler variable
+let plaidHandler = null;
+
+// Gets a temporary Token from Plaid which is required to open the Plaid Modal.
+async function getPlaidTemporaryLinkToken(dataMode, accountId = null) {
+
+    let requestUri = '/api/plaid/create-link-token';
+
+    if(dataMode !== "add") {
+        requestUri = '/api/plaid/create-update-link-token';
+    }
+
+    // Request a fresh link_token from your C# backend right when the user clicks
+    const response = await fetch(requestUri, {
+        method: 'POST',
+        credentials: "include",   // REQUIRED for antiforgery cookie
+        headers: {
+            "Content-Type": "application/json",
+            "RequestVerificationToken": _token
+        },
+        body: JSON.stringify({ accountId: accountId })
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch link token from backend');
+    }
+
+    const data = await response.json();
+    return data.link_token;
+
+}
+
+// Links an external account through Plaid.
+async function setupPlaidLink(dataMode, accountId = null, onCompleteCallback = null) {
+
+    try {
+        
+        const linkToken = await getPlaidTemporaryLinkToken(dataMode, accountId);
+
+        // Initialize Plaid Link Handler with the fresh token
+        plaidHandler = Plaid.create({
+
+            token: linkToken,
+            // Only after the user successfully logs into their bank inside the pop-up does Plaid fire the onSuccess function
+            onSuccess: async (public_token, metadata) => {
+
+                try {
+                    // Send public_token to your C# backend
+                    const response = await fetch('/api/plaid/get-and-save-exchange-tokens', {
+                        method: 'POST',
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "RequestVerificationToken": _token
+                        },
+                        body: JSON.stringify({
+                            plaidPublicTemporaryToken: public_token,
+                            dataMode: dataMode // or "update" based on your logic
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to exchange token on backend.');
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+
+                        // EXECUTE CALLBACK HERE (After Plaid flow is fully done!)
+                        if (typeof onCompleteCallback === 'function') {
+                            await onCompleteCallback();
+                        }
+                        
+                        showDbMessage("Linked account added successfully!", true);
+                        
+                        // Refresh UI or notify the user
+                        // location.reload();
+                        doNavigation(null, 'first', true);
+                    }
+
+                } catch (error) {
+                    console.error('Error during token exchange:', error);
+                }
+            },
+            onExit: (err, metadata) => {
+                if (err) {
+                    console.error('User left Plaid Link with error:', err);
+                }
+            },
+        });
+
+        // Open the modal immediately after creation
+        plaidHandler.open();
+
+    } catch (error) {
+        console.error('Error initializing Plaid Link:', error);
+    }
+}
+
+// Plaid Create Token - End
+
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form
 setUpUnobtrusiveValidationOnModal('#addEditAccountModal');
@@ -296,4 +429,9 @@ $(document).ready(function () {
 
     });
 
+});
+
+// Load the first time data!!!
+window.addEventListener('load', (event) => {
+    doNavigation(null, 'first', true);
 });

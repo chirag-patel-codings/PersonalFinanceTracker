@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<PersonalFinanceTracker.Models.Account>;
 <!-- LINK ACCOUNT IS PENDING!!! -->
 <div id="dbMessage" class="alert" role="alert" style="display:none;"></div>
-<h3>Accounts <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span></h3>
+<h3>Accounts <span title='Add' class="material-symbols-outlined-data-icon float-end pe-2">add</span>
+    <span id="addLinkedAccount" title='Add Linked Account' class="material-symbols-outlined-data-icon float-end pe-2" style="color: cadetblue;">add</span>
+</h3>
 
 <table class="table bg-light shadow-raised" id="accountsTable">
     <thead>
@@ -91,6 +93,10 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    @* Plaid - Script *@
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
     <script src="~/js/app/Account.js"></script>
     
 }

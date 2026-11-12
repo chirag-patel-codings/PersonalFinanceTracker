@@ -30,10 +30,22 @@ Log.Logger = new LoggerConfiguration()
 // Tell ASP.NET Core to use Serilog for logging
 builder.Host.UseSerilog();
 
-// Custom code END
-
 // Register Dapper type handler
 SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
+
+// REGISTER CORS SERVICE (For 'Plaid' integration)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// REGISTER THE HTTP CLIENT FACTORY:
+builder.Services.AddHttpClient();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -44,9 +56,6 @@ builder.Services.AddControllersWithViews()
         // options.JsonSerializerOptions.PropertyNamingPolicy = null;   // Does No Conversion to Property Names
     });
 builder.Services.AddHttpContextAccessor();   // To Get httpContext in custom classes other than Controller
-
-// Custom Code Starts -- Here...
-
 
 // DATABASE CONNECTION AND 'INTERFACE' DEPENDANCY IS ADDED TO THE 'Services' HERE...
 /*
@@ -105,13 +114,12 @@ app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHsts();
 
-
-// Custom code END
-
-
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+// Add CORS into the HTTP pipeline (MUST be before MapControllers)
+app.UseCors("AllowAllPolicy");
 
 // Required for Authentication and Authorization!!!
 app.UseAuthentication();
@@ -139,5 +147,5 @@ app.Run();
 
 
 
-// To let WebApplicationFactory<Program> access it from your test project (as 'Program' class is partial internally from .net version 6 onwards!!!)
+// To let WebApplicationFactory<Program> access it from test project (as 'Program' class is partial internally from .net version 6 onwards!!!)
 public partial class Program { }

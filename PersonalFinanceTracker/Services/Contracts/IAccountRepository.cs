@@ -13,5 +13,8 @@ namespace PersonalFinanceTracker.Services.Contracts
         public bool SaveAccount(Account account, string? connString);
         public bool DeleteAccount(ulong userId, string accountId, string? connString);
         public IEnumerable<AccountType> GetAccountTypes(string? connString);
+        public bool SaveLinkedAccountsFromExternalInstitute(List<Account> accounts, string? dataMode, string? connString);
+        public string? GetPlaidPermanentAccessToken(ulong userId, string? accountId, string? connString);
+
     }
 }
