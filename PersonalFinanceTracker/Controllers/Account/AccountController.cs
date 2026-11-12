@@ -456,49 +456,6 @@ namespace PersonalFinanceTracker.Controllers
             }
         }
 
-
-        /*
-        
-        public async Task<IActionResult> ExchangeToken([FromBody] dynamic plaidPublicToken)
-        {
-
-            string plaidPublicTokenValue = plaidPublicToken.GetProperty("plaidPublicToken").GetString();
-
-            // Create HttpClient pointing to Sandbox (or Production URL)
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://sandbox.plaid.com"); // Switch to https://production.plaid.com when live
-
-            // Build the payload matching Plaid's raw JSON schema for public token exchange
-            var payload = new
-            {
-                client_id = _configuration["Plaid:ClientId"],
-                secret = _configuration["Plaid:Secret"],
-                public_token = plaidPublicTokenValue
-            };
-
-            // Send POST request to Plaid's direct endpoint
-            var response = await client.PostAsJsonAsync("/item/public_token/exchange", payload);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                return BadRequest(new { error = errorContent });
-            }
-
-            // Read the JSON response from Plaid
-            var jsonResponse = await response.Content.ReadFromJsonAsync<JsonElement>();
-
-            // CRITICAL: Save accessToken and itemId to your database securely tied to the user!
-            string accessToken = jsonResponse.GetProperty("access_token").GetString();
-            string itemId = jsonResponse.GetProperty("item_id").GetString();
-
-            return Ok(new { success = true, accessToken = accessToken, itemId = itemId, message = "Successfully exchanged token via direct Plaid API!" });
-
-
-        }
-        
-        */
-
         // Plaid - End
 
 
