@@ -223,18 +223,19 @@ const deleteCategoryRecord = function (categoryId) {
         body: JSON.stringify({ categoryId: String(categoryId) })
     })
         .then(response => {
-            // Check if the HTTP status code is 200-299 (Ok)
-            if (!response.ok) {
-                // throw new Error(`HTTP error! Status: ${response.status}`);
-                showDbMessage("Category has not been deleted successfully!!!", true);
-            }
             // Parse the body text as JSON
             return response.json();
         })
         .then(data => {
-            updateStandardCategoriesJSON({ categoryId: categoryId });
-            doNavigation(null, 'current');  // Refresh the page!
-            showDbMessage("Category deleted successfully.", true);
+            if(data.success){
+                updateStandardCategoriesJSON({ categoryId: categoryId });
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Category deleted successfully.", true);
+            }
+            else{
+                console.error(data.message);
+                showDbMessage("Error: Category has not been deleted successfully!!!", false);
+            }
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);

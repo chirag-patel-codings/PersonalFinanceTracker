@@ -27,7 +27,7 @@ namespace PersonalFinanceTracker.Services.Repository
         
         private readonly IDbConnectionFactory _factory;
 
-        private readonly ITransactionRuleService _transactionRuleService;   // WILL NEED TO DELETE IF NOT WORKING.
+        private readonly ITransactionRuleService _transactionRuleService;   
         public TransactionRepository(IDbConnectionFactory factory, ITransactionRuleService transactionRuleService)
         {
             _transactionRuleService = transactionRuleService;
@@ -39,7 +39,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int GetTotalNoOfRecords(ulong userId, TransactionFilter transactionQueryFilter, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             var parameters = PrepareTransactionQueryParameters(userId, transactionQueryFilter, null, null);
 
@@ -57,7 +57,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<TransactionDataModel>? GetTransactions(ulong userId, TransactionFilter transactionQueryFilter, int recStartNumber, int recEndNumber, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = PrepareTransactionQueryParameters(userId, transactionQueryFilter, recStartNumber, recEndNumber);
@@ -84,7 +84,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public TransactionDataModel? GetTransaction(ulong userId, string transactionId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT CAST(t.transaction_id AS CHAR) AS TransactionId, " +
                                 "t.transaction_date AS TransactionDate, " +
@@ -113,7 +113,7 @@ namespace PersonalFinanceTracker.Services.Repository
         {
             
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -148,7 +148,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteTransaction(ulong userId, string transactionId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -191,7 +191,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<ListOptionStringId> GetSelectOptionsDataFor(ulong userId, string selectFor, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string idColumn = "";
             string nameColumn = "";
@@ -235,7 +235,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public ulong GetDefaultCateogryId(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT c.category_id AS CategoryId " +
                            "FROM pft_categories c " +
@@ -250,7 +250,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<TransactionDataModel> GetCSVAndBankLinkTransactionsForUser(ulong userID, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT t.transaction_id AS TransactionId, " +
                                 "t.transaction_date AS TransactionDate, " +
@@ -274,7 +274,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public void UpdateTransactionRecordFromRule(ulong userID, TransactionDataModel transaction, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "UPDATE pft_transactions t " +
                             "SET t.category_id = @CategoryID, " +
@@ -336,7 +336,7 @@ namespace PersonalFinanceTracker.Services.Repository
                 transactionForRuleApplication.transaction.CategoryId = defaultCategoryId;
                 transactionForRuleApplication.transaction.GoalId = null;
                 transactionForRuleApplication.transaction.TagId = null;
-                transactionForRuleApplication.transaction.TransactionCategorization = transactionCategorization;  // Can be CSV or Bank!
+                transactionForRuleApplication.transaction.TransactionCategorization = transactionCategorization;  // Can be CSV or (will not be Bank)!
                 transactionForRuleApplication.transaction.TransactionType = 1;    // Regular
 
                 // Apply Existing Rules (Get Category and (optional)Goal)
@@ -364,73 +364,7 @@ namespace PersonalFinanceTracker.Services.Repository
             return (null, transactionsAsList);
 
         }
-
-        // Complete
-        // Inserts transaction record(s) from CSV or Linked Bank Account!!!
-        // transactionCategorization: 2 = CSV upload , 3 = auto (Bank) 
-        public bool BulkUploadTransactions(ulong userId, IEnumerable<TransactionDataModel> transactions, string importTemplateId, string? connString)
-        {
-
-            int rowsInserted = 0;
-
-            connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
-
-            string sql = "INSERT INTO pft_transactions (transaction_id, user_id, transaction_date, transaction_description, transaction_amount, account_id, category_id, goal_id, tag_id, transaction_categorization, transaction_type) " +
-                          "VALUES ";
-            sql = string.Concat(sql, PrepareValuesStatementForBulkInsert(userId, transactions, connString));
-
-
-            if (importTemplateId != null)
-            {
-                sql = string.Concat(sql, $"; INSERT INTO pft_trans_import (user_id, import_template_id) VALUES ('{userId}', '{importTemplateId}');");
-            }
-
-            using (var transaction = _conn.BeginTransaction())
-            {
-
-                try
-                {
-                    rowsInserted = _conn.Execute(sql, transaction: transaction);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return false;
-                }
-            
-            }
-
-            return rowsInserted > 0;
-
-        }
-
-        // Complete
-        // Prepares the Values statement for INSERT from CSV or Linked Bank Account data!!!
-        private string PrepareValuesStatementForBulkInsert(ulong userId, IEnumerable<TransactionDataModel> transactionData, string? connString)
-        {
-                       
-            StringBuilder sb = new StringBuilder();
-            
-            foreach (var rec in transactionData)
-            {
-                
-                rec.GoalId = rec.GoalId == null ? "NULL" : $"'{rec.GoalId}'";
-                rec.TagId = rec.TagId == null ? "NULL" : $"'{rec.TagId}'";
-
-                string currentRecordAsValuesStatement = $"(GeneratePrefixedId(3), {userId}, '{rec.TransactionDate.ToString("yyyy-MM-dd")}', '{rec.TransactionDescription.Replace("\\", "\\\\").Replace("\'", "\\'").Replace("\"", "\\\"")}', '{rec.TransactionAmount}', '{rec.AccountId}', '{rec.CategoryId}', {rec.GoalId}, {rec.TagId}, '{rec.TransactionCategorization}', '{rec.TransactionType}'),";
-                sb.Append(currentRecordAsValuesStatement);
-
-            }
-            
-            string result = sb.ToString().Trim();
-
-            return result.Substring(0, result.Length - 1);
-
-        }
-
-
         
+
     }
 }

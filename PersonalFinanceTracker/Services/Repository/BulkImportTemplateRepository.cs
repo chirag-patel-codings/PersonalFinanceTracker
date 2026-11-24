@@ -25,7 +25,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<BulkImportTemplate> GetBulkImportTemplate (ulong userId, string importTemplateName, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             var parameters = new DynamicParameters();
             parameters.Add("user_id", userId);
@@ -43,7 +43,7 @@ namespace PersonalFinanceTracker.Services.Repository
         {
 
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT i.import_template_name " +
                            "FROM pft_import_templates i " +
@@ -59,7 +59,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveBulkImportTemplate(BulkImportTemplate bulkImportTemplate, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -89,7 +89,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteBulkImportTemplate(ulong userId, string importTemplateName, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

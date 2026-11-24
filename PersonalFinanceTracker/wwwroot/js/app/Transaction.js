@@ -324,17 +324,18 @@ const deleteTransactionRecord = function (transactionId) {
         body: JSON.stringify({ transactionId: String(transactionId) })
     })
         .then(response => {
-            // Check if the HTTP status code is 200-299 (Ok)
-            if (!response.ok) {
-                // throw new Error(`HTTP error! Status: ${response.status}`);
-                showDbMessage("Transaction has not been deleted successfully!!!", true);
-            }
             // Parse the body text as JSON
             return response.json();
         })
         .then(data => {
-            doNavigation(null, 'current');  // Refresh the page!
-            showDbMessage("Transaction deleted successfully.", true);
+            if(data.success){
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Transaction deleted successfully.", true);
+            }
+            else{
+                console.error(data.message);
+                showDbMessage("Transaction has not been deleted successfully!!!", false);
+            }
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);

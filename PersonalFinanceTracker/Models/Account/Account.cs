@@ -30,7 +30,13 @@ namespace PersonalFinanceTracker.Models
         public string? PlaidItemId { get; set; } = null;  
         public string? PlaidInstitutionId { get; set; } = null;  
         public string? PlaidAccountId { get; set; } = null; // May not be useful but keeping it for future use if needed.
+
+        // For Account_Id Reconsilation (Transactions may have new account_id while user may not have in database)
+        public string? PlaidPersistentAccountId { get; set; } = null; // useful to change the account_id for depository accounts
+        public string? PlaidAccountMask { get; set; } = null; 
+        public string? PlaidAccountSubtype { get; set; } = null;
         
+        public string? PlaidNextCursor  { get; set; } = null;
         // For Plaid Integration - End
 
     }

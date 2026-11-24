@@ -19,13 +19,16 @@ namespace PersonalFinanceTracker.Controllers
         private readonly ITransactionRepository _transactionRepository;
 
         private readonly IBulkImportTemplateRepository _bulkImportTemplateRepository;
+
+        private readonly IBulkUploadService _bulkUploadService;
         private readonly ulong _currentUserId;
         private readonly string _userCurrencyCode, _userCurrencySymbol;
-        public TransactionController(IHttpContextAccessor httpContextAccessor, ITransactionRepository transactionRepository, IBulkImportTemplateRepository bulkImportTemplateRepository)
+        public TransactionController(IHttpContextAccessor httpContextAccessor, ITransactionRepository transactionRepository, IBulkImportTemplateRepository bulkImportTemplateRepository, IBulkUploadService bulkUploadService)
         {
 
             _transactionRepository = transactionRepository;
             _bulkImportTemplateRepository = bulkImportTemplateRepository;
+            _bulkUploadService = bulkUploadService;
             _currentUserId = ulong.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
             _userCurrencyCode = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencyCode");
             _userCurrencySymbol = httpContextAccessor.HttpContext?.User.FindFirstValue("CurrencySymbol");
@@ -249,7 +252,7 @@ namespace PersonalFinanceTracker.Controllers
 
             if (validationErrorsOrTransactions.transactions != null)    // If the data returned
             {
-                bool result = _transactionRepository.BulkUploadTransactions(_currentUserId, (IEnumerable<TransactionDataModel>)validationErrorsOrTransactions.transactions, bulkImportTemplate.ImportTemplateId, connString);
+                bool result = _bulkUploadService.BulkInsertTransactions(_currentUserId, (IEnumerable<TransactionDataModel>)validationErrorsOrTransactions.transactions, bulkImportTemplate.ImportTemplateId, connString);
                 return Ok(new { success = result });
             }
             else

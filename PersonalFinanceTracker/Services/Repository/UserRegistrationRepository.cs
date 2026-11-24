@@ -57,7 +57,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool UserWithEmailAlreadyExists(string email, string connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT COUNT(user_email) FROM pft_users WHERE user_email = @user_email";
             int existingEmailCount = _conn.ExecuteScalar<int>(sql, new { user_email = email });
@@ -73,7 +73,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool UserWithSameUserNameExists(string userName, string connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
             string sql = "SELECT COUNT(user_user_name) FROM pft_users WHERE user_user_name = @user_name";
             int existingEmailCount = _conn.ExecuteScalar<int>(sql, new { user_name = userName });
 
@@ -84,7 +84,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int UpdateUserEmailVarification(string userEmailTokenHash, string connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             var parameters = new DynamicParameters();
             parameters.Add("user_email_token_hash", _emailService.GenerateHashFromToken(userEmailTokenHash));

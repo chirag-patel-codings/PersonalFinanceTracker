@@ -11,7 +11,7 @@
 
 // Detach the existing validation, Remove the validation data (validation object), clear error messages from the elements, ReBuild & Attach the validation to the form, and
 // set the blur effect for validation!!!
-function rebindValidation($form) {
+const rebindValidation = function ($form) {
 
     // Unbind internal handlers (.validate namespace)
     $form.off(".validate");

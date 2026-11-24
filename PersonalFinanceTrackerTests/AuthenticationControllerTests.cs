@@ -21,6 +21,7 @@ using PersonalFinanceTracker.Controllers.Authentication;
 using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Services.Communications;
 using PersonalFinanceTracker.Services.Contracts;
+using PersonalFinanceTracker.Services.Plaid;
 using PersonalFinanceTracker.Services.Repository;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
@@ -47,6 +48,7 @@ namespace PersonalFinanceTrackerTests
         private IUserRegistrationRepository _userRegistrationRepository = null!;
         private IUserRepository _userRepository = null!;
         private IEmailService _emailService = null!;
+        private IPlaidService _plaidService = null;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -80,6 +82,7 @@ namespace PersonalFinanceTrackerTests
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRegistrationRepository, UserRegistrationRepository>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IPlaidService, PlaidService>();
             services.AddTransient<AuthenticationController>();
 
             // Build provider
@@ -94,6 +97,7 @@ namespace PersonalFinanceTrackerTests
             _userRepository = provider.GetRequiredService<IUserRepository>();
             _userRegistrationRepository = provider.GetRequiredService<IUserRegistrationRepository>();
             _emailService = provider.GetRequiredService<IEmailService>();
+            _plaidService = provider.GetRequiredService<IPlaidService>();
             _controller = provider.GetRequiredService<AuthenticationController>();      // NO HttpContext Services added to this controller instance
 
             
@@ -615,7 +619,8 @@ namespace PersonalFinanceTrackerTests
                 serviceProvider.GetRequiredService<IDbConnectionFactory>(),
                 serviceProvider.GetRequiredService<IUserRepository>(),
                 serviceProvider.GetRequiredService<IUserRegistrationRepository>(),
-                serviceProvider.GetRequiredService<IEmailService>() // adjust if your logger is different
+                serviceProvider.GetRequiredService<IEmailService>(), // adjust if your logger is different
+                serviceProvider.GetRequiredService<IPlaidService>()
             )
             {
                 ControllerContext = new ControllerContext

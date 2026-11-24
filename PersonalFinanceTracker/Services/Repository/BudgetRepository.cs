@@ -26,7 +26,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<Budget>? GetBudgetSettings(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -42,7 +42,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveBudgetSettings(Budget budget, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

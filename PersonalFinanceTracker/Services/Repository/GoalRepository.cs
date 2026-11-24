@@ -25,7 +25,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int GetTotalNoOfRecords(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT COUNT(goal_id) FROM pft_goals WHERE user_id = @UserId";
 
@@ -36,7 +36,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public Goal? GetGoalWithDetails(ulong userId, string goalId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
             ulong ulongGoalId = ulong.Parse(goalId);
 
             string sql = "SELECT CAST(g.goal_id AS CHAR) AS GoalId, " +
@@ -67,7 +67,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<Goal>? GetGoals(ulong userId, int recStartNumber, int  recEndNumber, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -86,7 +86,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveGoalWithDetails(Goal goal, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             if(goal.GoalId == null || goal.GoalId.Trim() == "")
             {
@@ -160,7 +160,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteGoal(ulong userId, string goalId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

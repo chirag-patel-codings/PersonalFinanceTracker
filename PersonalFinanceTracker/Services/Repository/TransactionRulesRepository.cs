@@ -30,7 +30,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int GetTotalNoOfRecords(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT COUNT(tr.transctions_rule_id) " +
                            "FROM pft_transactions_rules tr " +
@@ -45,7 +45,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<TransactionRule>? GetTransactionRules(ulong userId, int recStartNumber, int recEndNumber, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -66,7 +66,7 @@ namespace PersonalFinanceTracker.Services.Repository
         {
 
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT CAST(tr.transctions_rule_id AS CHAR) AS TransactionRuleId, " +
                                 "CAST(tr.account_id AS CHAR) AS AccountId, " +
@@ -90,7 +90,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveTransactionRule(TransactionRule transactionRulesRecord, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -120,7 +120,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteTransactionRule(ulong userId, string transactionRulesId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

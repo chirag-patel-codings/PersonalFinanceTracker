@@ -533,16 +533,18 @@ const deleteBudgetRecord = function (record) {
         body: JSON.stringify(record)
     })
         .then(response => {
-            // Check if the HTTP status code is 200-299 (Ok)
-            if (!response.ok) {
-                // throw new Error(`HTTP error! Status: ${response.status}`);
-                showDbMessage("Budget has not been deleted successfully!!!", true);
-            }
             // Parse the body text as JSON
             return response.json();
         })
         .then(data => {
-            showDbMessage("Budget has been deleted.", true);
+            if(data.success){
+                showDbMessage("Budget has been deleted.", true);
+            }
+            else{
+                console.error(data.message);
+                showDbMessage("Error: Budget has not been deleted successfully!!!", false);
+            }
+
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);

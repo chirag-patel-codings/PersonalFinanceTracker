@@ -25,7 +25,7 @@ namespace PersonalFinanceTracker.Services.Repository
         {
 
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string stored_proc_name = "";
             reportName = reportName.ToUpper();

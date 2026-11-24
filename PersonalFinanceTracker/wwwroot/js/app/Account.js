@@ -206,17 +206,18 @@ const deleteAccountRecord = function (accountId) {
         body: JSON.stringify({ accountId: String(accountId) })
     })
         .then(response => {
-            // Check if the HTTP status code is 200-299 (Ok)
-            if (!response.ok) {
-                // throw new Error(`HTTP error! Status: ${response.status}`);
-                showDbMessage("Account has not been deleted successfully!!!", true);
-            }
             // Parse the body text as JSON
             return response.json();
         })
         .then(data => {
-            doNavigation(null, 'current');  // Refresh the page!
-            showDbMessage("Account deleted successfully.", true);
+            if(data.success){
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Account deleted successfully.", true);
+            }
+            else{
+                console.error(data.message);
+                showDbMessage("Error: Account has not been deleted successfully!!!", false);
+            }
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);
@@ -255,7 +256,9 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
             if (isALinkedAccount === "1") {
                 // For Linked Accounts, we will not show the modal, instead we will open the Plaid Link to update the account details!
-                setupPlaidLink("edit", recordId, null);
+                if(confirm("In the next screen, please keep the existing accounts selected that you want to be remained linked!\n\nAny un-selected existing linked accounts and all of it's related information will be permanently deleted!\n\nDo you want to proceed?")){
+                    setupPlaidLink("edit", recordId, null);
+                }
             }
             else {
 
@@ -273,10 +276,12 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
             if (isALinkedAccount === "1") {
                 // For Linked Accounts, we will not show the modal, instead we will open the Plaid Link to update the account details
-                if (confirm("To delete this account, you must unselect it in the next screen!\nPlease select another account if it is the only account linked and other accounts available for selection!\n\nYou may NOT be able to un-select, if it's the only account from an institution!\n\nDeleting this account, will delete all of it's related records from your account permanently!\n\nDo you want to proceed?")){
-                    
+                if (confirm("To delete this account, you must unselect it in the next screen!\nPlease select another account if it is the only account linked and other accounts available for selection!\n\nYou may NOT be able to un-select, if it's the only account from an institution!\n\nDeleting this account, will delete all of it's related records from your account permanently!\n\nDo you want to proceed?")) {
+
                     setupPlaidLink("delete", recordId, () => {
-                        deleteAccountRecord(recordId);
+                        // deleteAccountRecord(recordId);
+                        doNavigation(null, 'current');  // Refresh the page!
+                        showDbMessage("Account deleted successfully.", true);
                     });
                 }
             }
@@ -306,8 +311,9 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 
 // Attach directly to your button click event
 document.getElementById('addLinkedAccount').onclick = function () {
-    
-    setupPlaidLink("add", null, null);
+    if(confirm("In the next screen, only select the account(s), that you want to be newly added.\n\nIf you add any same existing linked account, all of it's current details will be permanently deleted and would be processed from scratch as new account!\n\nPlease confirm!")){
+        setupPlaidLink("add", null, null);
+    }
     
 };
 
@@ -388,7 +394,9 @@ async function setupPlaidLink(dataMode, accountId = null, onCompleteCallback = n
                         
                         // Refresh UI or notify the user
                         // location.reload();
-                        doNavigation(null, 'first', true);
+                        if(dataMode != 'delete'){
+                            doNavigation(null, 'first', true);
+                        }
                     }
 
                 } catch (error) {

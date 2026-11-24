@@ -14,6 +14,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using PersonalFinanceTracker.Services.TransactionRules;
 using PersonalFinanceTracker.Services.CSVUpload;
+using PersonalFinanceTracker.Services.BulkUpload;
+using PersonalFinanceTracker.Services.Plaid;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +88,9 @@ builder.Services.AddTransient<ITransactionRuleRepository, TransactionRuleReposit
 builder.Services.AddTransient<ITransactionRuleService, TransactionRuleService>();
 builder.Services.AddTransient<IBulkImportTemplateRepository, BulkImportTemplateRepository>();
 builder.Services.AddTransient<IReportRepository, ReportRepository>();
+builder.Services.AddTransient<IBulkUploadService, BulkUploadService>();
+builder.Services.AddTransient<IPlaidService, PlaidService>();
+
 
 // Custom Code ENDS -- Here...
 

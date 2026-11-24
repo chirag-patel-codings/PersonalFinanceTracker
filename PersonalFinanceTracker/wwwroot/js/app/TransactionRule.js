@@ -281,17 +281,18 @@ const deleteTransactionRuleRecord = function (transactionRuleId) {
         body: JSON.stringify({ transactionRuleId: String(transactionRuleId) })
     })
         .then(response => {
-            // Check if the HTTP status code is 200-299 (Ok)
-            if (!response.ok) {
-                // throw new Error(`HTTP error! Status: ${response.status}`);
-                showDbMessage("Transaction Rule has not been deleted successfully!!!", true);
-            }
             // Parse the body text as JSON
             return response.json();
         })
         .then(data => {
-            doNavigation(null, 'current');  // Refresh the page!
-            showDbMessage("Transaction Rule deleted successfully.", true);
+            if(data.success){
+                doNavigation(null, 'current');  // Refresh the page!
+                showDbMessage("Transaction Rule deleted successfully.", true);
+            }
+            else{
+                console.error(data.message);
+                showDbMessage("Transaction Rule has not been deleted successfully!!!", true);
+            }
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);

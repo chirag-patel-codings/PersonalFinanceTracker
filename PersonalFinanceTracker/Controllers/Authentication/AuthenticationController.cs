@@ -17,11 +17,14 @@ using PersonalFinanceTracker.Models.Authentication;
 using PersonalFinanceTracker.Services.Communications;
 using PersonalFinanceTracker.Services.Contracts;
 using PersonalFinanceTracker.Services.Repository;
+using Syncfusion.EJ2.PivotView;
 using System.Buffers.Text;
 using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text.RegularExpressions;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace PersonalFinanceTracker.Controllers.Authentication
 {
@@ -33,14 +36,16 @@ namespace PersonalFinanceTracker.Controllers.Authentication
         IUserRegistrationRepository _userRegistrationRepository;
         IUserRepository _userRepository;
         IEmailService _emailService;
+        IPlaidService _plaidService;
 
-        public AuthenticationController(IDbConnectionFactory factory, IUserRepository userRepository, IUserRegistrationRepository userRegistrationRepository, IEmailService emailService)
+        public AuthenticationController(IDbConnectionFactory factory, IUserRepository userRepository, IUserRegistrationRepository userRegistrationRepository, IEmailService emailService, IPlaidService plaidService)
         {
 
             _factory = factory;
             _userRepository = userRepository;
             _userRegistrationRepository = userRegistrationRepository;
             _emailService = emailService;
+            _plaidService = plaidService;
 
         }
 
@@ -64,6 +69,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
                 if (requestedUserDetails != null)
                 {
+
                     // Verify password against the database hash
                     if (BCrypt.Net.BCrypt.EnhancedVerify(userLogInDetails.Password, requestedUserDetails.Password))
                     {
@@ -82,8 +88,18 @@ namespace PersonalFinanceTracker.Controllers.Authentication
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
                                                         new ClaimsPrincipal(claimsIdentity));
 
+                        var linkedAccounts = _plaidService.GetPlaidActiveAccountsForUser(requestedUserDetails.UserId ?? 0, connString);
+
+
+                        if(connString == null)      // NOT TO PERFORMED IN TEST MODE!
+                        {
+                            await _plaidService.PerformPlaidAccountReconsilation(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);     // Must be the 1st step before data import
+                            await _plaidService.ImportAllLinkedAccountsDataForUser(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);
+                        }
+
                         return RedirectToAction("Index", "Dashboard");
                     }
+
                 }
             }
 
@@ -224,6 +240,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         }
+
 
     }
 }

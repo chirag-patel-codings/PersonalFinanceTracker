@@ -26,7 +26,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public SessionUser? GetUserDetailsForLogIn(string userNameOrEmail, string connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string whereClause = "pu.user_user_name = @UserNameOrEmail";
 

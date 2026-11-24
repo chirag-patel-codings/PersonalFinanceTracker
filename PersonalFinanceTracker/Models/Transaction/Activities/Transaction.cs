@@ -43,6 +43,9 @@ namespace PersonalFinanceTracker.Models
         public byte? TransactionRepeatInterval { get; set; }        //  Weekly - 1, BiWeekly - 2, Monthly – 3,  BiMonthly – 4,  Quarterly – 5,  Half-Yearly – 6 , Yearly - 7
         public DateOnly? TransactionRepeatEndDate { get; set; }
 
+        // For Plaid Updates & Deletes
+        public string? PlaidTransactionId  { get; set; } = null;
+
 
     }
     

@@ -361,51 +361,6 @@ const getImportTemplateValues = function () {
 
 }
 
-/*
-// Selects the specified value for the specified 'select'
-const pickValueFromSelectOptions = function (select, valueToPick) {
-    select.value = Array.from(select.options).find(o => o.text === valueToPick).value;
-}
-
-// Applies the import Template data to elements on 'mapFieldsTab' modal tab
-const applyImportTemplateValues = function () {
-    
-    const headerRowSelect = document.querySelector('select[name="headerRow"]');
-    const dateColumnSelect = document.querySelector('select[data-col-index="' + currentBulkImportTemplate.dateFieldIndex + '"]');
-    const descriptionColumnSelect = document.querySelector('select[data-col-index="' + currentBulkImportTemplate.descriptionFieldIndex + '"]');
-
-    // RESET THE VALUES FIRST!!!
-    headerRowSelect.value = 0;
-    let columnSelects = document.querySelectorAll('#csvDataColumnMappingHeader select');
-    columnSelects.forEach(select => {
-        select.selectedIndex = 0;
-    });
-
-    if (currentBulkImportTemplate.dateFieldIndex > -1 && currentBulkImportTemplate.descriptionFieldIndex > -1) {
-
-        headerRowSelect.value = currentBulkImportTemplate.headerRowIndex;
-        pickValueFromSelectOptions(dateColumnSelect, 'Date');
-        pickValueFromSelectOptions(descriptionColumnSelect, 'Description');
-
-        if(currentBulkImportTemplate.amountFieldIndex !== '-1'){
-            const amountColumnSelect = document.querySelector('select[data-col-index="' + currentBulkImportTemplate.amountFieldIndex + '"]');
-            pickValueFromSelectOptions(amountColumnSelect, 'Amount');
-        }
-        if(currentBulkImportTemplate.debitFieldIndex !== '-1'){
-            const debitColumnSelect = document.querySelector('select[data-col-index="' + currentBulkImportTemplate.debitFieldIndex + '"]');
-            pickValueFromSelectOptions(debitColumnSelect, 'Debit/Outflow');
-        }
-
-        if(currentBulkImportTemplate.creditFieldIndex !== '-1'){
-            const creditColumnSelect = document.querySelector('select[data-col-index="' + currentBulkImportTemplate.creditFieldIndex + '"]');
-            pickValueFromSelectOptions(creditColumnSelect, 'Credit/Inflow');
-        }
-    
-    }
-
-}
-*/
-
 
 // Gets the template details for supplied 'Template Name' saved for current user
 // And applies those values in appropriate form controls

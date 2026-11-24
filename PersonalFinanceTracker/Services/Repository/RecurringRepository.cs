@@ -30,7 +30,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int GetTotalNoOfRecords(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT COUNT(trs.transaction_recurring_id) " +
                            "FROM pft_recurring_schedules trs " +
@@ -47,7 +47,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<Recurring>? GetRecurrings(ulong userId, int recStartNumber, int recEndNumber, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -67,7 +67,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public Recurring? GetRecurring(ulong userId, string transactionRecurringId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT CAST(trs.transaction_recurring_id AS CHAR) AS RecurringId, " +
                                 "trs.recurring_next_date AS RecurringNextDate, " +
@@ -95,7 +95,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveRecurring(Recurring transactionRecurringRecord, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -129,7 +129,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteRecurring(ulong userId, string transactionRecurringId, bool deleteSeries, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();

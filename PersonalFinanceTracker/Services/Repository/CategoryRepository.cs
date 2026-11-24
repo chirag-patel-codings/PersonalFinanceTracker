@@ -25,7 +25,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public int GetTotalNoOfRecords(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT COUNT(category_id) FROM pft_categories WHERE user_id = @UserId";
 
@@ -37,7 +37,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public Category? GetCategory(ulong userId, string categoryId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT CAST(c.category_id AS CHAR) AS CategoryId, " +
                                 "c.standard_category_id AS StandardCategoryId, " +
@@ -57,7 +57,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<Category>? GetCategories(ulong userId, int recStartNumber, int  recEndNumber, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -76,7 +76,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool SaveCategory(Category category, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -108,7 +108,7 @@ namespace PersonalFinanceTracker.Services.Repository
             {
 
                 connString = connString ?? "pft_con_str";
-                using IDbConnection _conn = _factory.GetDBConnection(connString);
+                IDbConnection _conn = _factory.GetDBConnection(connString);
                 
                 string sql = $"SELECT 1 FROM pft_transactions WHERE user_id = @UserId AND category_id = @CategoryId AND transaction_amount {(categoryType > 0 ? "< 0" : "> 0")} LIMIT 1";
                 invalidRecordsCount = _conn.ExecuteScalar<int?>(sql, new { UserId = userId, CategoryId = categoryId });
@@ -129,7 +129,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public bool DeleteCategory(ulong userId, string categoryId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             // Initialize DynamicParameters
             var parameters = new DynamicParameters();
@@ -150,7 +150,7 @@ namespace PersonalFinanceTracker.Services.Repository
         public IEnumerable<StandardCategories> GetStandardCategories(ulong userId, string? connString)
         {
             connString = connString ?? "pft_con_str";
-            using IDbConnection _conn = _factory.GetDBConnection(connString);
+            IDbConnection _conn = _factory.GetDBConnection(connString);
 
             string sql = "SELECT CONVERT(c.category_id, CHAR) AS CategoryId, c.category_name AS CategoryName FROM pft_categories c WHERE c.user_id = @UserId AND c.category_id = c.standard_category_id;";
 
