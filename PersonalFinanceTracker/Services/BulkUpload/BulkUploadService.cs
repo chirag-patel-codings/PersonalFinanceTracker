@@ -227,7 +227,7 @@ namespace PersonalFinanceTracker.Services.BulkUpload
                 TransactionDataModel transactionForRuleApplication = new TransactionDataModel
                 {
                     TransactionDate = DateOnly.ParseExact(tx.GetProperty("date").GetString()!, "yyyy-MM-dd"),    // YYYY-MM-DD format
-                    TransactionAmount = tx.GetProperty("amount").GetDouble(),
+                    TransactionAmount = tx.GetProperty("amount").GetDouble() * (-1),    // Transactions are having opposite signs
                     TransactionDescription = description,
                     PlaidTransactionId = tx.GetProperty("transaction_id").GetString()!,
                     AccountId = linkedAccounts?.FirstOrDefault(a => a?.PlaidAccountId == plaidAccountId && a?.UserId == userId)?.AccountId ?? string.Empty, // Must be required!

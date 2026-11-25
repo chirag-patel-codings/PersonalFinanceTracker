@@ -85,7 +85,7 @@ namespace PersonalFinanceTracker.Services.Plaid
                     var accountExists = accountsListFromPlaid.FirstOrDefault(p => p.PlaidInstitutionId == existingLinkedAccount.PlaidInstitutionId && p.AccountName == existingLinkedAccount.AccountName && p.PlaidAccountMask == existingLinkedAccount.PlaidAccountMask && p.PlaidAccountSubtype == existingLinkedAccount.PlaidAccountSubtype);
                     if(accountExists == null && dataMode != "add")
                     {
-                        // Account will be retained if they were created at different time. (they will have different plaid-access-token & plaid-item-id).
+                        // Account will be retained if they were created at different time. (they will have different plaid-access-token & plaid-item-id).  
                         if (existingLinkedAccount.PlaidAccessToken == accountsListFromPlaid[0].PlaidAccessToken && existingLinkedAccount.PlaidItemId == accountsListFromPlaid[0].PlaidItemId)
                         {
                             unlinkedAccounts.Add(existingLinkedAccount);
