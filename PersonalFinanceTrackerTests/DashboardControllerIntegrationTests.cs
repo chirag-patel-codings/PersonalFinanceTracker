@@ -29,6 +29,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class DashboardControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -38,8 +39,8 @@ namespace PersonalFinanceTrackerTests
         IDbConnection _tempConnection;
 
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
 
             // (Instantiate a standalone connection factory just for this lookup)
@@ -78,8 +79,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
 
             _tempConnection?.Close();
@@ -91,7 +92,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/Dashboard/Index")]
         public async Task DashboardAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -112,7 +113,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/Dashboard/GetUserCurrencyDetailsAndLicenseKey")]
         [TestCase("/Dashboard/GetReportsData")]
         public async Task DashboardAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
@@ -158,7 +159,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task DashboardIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
             // ARRANGE
@@ -182,7 +183,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(4)]
         [TestCase("VerifyEmail")]
         [TestCase("/Dashboard/Privacy")]
         public async Task DashboardAllowAnonymousActions_UnAuthenticatedRequests_ReturnsValidRedirectToActions
@@ -210,7 +211,7 @@ namespace PersonalFinanceTrackerTests
 
 
 
-        [Test]
+        [Test, Order(5)]
         [TestCase(null, false, "pft_con_str_testenv")]
         [TestCase("waGUTqmYYZrDZSLAqBLGaPdUZvCNfV46f89OTZbDVq48vwUg-77wyt9c7Sp-c12bt-vA1xwkyjaQX4vDl8zxFnblK_3USlROAO6zGfsxRdDfhNe5cAHBg0eC66oconm7tVUs06pjkzs1KijnPo7PVaDbx2TYJ7dAi-LQxF6mAmM28FkmUa6xvEcTckDamTR5Y1Y8C0YBhRk8vxudCxwg2nqOhKxTHxY7250gWTwtzLdI8Zs2AsY38Z2Kqrou75", false, "pft_con_str_testenv")]
         [TestCase("LneO3S8w325fcNYNei0hkgEw0md-vR1YKOL4UlP2Ay1Pckp5oU5whtNCwhD6hDrUyEyOQAMfNosdsWunkLj60ZwaGUTqmYYZrDZSLAqBLGaPdUZvCNfV46f89OTZbDVq48vwUg-77wyt9c7Sp-c12bt-vA1xwkyjaQX4vDl8zxFnblK_3USlROAO6zGfsxRdDfhNe5cAHBg0eC66oconm7tVUs06pjkzs1KijnPo7PVaDbx2TYJ7dAi-LQxF6mAmM28FkmUa6xvEcTckDamTR5Y1Y8C0YBhRk8vxudCxwg2nqOhKxTHxY7250gWTwtzLdI8Zs2AsY38Z2Kqrou75", true, "pft_con_str_testenv")]
@@ -251,7 +252,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(6)]
         public async Task DashboradGetUserCurrencyDetailsAndLicenseKeyPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -297,7 +298,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(7)]
         [TestCase("2026-12-31", "2026-01-01", 400, "DashboardParametersStartDate", "Start date must be earlier than end date!")]
         public async Task DashboardGetReportsData_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
             (DateOnly dashboardParametersStartDate, DateOnly dashboardParametersEndDate, int expectedStatusCode, string failedValidationPropertyName, string? expectedErrorMessage)
@@ -348,7 +349,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(8)]
         public async Task DashboradGetReportsDataPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 

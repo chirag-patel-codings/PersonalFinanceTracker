@@ -29,6 +29,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class ReportControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -38,8 +39,8 @@ namespace PersonalFinanceTrackerTests
         IDbConnection _tempConnection;
 
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
 
             // (Instantiate a standalone connection factory just for this lookup)
@@ -81,8 +82,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
 
             _tempConnection?.Close();
@@ -94,7 +95,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/reports")]
         public async Task ReportsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -115,7 +116,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/Report/GetTagsAndCurrencyDetails")]
         [TestCase("/Report/GetReport")]
         public async Task ReportsAllPostActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
@@ -161,7 +162,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task ReportsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -178,7 +179,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(4)]
         public async Task ReportsGetTagsAndCurrencyDetailsPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -225,7 +226,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(5)]
         // ReportStartDate
         // [TestCase("", "2026-12-31", "IncomeExpense", (byte)1, null, 400, "ReportStartDate", "Start date is required!")]      // Eliminated as default value is generated and provided and null values will fail model
         [TestCase("2026-12-31", "2026-01-01", "IncomeExpense", (byte)1, null, 400, "ReportStartDate", "Start date must be earlier than end date!")]
@@ -282,7 +283,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(6)]
         [TestCase("2000-01-01", "2050-12-31", "IncomeExpense", (byte)1, null)]
         [TestCase("2000-01-01", "2050-12-31", "NetWorth", (byte)1, null)]
         [TestCase("2000-01-01", "2050-12-31", "Goal", (byte)1, null)]

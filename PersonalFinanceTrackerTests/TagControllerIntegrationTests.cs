@@ -29,6 +29,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class TagControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -37,8 +38,9 @@ namespace PersonalFinanceTrackerTests
         private Tag? _tagRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -91,8 +93,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -102,7 +104,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/categories/tags")]
         public async Task TagsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -123,7 +125,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/categories/tags")]
         [TestCase("/Tag/GetTag")]
         [TestCase("/Tag/SaveTag")]
@@ -177,7 +179,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task TagsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -194,7 +196,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task TagsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -241,7 +243,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         
         // TagName:
         [TestCase("", null, null, "From_Test_Tag_Description", "#ffffff", (sbyte)1, 400, "TagName", "Tag name is required!")]
@@ -314,7 +316,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(6)]
         public async Task TagsAddTag_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
             
@@ -355,7 +358,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(7)]
         public async Task TagsUpdateTag_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -401,7 +404,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(8)]
         public async Task TagsGetTag_AuthenticatedRequest_ReturnsTagRecord()
         {
 
@@ -442,7 +446,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(9)]
         /*
          *  
          *  When a tag is deleted:

@@ -28,6 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class AccountControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -36,8 +37,8 @@ namespace PersonalFinanceTrackerTests
         private Account? _accountRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
 
             // (Instantiate a standalone connection factory just for this lookup)
@@ -89,8 +90,9 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        // [OneTimeTearDown]
+        [TearDown]
+        public void TearDown()
         {
 
             _tempConnection?.Close();
@@ -101,8 +103,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        
-        [Test]
+
+        [Test, Order(1)]
         [TestCase("/accounts")]
         public async Task AccountsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -123,7 +125,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/accounts")]
         [TestCase("/Account/GetAccount")]
         [TestCase("/Account/SaveAccount")]
@@ -181,7 +183,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task AccountsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
             // Act - Sends a real HTTP GET request through Program.cs, middleware, and controllers
@@ -197,7 +199,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task AccountsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -254,7 +256,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         // AccountName
         [TestCase("", null, "", "From_Test_Account_Institution_Name", 101, "From_Test_Account_Description", 0, 400, "AccountName", "Account name is required!")]
         [TestCase(null, null, "", "From_Test_Account_Institution_Name", 101, "From_Test_Account_Description", 0, 400, "AccountName", "Account name is required!")]
@@ -328,7 +330,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(6)]
         public async Task AccountsAddAccount_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
             
@@ -369,7 +371,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(7)]
         public async Task AccountsUpdateAccount_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -418,7 +420,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(8)]
         public async Task AccountsGetAccount_AuthenticatedRequest_ReturnsAccountRecord()
         {
 
@@ -461,7 +463,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(9)]
         /*
          * 
          *  When an Account is deleted:

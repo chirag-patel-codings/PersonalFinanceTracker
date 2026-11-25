@@ -32,7 +32,8 @@ namespace PersonalFinanceTracker.Services.Plaid
             _config = config;
         }
 
-        // dataMode:
+        // (Acts for the Linked Accounts created at the same time - (they will have same plaid-access-token & plaid-item-id)):
+        // dataMode 
         // "Add":       Pre-Linked Same Account will be deleted and will start as fresh new account. Any other new account(s) will be start as new fresh account(s).
         // "Edit":      Selected Pre-Linked Same Account & it's related details will remain as is. Non-Selected Pre-Linked Same Account & it's related details will be deleted.
         //              Selected Non-Prelinked New Account will be created and start as fresh.
@@ -56,10 +57,15 @@ namespace PersonalFinanceTracker.Services.Plaid
                 // Confirms the new accounts for the Particular Institution
                 foreach (var accountFromPlaid in accountsListFromPlaid) 
                 {
-                    // u.PlaidAccessToken == accountFromPlaid.PlaidAccessToken && u.PlaidItemId == accountFromPlaid.PlaidItemId
+                    // u.PlaidAccessToken == accountFromPlaid.PlaidAccessToken && u.PlaidItemId == accountFromPlaid.PlaidItemId (NOT TO BE CONSIDERED HERE)
                     var accountAlreadyExists = userLinkedAccountsForInstitute.FirstOrDefault(u => u.PlaidInstitutionId == accountFromPlaid.PlaidInstitutionId && u.AccountName == accountFromPlaid.AccountName && u.PlaidAccountMask == accountFromPlaid.PlaidAccountMask && u.PlaidAccountSubtype == accountFromPlaid.PlaidAccountSubtype);
                     if (accountAlreadyExists == null)
                     {
+                        var accountCreatedWithSamePermanentAccessToken = userLinkedAccountsForInstitute.FirstOrDefault(u => u.PlaidAccessToken == accountFromPlaid.PlaidAccessToken && u.PlaidItemId == accountFromPlaid.PlaidItemId && u.PlaidNextCursor != null);
+                        if (accountCreatedWithSamePermanentAccessToken != null)
+                        {
+                            accountFromPlaid.PlaidNextCursor = accountCreatedWithSamePermanentAccessToken.PlaidNextCursor;
+                        }
                         newAccounts.Add(accountFromPlaid);
                     }
                     else
@@ -72,15 +78,18 @@ namespace PersonalFinanceTracker.Services.Plaid
                     }
                 }
 
-
+                
                 // Confirms the Unlinked Accounts By User for the Particular Institution
-                foreach(var existingLinkedAccount in userLinkedAccountsForInstitute)
+                foreach (var existingLinkedAccount in userLinkedAccountsForInstitute)
                 {
-                    // p.PlaidAccessToken == existingLinkedAccount.PlaidAccessToken && p.PlaidItemId == existingLinkedAccount.PlaidItemId 
                     var accountExists = accountsListFromPlaid.FirstOrDefault(p => p.PlaidInstitutionId == existingLinkedAccount.PlaidInstitutionId && p.AccountName == existingLinkedAccount.AccountName && p.PlaidAccountMask == existingLinkedAccount.PlaidAccountMask && p.PlaidAccountSubtype == existingLinkedAccount.PlaidAccountSubtype);
                     if(accountExists == null && dataMode != "add")
                     {
-                        unlinkedAccounts.Add(existingLinkedAccount);
+                        // Account will be retained if they were created at different time. (they will have different plaid-access-token & plaid-item-id).
+                        if (existingLinkedAccount.PlaidAccessToken == accountsListFromPlaid[0].PlaidAccessToken && existingLinkedAccount.PlaidItemId == accountsListFromPlaid[0].PlaidItemId)
+                        {
+                            unlinkedAccounts.Add(existingLinkedAccount);
+                        }
                     }
                 }
 
@@ -88,12 +97,12 @@ namespace PersonalFinanceTracker.Services.Plaid
                 if (newAccounts.Count > 0 && dataMode != "delete")
                 {
 
-                    sql = "INSERT INTO pft_accounts (account_id, user_id, account_name, account_institution_name, account_type_id, account_description, is_a_linked_account, plaid_access_token, plaid_item_id, plaid_institution_id, plaid_account_id, plaid_is_account_active, plaid_persistent_account_id, plaid_account_mask, plaid_account_subtype) VALUES ";
+                    sql = "INSERT INTO pft_accounts (account_id, user_id, account_name, account_institution_name, account_type_id, account_description, is_a_linked_account, plaid_access_token, plaid_item_id, plaid_institution_id, plaid_account_id, plaid_is_account_active, plaid_persistent_account_id, plaid_account_mask, plaid_account_subtype, plaid_next_cursor) VALUES ";
 
                     string valuesText = "";
                     foreach (Account account in newAccounts)
                     {
-                        valuesText = $"{valuesText} (GeneratePrefixedId(2), '{account.UserId}', '{account.AccountName}', '{account.AccountInstitutionName}', '{account.AccountTypeId}', '{account.AccountDescription}', '{account.IsALinkedAccount}', '{account.PlaidAccessToken}', '{account.PlaidItemId}', '{account.PlaidInstitutionId}', '{account.PlaidAccountId}', '{(dataMode == "delete" ? 0 : 1)}', {(account.PlaidPersistentAccountId == null ? "null" : "'" + account.PlaidPersistentAccountId + "'")}, {(account.PlaidAccountMask == null ? "null" : "'" + account.PlaidAccountMask + "'")}, {(account.PlaidAccountSubtype == null ? "null" : "'" + account.PlaidAccountSubtype + "'")}),";
+                        valuesText = $"{valuesText} (GeneratePrefixedId(2), '{account.UserId}', '{account.AccountName}', '{account.AccountInstitutionName}', '{account.AccountTypeId}', '{account.AccountDescription}', '{account.IsALinkedAccount}', '{account.PlaidAccessToken}', '{account.PlaidItemId}', '{account.PlaidInstitutionId}', '{account.PlaidAccountId}', '{(dataMode == "delete" ? 0 : 1)}', {(account.PlaidPersistentAccountId == null ? "null" : "'" + account.PlaidPersistentAccountId + "'")}, {(account.PlaidAccountMask == null ? "null" : "'" + account.PlaidAccountMask + "'")}, {(account.PlaidAccountSubtype == null ? "null" : "'" + account.PlaidAccountSubtype + "'")}, {(account.PlaidNextCursor == null ? "null" : "'" + account.PlaidNextCursor + "'")} ),";
                     }
 
                     valuesText = valuesText.Trim();

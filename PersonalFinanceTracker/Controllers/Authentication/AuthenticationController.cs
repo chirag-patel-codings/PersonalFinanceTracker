@@ -88,11 +88,9 @@ namespace PersonalFinanceTracker.Controllers.Authentication
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
                                                         new ClaimsPrincipal(claimsIdentity));
 
-                        var linkedAccounts = _plaidService.GetPlaidActiveAccountsForUser(requestedUserDetails.UserId ?? 0, connString);
-
-
-                        if(connString == null)      // NOT TO PERFORMED IN TEST MODE!
+                        if(connString == null)      // NOT TO BE PERFORMED IN TEST MODE!
                         {
+                            var linkedAccounts = _plaidService.GetPlaidActiveAccountsForUser(requestedUserDetails.UserId ?? 0, connString);
                             await _plaidService.PerformPlaidAccountReconsilation(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);     // Must be the 1st step before data import
                             await _plaidService.ImportAllLinkedAccountsDataForUser(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);
                         }

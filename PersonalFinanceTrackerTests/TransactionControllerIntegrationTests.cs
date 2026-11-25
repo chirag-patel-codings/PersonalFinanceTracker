@@ -30,6 +30,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class TransactionControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -42,8 +43,9 @@ namespace PersonalFinanceTrackerTests
         private (string[] accountIds, string[] categoryIds, string[] goalIds, string[] tagIds) _lists = new(new string[] { }, new string[] { }, new string[] { }, new string[] { });
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -89,8 +91,9 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -101,7 +104,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/transactions")]
         public async Task TransactionsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -122,7 +125,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/transactions")]
         [TestCase("/Transaction/GetTransaction")]
         [TestCase("/Transaction/SaveTransaction")]
@@ -176,7 +179,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task TransactionsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -193,7 +196,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task TransactionsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -286,7 +289,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         // transactionDate + transactionRepeatEndDate
         [TestCase("", "0002-01-01", "Test Transaction Description", 150, "123", "123", null, null, (byte) 1, (byte)1, "1", null, (byte) 0, (byte)1, "0001-01-01", 400, "TransactionDate", "The date must be earlier than recurring end date!")]
         [TestCase(null, "0002-01-01", "Test Transaction Description", 150, "123", "123", null, null, (byte) 1, (byte)1, "1", null, (byte) 0, (byte)1, "0001-01-01", 400, "TransactionDate", "The date must be earlier than recurring end date!")]
@@ -383,9 +386,10 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+
         // Add inserts a new records in the Transactions table if isTransactionRepeatActive == 0
         // And inserts a new records in the Transactions, Transaction Repeats and Recurring Schedules tables if isTransactionRepeatActive == 1
-        [Test]
+        [Test, Order(6)]
         [TestCase(0)]   // Should only generate record in Transactions Table
         [TestCase(1)]   // Should generate records in Transactions, Transaction Repeats and Recurring Schedules
         public async Task TransactionsAddTransaction_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord
@@ -448,8 +452,9 @@ namespace PersonalFinanceTrackerTests
 
         }
 
+        
         // Update only updates the transactions table record values. 
-        [Test]
+        [Test, Order(7)]
         public async Task TransactionsUpdateTransaction_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -539,7 +544,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(8)]
         public async Task TransactionsGetTransaction_AuthenticatedRequest_ReturnsTransactionRecord()
         {
 
@@ -595,7 +600,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(9)]
         /*
          *  
          *  When a transaction record is deleted:
@@ -635,7 +640,7 @@ namespace PersonalFinanceTrackerTests
 
         // Transaction Filter Validations And Query Record Tests - Start Here
 
-        [Test]
+        [Test, Order(10)]
         // transactionFilterStartDate + transactionFilterEndDate: Model will fail for null values
         [TestCase("2025-01-01", "2024-01-01", null, null, "Invalid Transaction Description", null, null, (byte) 1, (byte)1, 400, "TransactionFilterStartDate", "Start date must be earlier than end date!")]
 

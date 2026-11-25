@@ -28,6 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class RecurringControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -37,8 +38,8 @@ namespace PersonalFinanceTrackerTests
         private Recurring? _recurringRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -84,8 +85,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -96,7 +97,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/transactions/recurring")]
         public async Task RecurringsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -117,7 +118,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/transactions/recurring")]
         [TestCase("/Recurring/GetRecurring")]
         [TestCase("/Recurring/SaveRecurring")]
@@ -171,7 +172,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task RecurringsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -188,7 +189,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task RecurringsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -268,7 +269,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         // RecurringNextDate
         [TestCase("", null, null, "Dummy Test Recurring Description", 234.56, "123", "123", null, null, (byte)1, null, (byte)1, (byte)1, null, 400, "RecurringNextDate", "Please provide recurring date!")]
         [TestCase(null, null, null, "Dummy Test Recurring Description", 234.56, "123", "123", null, null, (byte)1, null, (byte)1, (byte)1, null, 400, "RecurringNextDate", "Please provide recurring date!")]
@@ -357,7 +358,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(6)]
         public async Task RecurringsAddRecurring_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
 
@@ -408,7 +409,7 @@ namespace PersonalFinanceTrackerTests
 
         // Category from "Income" to "Expense" or vise-a-versa, is not checked in the middle layer as already been checked by the UI.
 
-        [Test]
+        [Test, Order(7)]
         public async Task RecurringsUpdateRecurring_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -490,7 +491,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(8)]
         public async Task RecurringsGetRecurring_AuthenticatedRequest_ReturnsRecurringRecord()
         {
 
@@ -540,7 +541,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(9)]
         /*
          *  
          *  When a recurring record is deleted:

@@ -31,6 +31,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class TransactionsBulkUploadControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -40,8 +41,8 @@ namespace PersonalFinanceTrackerTests
         private bool _areDummyDataInsertedForCSVBulkUploadTest = false;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -85,8 +86,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -97,7 +98,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/Transaction/GetBulkImportTemplate")]
         [TestCase("/Transaction/GetBulkImportTemplateNames")]
         [TestCase("/Transaction/SaveBulkImportTemplate")]
@@ -144,7 +145,7 @@ namespace PersonalFinanceTrackerTests
 
                 case "/Transaction/UploadCsvFileAndGetContents":
 
-                    MultipartFormDataContent formData = GetCSVFileAsHeaderContent("TEST_DATA_VALID.CSV");
+                    MultipartFormDataContent formData = GetCSVFileAsHeaderContent("TEST_DATA_VALID_1.CSV");
                     requestPostInValidAuthorize.Content = formData;
                     requestPostInValidAntiforgeryToken.Content = formData;
                     break;
@@ -166,7 +167,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         public async Task TransactionsGetBulkImportTemplateNamesPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -204,7 +205,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         [TestCase("", "123", "", (byte) 1, (byte) 1, (sbyte) 1, (sbyte) 2, (sbyte) 3, (sbyte) -1, (sbyte) -1, 400, "ImportTemplateName", "Please provide import template name!")]
         [TestCase("", "123", "This Import Template Name Is More Than 100 Characters Long...blah...blah...blah...blah...blah...blah.", (byte)1, (byte)1, (sbyte)1, (sbyte)2, (sbyte)3, (sbyte)-1, (sbyte)-1, 400, "ImportTemplateName", "Import template name should not be more than 100 characters long!")]
         public async Task TransactionsSaveBulkImportTemplate_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
@@ -266,7 +267,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        
+        [Test, Order(4)]
         [TestCase("New Template Added Through Test 1")]
         public async Task TransactionsAddBulkImportTemplate_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord(string newTemplateName)
         {
@@ -308,7 +310,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         public async Task TransactionsUpdateBulkImportTemplate_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -367,7 +369,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(6)]
         public async Task BulkUploadsGetBulkImportTemplate_AuthenticatedRequest_ReturnsTransactionsBulkUploadRecord()
         {
 
@@ -412,7 +414,7 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [Test]
+        [Test, Order(7)]
         /*
          *  
          *  When a bulk import template is deleted:
@@ -448,7 +450,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(8)]
         [TestCase("TEST_DATA_EMPTY.CSV", 400, "The uploaded file has no content!")]
         [TestCase("TEST_DATA_VALID.txt", 400, "Only .CSV files are allowed!")]
         [TestCase("TEST_DATA_ExtraFileds.CSV", 400, "File has more than 8 columns!")]
@@ -496,7 +499,7 @@ namespace PersonalFinanceTrackerTests
 
 
 
-        [Test]
+        [Test, Order(9)]
         [TestCase("TEST_DATA_FOR_DATE_VALIDATION.CSV", 400, "TransactionDate", "Please provide transaction date!")]
         [TestCase("TEST_DATA_FOR_DESCRIPTION_VALIDATION_1.CSV", 400, "TransactionDescription", "Please provide transaction description!")]
         [TestCase("TEST_DATA_FOR_DESCRIPTION_VALIDATION_2.CSV", 400, "TransactionDescription", "Transaction description should not be more than 255 characters long!")]
@@ -578,7 +581,7 @@ namespace PersonalFinanceTrackerTests
 
 
         // Check the uploaded data and template record...When valid data are supplied!!!
-        [Test]
+        [Test, Order(10)]
         [TestCase("TEST_DATA_VALID_1.CSV")]
         [TestCase("TEST_DATA_VALID_2.CSV")]
         [TestCase("TEST_DATA_VALID_3.CSV")] // Must be last test as cleans up the data!!!

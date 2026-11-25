@@ -160,7 +160,7 @@ namespace PersonalFinanceTracker.Controllers
             string accountId = createUpdateTokenForAccount.GetProperty("accountId").GetString();
 
             // PLAID PERMENANT ACCESS TOKEN SHOULD NEVER BE SENT TO THE FRONT-END.
-            // Get the existing permanent access token for the account from your database.
+            // Get the existing permanent access token for the account from database.
             string? plaidAccessToken = _plaidService.GetPlaidPermanentAccessToken(_currentUserId, accountId, connString);
 
             if (string.IsNullOrEmpty(plaidAccessToken))
@@ -172,14 +172,14 @@ namespace PersonalFinanceTracker.Controllers
 
         }
 
+
         // Gets the "account details" + "permenant Plaid token" from the Plaid and saves them to database.
         [Authorize]
         [HttpPost("/api/plaid/get-and-save-exchange-tokens")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetAndSaveExchangeTokens([FromBody] JsonObject payload, string? connString = null)
         {
-            // string plaidPublicTokenValue = plaidPublicToken.GetProperty("plaidPublicToken").GetString();
-
+            
             string plaidPublicTemporaryTokenValue = payload["plaidPublicTemporaryToken"]?.ToString()!;
             string dataMode = payload["dataMode"]?.ToString().ToLower()!;
 

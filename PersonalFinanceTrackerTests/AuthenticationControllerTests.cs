@@ -19,10 +19,12 @@ using NUnit.Framework;
 using Org.BouncyCastle.Asn1;
 using PersonalFinanceTracker.Controllers.Authentication;
 using PersonalFinanceTracker.Models.Authentication;
+using PersonalFinanceTracker.Services.BulkUpload;
 using PersonalFinanceTracker.Services.Communications;
 using PersonalFinanceTracker.Services.Contracts;
 using PersonalFinanceTracker.Services.Plaid;
 using PersonalFinanceTracker.Services.Repository;
+using PersonalFinanceTracker.Services.TransactionRules;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -69,6 +71,10 @@ namespace PersonalFinanceTrackerTests
 
             // Register DI services
             var services = new ServiceCollection();
+
+            // Register HttpClient services required by PlaidService
+            services.AddHttpClient();   // FOR 'IHttpClientFactory' IN 'PlaidService';
+
             services.AddSingleton(configuration);
 
             // THIS IS THE FIX
@@ -81,6 +87,11 @@ namespace PersonalFinanceTrackerTests
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRegistrationRepository, UserRegistrationRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();    // For 'IPlaidService'
+            services.AddScoped<IBulkUploadService, BulkUploadService>();    // For 'IPlaidService'
+            services.AddScoped<ITransactionRepository, TransactionRepository>(); // For 'IPlaidService' => BulkUploadService
+            services.AddScoped<ITransactionRuleService, TransactionRuleService>(); // For 'IPlaidService' => BulkUploadService
+            services.AddScoped<ITransactionRuleRepository, TransactionRuleRepository>(); // For 'IPlaidService' => BulkUploadService ==> TransactionRuleService
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPlaidService, PlaidService>();
             services.AddTransient<AuthenticationController>();
@@ -146,7 +157,7 @@ namespace PersonalFinanceTrackerTests
         *   34 budget (settings) records added to the budgets table as "Permanent Categories" are excluded from budget settings!
         *   1 email varification token record added to the tokens table
         */
-        [Test]
+        [Test, Order(1)]
         [TestCase("PFT_Test", "User123", "PFT_Test_User_123", "PassWord43@^", "PassWord43@^", "test@test.tt", true, "", "Login", 0, 1)]
         public void Authentication_UserRegistration_ShouldPassForNewRecordInsertion
             (string firstName, string lastName, string userName, string password, string confirmPassword, string? email, bool termsAndConditionAccepted, string expectedErrorMessage, string expectedViewName, int totalValidationErrors, int expectedRecordCountInDB = 0)
@@ -180,8 +191,9 @@ namespace PersonalFinanceTrackerTests
             // IDbConnection _connection = _factory.GetDBConnection("pft_con_str_testenv");
 
             existingUserId = DatabaseHelperForTests.GetUserIdByUserNameAndEmail(userName, email, _connection).ToString();
+            DatabaseHelperForTests.CleanupDummyDataInRelatedTables("authentication", _connection);
             DatabaseHelperForTests.DeleteNewUserByUserNameAndEmail(userName, email, _connection);       // DELETE IF ANY EXSITING USER WITH THE SAME NAME AND EMAIL
-            
+
             userRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_users", "user_id", existingUserId, _connection);
             categoryRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_categories", "user_id", existingUserId, _connection);
             budgetRecordsCountAfterDelete = DatabaseHelperForTests.GetRecordsCountForQueriedFieldInTable(existingUserId, "pft_budgets", "user_id", existingUserId, _connection);
@@ -217,7 +229,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         // spaces are ignored by attributes as values...these tests passes...
         [TestCase("   ", "   ", "   ", "   ", "   ", null, true, "First Name is required!", "UserRegistration", 6)]
         [TestCase("   ", "   ", "   ", "   ", "   ", null, true, "Last Name is required!", "UserRegistration", 6)]
@@ -357,7 +369,7 @@ namespace PersonalFinanceTrackerTests
 
         
 
-        [Test]
+        [Test, Order(3)]
         [TestCase("", "PassWord43@^", "Username or Email is required!", null, 1)]
         [TestCase(null, "PassWord43@^", "Username or Email is required!", null, 1)]
         [TestCase("PFT_Test_User_123", "", "Password is required!", null, 1)]
@@ -411,7 +423,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", "Login")]
         [TestCase("PFT_Test_User_123", "PassWord43@^", "Authentication", "Login", "Logout")]
         public async Task Authentication_LoginAndLogOutActions_ShouldPassWithSuccess
@@ -463,7 +475,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         [TestCase("PFT_Test_User_123", "PassWord43@^", "Dashboard", "Index", 200)]
         public async Task Authentication_LoginAndWindowClosedLogoutActions_ShouldPassWithSuccess
             (string? userNameOrEmail, string? password, string expectedLoginControllerName, string expectedLoginActionName, int windowClosedLogoutStatusCode)
@@ -505,8 +517,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-
         // User with this Email already exists!
+        [Test, Order(6)]
         [TestCase("invalidEmail@form", "False")]        // Not a valid email
         [TestCase("chiragpatel.android@gmail.com", "User with this Email already exists!")]
         [TestCase("not_existing_email@gmail.com", "True")]
@@ -523,8 +535,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-
         // User with this Name already exists!
+        [Test, Order(7)]
         [TestCase("ChiragPatel", "False")]       // When Username length is less than 12 characters!!!
         [TestCase("pft_pft_admin", "User with this Username already exists!")]
         [TestCase("NotAnExistingUser", "True")]
@@ -542,6 +554,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
+        [Test, Order(8)]
         [TestCase("/", "/")]    
         [TestCase("Login", "Login")]
         [TestCase("Register", "UserRegistration")]
@@ -591,6 +604,10 @@ namespace PersonalFinanceTrackerTests
 
             // Build the Service Provider for this test run (includes Authentication & your dependencies)
             var services = new ServiceCollection();
+
+            // Register HttpClient services required by PlaidService
+            services.AddHttpClient();   // FOR 'IHttpClientFactory' IN 'PlaidService';
+
             services.AddSingleton(configuration); // Your configuration instance
 
             services.AddControllers();
@@ -603,7 +620,13 @@ namespace PersonalFinanceTrackerTests
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRegistrationRepository, UserRegistrationRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();    // For 'IPlaidService'
+            services.AddScoped<IBulkUploadService, BulkUploadService>();    // For 'IPlaidService'
+            services.AddScoped<ITransactionRepository, TransactionRepository>(); // For 'IPlaidService' => BulkUploadService
+            services.AddScoped<ITransactionRuleService, TransactionRuleService>(); // For 'IPlaidService' => BulkUploadService
+            services.AddScoped<ITransactionRuleRepository, TransactionRuleRepository>(); // For 'IPlaidService' => BulkUploadService ==> TransactionRuleService
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IPlaidService, PlaidService>();
 
             var serviceProvider = services.BuildServiceProvider();
 

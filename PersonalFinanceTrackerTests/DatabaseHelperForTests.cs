@@ -272,27 +272,27 @@ namespace PersonalFinanceTrackerTests
 
             switch (testName)
             {
-                case "tags":
+                case "authentication":
+                    sql = GetDeleteStatementsForSuppliedTables("pft_budgets_details", "pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_goal_details", "pft_goals", "pft_budgets", "pft_user_tokens", "pft_trans_import", "pft_import_templates", "pft_tags", "pft_categories", "pft_accounts");
+                    break;
 
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_accounts");
+                case "tags":
+                    // Excluded: "pft_tags"
+                    sql = GetDeleteStatementsForSuppliedTables("pft_budgets_details", "pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_goal_details", "pft_goals", "pft_trans_import", "pft_import_templates", "pft_accounts");
+                    break;
+
+
+                case "transactionrules":
+                case "categories":
+                case "recurrings":
+
+                    // Excluded: "pft_categories", "pft_budgets", "pft_user_tokens"
+                    sql = GetDeleteStatementsForSuppliedTables("pft_budgets_details", "pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_goal_details", "pft_goals", "pft_tags", "pft_trans_import", "pft_import_templates", "pft_accounts");
                     break;
 
                 case "goals":
-
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_accounts");
-                    break;
-
-                case "categories":
-
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_budgets_details", "pft_accounts");
-                    break;
-
-                case "transactionrules":
-                    sql = GetDeleteStatementsForSuppliedTables("pft_transactions", "pft_recurring_schedules", "pft_goals", "pft_accounts");
-                    break;
-                
-                case "recurrings":
-                    sql = GetDeleteStatementsForSuppliedTables("pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions", "pft_tags", "pft_goals", "pft_accounts");
+                // Excluded: "pft_categories", "pft_budgets", "pft_user_tokens", "pft_goal_details", "pft_goals" 
+                    sql = GetDeleteStatementsForSuppliedTables("pft_budgets_details", "pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_tags", "pft_trans_import", "pft_import_templates", "pft_accounts");
                     break;
 
                 case "transactions":
@@ -302,7 +302,7 @@ namespace PersonalFinanceTrackerTests
                     }
                     else
                     {
-                        // Pending
+                        sql = GetDeleteStatementsForSuppliedTables("pft_budgets_details", "pft_transactions", "pft_recurring_schedules", "pft_trasactions_repeats", "pft_transactions_rules", "pft_goal_details", "pft_goals", "pft_tags", "pft_trans_import", "pft_import_templates", "pft_accounts");
                     }
                     break;
 

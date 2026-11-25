@@ -32,6 +32,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class BudgetControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -46,8 +47,8 @@ namespace PersonalFinanceTrackerTests
         private BudgetDetails? _budgetDetailsRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -120,8 +121,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
 
             _tempConnection?.Close();
@@ -133,7 +134,7 @@ namespace PersonalFinanceTrackerTests
         }
         
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/budgets")]
         public async Task AccountsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -154,7 +155,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/budgets")]
         [TestCase("/Budget/SaveBudget")]
         [TestCase("/Budget/DeleteBudget")]
@@ -215,7 +216,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task BudgetsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
             
@@ -232,7 +233,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase("2026-12-31", "2026-01-01", 400, "BudgetDetailsStartDate", "Start date must be earlier than end date!")]
         public async Task BudgetsIndexPost_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
            (DateOnly budgetDetailsStartDateParameter, DateOnly budgetDetailsEndDateParameter, int expectedStatusCode, string failedValidationPropertyName, string? expectedErrorMessage)
@@ -283,7 +284,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(5)]
         public async Task BudgetsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
             // ARRANGE
@@ -333,7 +334,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(6)]
         [TestCase("SaveBudget", "", "", "Education", "-1", "20000101", "Jan 2000", 250, 400, "BudgetId", "Budget id is required!")]
         [TestCase("SaveBudget", "6666666666666666666", "", "Education", "-1", "", "Jan 2000", 250, 400, "BudgetDateDigits", "Budget date digits is required!")]
         [TestCase("DeleteBudget", "", "", "Education", "-1", "20000101", "Jan 2000", 250, 400, "BudgetId", "Budget id is required!")]
@@ -392,7 +393,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(7)]
         [TestCase(true)]
         [TestCase(false)]
         [TestCase(false)]
@@ -485,7 +486,7 @@ namespace PersonalFinanceTrackerTests
          * Only the specified record in the Budget Details table is deleted!
          * 
          */
-        [Test]
+        [Test, Order(8)]
         public async Task BudgetsDeleteBudget_AuthenticatedRequest_DeletesBudgetRecord()
         {
 
@@ -513,7 +514,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(9)]
         public async Task BudgetsGetBudgetSettings_AuthenticatedRequest_ReturnsBudgetRecord()
         {
 
@@ -544,7 +545,7 @@ namespace PersonalFinanceTrackerTests
         }
 
         
-        [Test]
+        [Test, Order(10)]
         [TestCase("", "Education", (byte)0, (byte)0, (byte)0, 400, "CategoryId", "Category id is required!")]
         public async Task BudgetsSaveBudgetSettings_AuthenticatedRequest_ReturnsBadRequestForModelValidationErrors
             (string categoryId, string? categoryName, byte budgetToBeRolledOver, byte? budgetIfUnderSettings, byte? budgetIfOverSettings, int expectedStatusCode, string failedValidationPropertyName, string? expectedErrorMessage)
@@ -597,7 +598,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(11)]
         public async Task BudgetsSaveBudgetSettings_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 

@@ -28,6 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class CategoryControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -37,8 +38,8 @@ namespace PersonalFinanceTrackerTests
         private Category? _categoryRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
             // (Instantiate a standalone connection factory just for this lookup)
 
@@ -97,8 +98,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -109,7 +110,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/categories")]
         public async Task CategoriesAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -130,7 +131,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/categories")]
         [TestCase("/Category/GetCategory")]
         [TestCase("/Category/SaveCategory")]
@@ -184,7 +185,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task CategorysIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -201,7 +202,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task CategorysIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -266,7 +267,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(5)]
         
         // StandardCategoryId
         [TestCase("", null, null, 1, "From_Test_Category_Name", "From_Test_Category_Description", "#ffffff", 201, 400, "StandardCategoryId", "Please provide standard category!")]
@@ -348,7 +349,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        
+        [Test, Order(6)]
         public async Task CategorysAddCategory_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
             
@@ -393,7 +395,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(7)]
         public async Task CategorysUpdateCategory_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -443,7 +446,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(8)]
         [TestCase("transactions")]
         [TestCase("recurrings")]
         public async Task CategorysUpdateCategory_AuthenticatedRequest_ReturnsBadRequest
@@ -515,7 +519,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(9)]
         public async Task CategorysGetCategory_AuthenticatedRequest_ReturnsCategoryRecord()
         {
 
@@ -558,7 +562,8 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+
+        [Test, Order(10)]
         /*
          *  
          *  When a category is deleted:

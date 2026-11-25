@@ -28,6 +28,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace PersonalFinanceTrackerTests
 {
     [TestFixture]
+    [NonParallelizable]
     public class GoalControllerIntegrationTests : HttpTestBase
     {
         private CustomWithConfigurationWebApplicationFactory _factory;
@@ -36,8 +37,8 @@ namespace PersonalFinanceTrackerTests
         private Goal? _goalRecord = null;
         IDbConnection _tempConnection;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
 
             // (Instantiate a standalone connection factory just for this lookup)
@@ -108,8 +109,8 @@ namespace PersonalFinanceTrackerTests
             
         }
 
-        [OneTimeTearDown]
-        public void OneTearDown()
+        [TearDown]
+        public void TearDown()
         {
             _tempConnection?.Close();
             _tempConnection?.Dispose();
@@ -120,7 +121,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(1)]
         [TestCase("/goals")]
         public async Task GoalsAllGetActions_UnAuthenticatedRequests_ReturnsUnauthorizedOrBadRequest
             (string actionName)
@@ -141,7 +142,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(2)]
         [TestCase("/goals")]
         [TestCase("/Goal/GetGoal")]
         [TestCase("/Goal/SaveGoal")]
@@ -195,7 +196,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public async Task GoalsIndexGet_AuthenticatedRequest_ReturnsOkAndValidPayload()
         {
 
@@ -212,7 +213,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(4)]
         [TestCase(true)]
         [TestCase(false)]
         public async Task GoalsIndexPost_AuthenticatedRequest_ReturnsOkAndValidPayload
@@ -282,7 +283,7 @@ namespace PersonalFinanceTrackerTests
          *  the model will fail for any incorrect value of it's member.
          */
         
-        [Test]
+        [Test, Order(5)]
         // GoalType
         [TestCase("", null, null, "From_Test_Goal_Name", "From_Test_Goal_Description", null, 400, "GoalType", "Please provide the type of goal!")]
         [TestCase(null, null, null, "From_Test_Goal_Name", "From_Test_Goal_Description", null, 400, "GoalType", "Please provide the type of goal!")]
@@ -353,7 +354,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(6)]
         public async Task GoalsAddGoal_AuthenticatedRequest_ReturnsOkAndCreatesNewRecord()
         {
             
@@ -397,7 +398,7 @@ namespace PersonalFinanceTrackerTests
         }
 
 
-        [Test]
+        [Test, Order(7)]
         public async Task GoalsUpdateGoal_AuthenticatedRequest_ReturnsOkAndUpdatesRecord()
         {
 
@@ -460,7 +461,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(8)]
         public async Task GoalsGetGoal_AuthenticatedRequest_ReturnsGoalRecord()
         {
 
@@ -507,7 +508,7 @@ namespace PersonalFinanceTrackerTests
 
         }
 
-        [Test]
+        [Test, Order(9)]
         /*
          *  
          *  When a goal is deleted:
