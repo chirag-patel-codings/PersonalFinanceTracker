@@ -19,11 +19,19 @@ using PersonalFinanceTracker.Services.Plaid;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog to write Errors to a local file
+// On Windows Azure App Service, Environment.GetEnvironmentVariable("HOME") returns "D:\home"
+string homeDirectory = Environment.GetEnvironmentVariable("HOME");
+
+// Fallback to local relative path if running on your local development machine
+string logPath = string.IsNullOrEmpty(homeDirectory)
+    ? "Logs/app-errors-.txt"
+    : Path.Combine(homeDirectory, "LogFiles", "app-errors-.txt");
+
+// Configure Serilog to write Errors to the correct path
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Error() // Only track Errors and Critical crashes
     .WriteTo.File(
-        path: "Logs/app-errors-.txt",
+        path: logPath, // <--- FIXED: using the variable we just created above!
         rollingInterval: RollingInterval.Day, // Creates a new file every day (app-errors-20260618.txt)
         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
     )
