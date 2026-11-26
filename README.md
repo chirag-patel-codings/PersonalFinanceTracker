@@ -50,11 +50,11 @@ The Personal Finance Tracker is a responsive web application, that helps users i
 * **Tags:** Tags provides another type of filter, so that you can determine/inspect/bifurcate the data in parallel to categories.
 * **Budgets:** Allows the user to set the budget per category and per month, which can be compared with actual cashflow in reports. Budget settings can also be configured for automization for next entries.
 * **Goals:** Allows the user to set goal for a period, which can be measured with actual finances.
-* **Transactions:** Transactions are the information source for this application. Every analysis of this application for the user's finances are being retrieved from transactions. Users can provide the transactions in three ways. Manually, Bulk Upload using CSV File Import (When import automization through Plaid is not available or supplied data are not in correct format), and Automization by Linking to their external financial institutes through Plaid intermediary.
-* **Rules:** Rules performs automization of category and/or goal assignment while the bulk CSV data upload and linked transactions sync as well as direct run through Rules GUI. Note: Rules are not assigned to transactions those are created manually.
+* **Transactions:** Transactions are the information source for this application. Every analysis of this application for the user's finances are being retrieved from transactions. Users can provide the transactions in three ways. Manually, Bulk Upload using CSV File Import (When import automization through Plaid is not available or supplied data are not in correct format), and Automization by Linking to their external financial institutes through Plaid intermediary. **Note:** While Bulk Upload of CSV File, user can also save and manage it's field mapping template on the same screen!
+* **Rules:** Rules performs automization of category and/or goal assignment while the bulk CSV data upload and linked transactions sync as well as direct run through Rules GUI. **Note:** Rules are not assigned to transactions those are created manually.
 * **Recurring Schedules:** Another automatic transaction entry at a specific interval until pre-configured duration.
 * **Dashboard:** Provides the charts for user's visualization of finances for the selected period.
-* **Reports:** Displays downloadable reports of the financial transactions like Income Vs Expenses, Net Worth and Budget comparisions on the monthly or supplied whole period basis.
+* **Reports:** Displays downloadable reports of the financial transactions like Income Vs Expenses, Net Worth and Budget comparisons on the monthly or supplied whole period basis.
 ---
 
 
