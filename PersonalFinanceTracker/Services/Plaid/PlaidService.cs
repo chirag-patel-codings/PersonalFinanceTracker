@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.Extensions.AI;
 using PersonalFinanceTracker.Models;
 using PersonalFinanceTracker.Services.BulkUpload;
 using PersonalFinanceTracker.Services.Contracts;
@@ -122,7 +123,7 @@ namespace PersonalFinanceTracker.Services.Plaid
 
                 }
 
-                // Remove Account & It's Related Information for Un-Linked Accounts
+                // Remove Account & It's Related Information for Un-Linked Accounts from database
                 foreach (var unlinkedAccount in unlinkedAccounts)
                 {
                     try
@@ -388,8 +389,7 @@ namespace PersonalFinanceTracker.Services.Plaid
                 };
 
                 var accountsResponse = await client.PostAsJsonAsync("/accounts/get", accountsPayload);
-                // var selectedAccounts = new List<object>();
-
+                
                 List<Account> accounts = new List<Account>();
 
                 if (accountsResponse.IsSuccessStatusCode)
@@ -647,6 +647,7 @@ namespace PersonalFinanceTracker.Services.Plaid
                             allAdded.Add(item.Clone());
                         }
                     }
+
                     if (root.TryGetProperty("modified", out var modProp) && modProp.ValueKind == JsonValueKind.Array)
                     {
                         foreach (var item in modProp.EnumerateArray())
@@ -654,6 +655,7 @@ namespace PersonalFinanceTracker.Services.Plaid
                             allModified.Add(item.Clone());
                         }
                     }
+
                     if (root.TryGetProperty("removed", out var remProp) && remProp.ValueKind == JsonValueKind.Array)
                     {
                         foreach (var item in remProp.EnumerateArray())
@@ -665,15 +667,21 @@ namespace PersonalFinanceTracker.Services.Plaid
                     // Update pagination flags
                     hasMore = root.GetProperty("has_more").GetBoolean();
                     latestCursor = root.GetProperty("next_cursor").GetString();
+
                 }
 
                 // atomically commit changes and the new cursor to MySQL
                 _bulkUploadService.SaveLinkedAccountData(userId, plaidItemId, allAdded, allModified, allRemoved, latestCursor!, linkedAccounts, connString);
+
             }
             catch (JsonException ex)
             {
                 // Handle JSON parsing errors safely
-                Console.WriteLine($"JSON parsing error during sync: {ex.Message}");
+                throw new Exception($"JSON parsing error during sync: {ex.Message}");
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception($"Plaid sync failed: {ex.Message}");
             }
         }
 

@@ -235,7 +235,7 @@ namespace PersonalFinanceTracker.Services.BulkUpload
                     GoalId = null,
                     TagId = null,
                     TransactionCategorization = 3,  // Bank / External Linked Account
-                    TransactionType = 1     // Regular
+                    TransactionType = 1             // Regular
 
                 };
 

@@ -90,9 +90,17 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
                         if(connString == null)      // NOT TO BE PERFORMED IN TEST MODE!
                         {
-                            var linkedAccounts = _plaidService.GetPlaidActiveAccountsForUser(requestedUserDetails.UserId ?? 0, connString);
-                            await _plaidService.PerformPlaidAccountReconsilation(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);     // Must be the 1st step before data import
-                            await _plaidService.ImportAllLinkedAccountsDataForUser(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);
+                            try
+                            {
+                                var linkedAccounts = _plaidService.GetPlaidActiveAccountsForUser(requestedUserDetails.UserId ?? 0, connString);
+                                await _plaidService.PerformPlaidAccountReconsilation(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);     // Must be the 1st step before data import
+                                await _plaidService.ImportAllLinkedAccountsDataForUser(requestedUserDetails.UserId ?? 0, linkedAccounts, connString);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Can be performed at next login...
+                                return RedirectToAction("Index", "Dashboard");
+                            }
                         }
 
                         return RedirectToAction("Index", "Dashboard");
