@@ -6,7 +6,7 @@ The Personal Finance Tracker is a responsive web application, that helps users i
 	
 ## 🛠️ Technologies:
 
-* HTML
+* HTML 
 * CSS 
 * JavaScript
 * Bootstrap v5.3.3
@@ -27,6 +27,7 @@ The Personal Finance Tracker is a responsive web application, that helps users i
 * Github
 * Azure (App Service with CI/CD and WebJobs)
 * Oracle Cloud (MySQL HeatWave, Virtual Cloud Networks, Reversed IP)
+* IDEs: Visual Studio 2026, Visual Studio Code, JetBrains Rider
 * Notepad++	
 ---
 
