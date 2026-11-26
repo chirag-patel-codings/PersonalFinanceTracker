@@ -61,3 +61,5 @@ The Personal Finance Tracker is a responsive web application, that helps users i
 ## ⚠️ Limitations:
 
 * **Password Reset:** This is currently not implemented due to un-developed profile module.	
+* **Transactions Sync:** Deleting linked transactions are not being tested while development as data not supplied in Plaid sandbox mode and may have to wait in production occurrence. 
+* **NUnit Tests for Plaid:** NUnit tests are not written for Plaid integrity functionalities to avoid direct use of Plaid Platform.
