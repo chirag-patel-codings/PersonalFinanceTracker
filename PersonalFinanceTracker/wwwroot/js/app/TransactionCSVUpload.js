@@ -26,6 +26,7 @@ const resizeModal = function () {
 
 }
 
+
 // Change the value of currentStep - Start
 
 function handleStepChange() {
@@ -34,7 +35,10 @@ function handleStepChange() {
     resizeModal();
 }
 
+
+// Resize modal as per (Tab) button click!
 document.querySelectorAll('button.nav-link').forEach(button => {
+
     button.addEventListener('click', handleStepChange);
     // button.addEventListener('focus', handleStepChange);  // Does not work correctly!
 });
@@ -93,6 +97,7 @@ const showHideCSVFileUploadModal = function (show=true) {
 
 }
 
+
 // Returns the Mapped column select values and column index as javascript object.
 const getSelectedColumnMappingsObject = function(){
 
@@ -107,6 +112,7 @@ const getSelectedColumnMappingsObject = function(){
     return selectedColumnMappingObject;
 
 }
+
 
 // Display the CSV File Data from Specific Header Row in the table for mapping and preview
 const displayCSVFileData = function (headerRowIndex=0, isForDataPreview = false) {
@@ -179,6 +185,7 @@ const displayCSVFileData = function (headerRowIndex=0, isForDataPreview = false)
 
     // Add a second header row if not "Preview" Mode!
     if (!isForDataPreview) {
+
         let headerRow2 = document.createElement('tr');
         // Second Header Row
         for (colIndex = 0; colIndex < rowData.length; colIndex++) {
@@ -188,6 +195,7 @@ const displayCSVFileData = function (headerRowIndex=0, isForDataPreview = false)
             headerRow2.appendChild(dataColumnHeader);
         }
         csvDataColumnMappingHeader.appendChild(headerRow2);
+
     }
 
     csvDataTable.appendChild(csvDataColumnMappingHeader);
@@ -229,9 +237,11 @@ const displayCSVFileData = function (headerRowIndex=0, isForDataPreview = false)
         csvDataColumnMappingBody.appendChild(dataRow);
         csvDataTable.appendChild(csvDataColumnMappingBody);
         recordIndex++;
+
     }
 
 }
+
 
 // Generates the dropdown select element for mapping CSV columns to transaction fields
 const generateDataMappingSelect = function(dataColIndex, colText){
@@ -268,6 +278,8 @@ const generateDataMappingSelect = function(dataColIndex, colText){
     return dataMappingSelect;
 
 }
+
+
 // Formats the error messages in the form of an unordered list
 // Send the messages like this: generateMessagesAsUOList("Error 1", "Error 2", "Error 3") -- OR -- generateMessagesAsUOList(["Error 1", "Error 2", "Error 3"])
 // But if you have used the function definition like "const generateMessagesAsUOList = function (...messages)" then calling the generateMessagesAsUOList("Error 1", "Error 2", "Error 3") is fine 
@@ -285,6 +297,7 @@ const generateMessagesAsUOList = function (messages){
     return uoList;
 
 }
+
 
 // Displays the CSV Validation Errors in the UI
 const displayCSVValidationErrors = function (errors, recordDetails){
@@ -314,7 +327,9 @@ const clearMapFieldsTabContents = function(){
     // document.getElementById('csvDataColumnMappingHeader').innerHTML = "";
     // document.getElementById('csvDataColumnMappingBody').innerHTML = "";
     */
+
 }
+
 
 // Enable or Disable CSV File Upload Tabs:
 const enableDisableCSVUploadTabs = function (elementId, enable=true){
@@ -332,20 +347,25 @@ const enableDisableCSVUploadTabs = function (elementId, enable=true){
 
 }
 
+
 // Returns the 'data-col-index' value for the element that contains the searchValue
 const getDataColIndex = function(searchValue){
 
     let result = -1;
     const selects = document.querySelectorAll('#csvDataColumnMappingHeader select');
+    
     selects.forEach(select => {
+
         if (select.options[select.selectedIndex].text == searchValue) {
             result = parseInt(select.getAttribute('data-col-index'));
         }
+
     });
 
     return result;
 
 }
+
 
 // Populates the 'currentBulkImportTemplate' members with appropriate values
 const getImportTemplateValues = function () {
@@ -408,12 +428,16 @@ const populateCSVImportSavedTemplatesList = function (bulkImportTemplateNames) {
 
     // Loop through your items and create options
     bulkImportTemplateNames.forEach(templateName => {
+
         const option = document.createElement('option');
         option.value = templateName; // The text shown in the input/dropdown
 
         datalist.appendChild(option);
+
     });
+    
 }
+
 
 // Gets all the templates saved for current user
 const getBulkImportTemplateNames = function () {
@@ -444,6 +468,7 @@ const getBulkImportTemplateNames = function () {
 
 }
 
+
 // Delete current record!!
 const deleteBulkImportTemplateRecord = function () {
 
@@ -468,12 +493,12 @@ const deleteBulkImportTemplateRecord = function () {
             else {
                 console.error(result.message);
                 showDbMessage("Error: Template has not been deleted successfully!!!", false);
-                return;
             }
 
         });
 
 }
+
 
 // Save Current Record or Add New Record!!
 const saveBulkImportTemplateRecord = function () {
@@ -509,6 +534,7 @@ const saveBulkImportTemplateRecord = function () {
         });
 
 }
+
 
 // Uploads the CSV file to the server and gets the contents back as JSON
 const uploadCSVFileAndGetContents = function(){
@@ -616,6 +642,7 @@ const ImportCsvFileData = function(){
 
 }
 
+
 // Validates the selected header field mappings and returns an array of error messages if any required fields are not mapped
 const validateHeaderFieldSelection = function () {
 
@@ -640,6 +667,7 @@ const validateHeaderFieldSelection = function () {
     return isValid;
 
 }
+
 
 // Validate all the data and header selection
 const isValidCSVFileData = function (dataHeaderRowIndex = 0) {
@@ -700,6 +728,7 @@ const isValidCSVFileData = function (dataHeaderRowIndex = 0) {
 
 }
 
+
 // Checks if the uploaded file is a valid CSV file by checking its magic numbers and content
 async function isValidCSVFile(file) {
 
@@ -745,18 +774,25 @@ async function isValidCSVFile(file) {
 
 }
 
+
 // Event listener for CSV Upload Account 'select'
 document.getElementById('csvUploadAccountId').addEventListener('change', function (event) {
+
     event.preventDefault();
     csvUploadAccountIdValue = this.value;
     enableDisableNextStepButton(currentStep);
+
 });
 
-// Import the data
+
+// Import the data to database!
 document.getElementById('btnImportCSVData').addEventListener('click', function (event) {
+
     event.preventDefault();
     ImportCsvFileData();
+
 });
+
 
 // Event Listener for HeaderRow 'select' 
 document.getElementById('headerRow').addEventListener('change', function (event) {
@@ -768,14 +804,18 @@ document.getElementById('headerRow').addEventListener('change', function (event)
     
 });
 
+
 // Show the modal when the "Upload CSV" button is clicked
 document.getElementById('showCSVUploadModal').addEventListener('click', function (event) {
+
     event.preventDefault();
     showHideCSVFileUploadModal(true);
+
 });
 
 
 // IMPORT TEMPLATE - START
+// Get the bulk import template by name. Enable or disable save and delete template buttons if template not exists.
 document.getElementById('csvImportSavedTemplatesSelect').addEventListener('blur', function(event){
 
     const saveCSVImportTemplate = document.getElementById('saveCSVImportTemplate');
@@ -803,6 +843,7 @@ document.getElementById('csvImportSavedTemplatesSelect').addEventListener('blur'
 
 });
 
+
 // Save the TEMPLATE for CSV Data File Header Fields Mappings
 document.getElementById('saveCSVImportTemplate').addEventListener('click', function(event){
 
@@ -820,16 +861,17 @@ document.getElementById('saveCSVImportTemplate').addEventListener('click', funct
 
 });
 
+
 // Delete Existing Template!
 document.getElementById('deleteCSVImportTemplate').addEventListener('click', function(event){
     
     event.preventDefault();
     if(confirm("Are you sure, you want to delete the template?")){
         deleteBulkImportTemplateRecord();
-
     }
     
 });
+
 
 // Disable preview data tab...
 document.getElementById('mapFieldsTab').addEventListener('change', function (event) {
@@ -839,6 +881,7 @@ document.getElementById('mapFieldsTab').addEventListener('change', function (eve
     }
 
 });
+
 
 // Change other element's value to '--Ignored--'
 document.getElementById('csvDataColumnMappingHeader').addEventListener('change', function (event) {
@@ -880,17 +923,23 @@ dz.addEventListener("dragleave", () => {
 
 });
 
-// Delegate dragover/drop to parent
+
+// Stop Delegate dragover/drop to parent
 ["dragover", "drop"].forEach(evt => {
+
     dz.addEventListener(evt, e => {
         e.preventDefault();
         e.stopPropagation();
     });
+
 });
 
+
 dz.addEventListener("drop", e => {
+
     input.files = e.dataTransfer.files;
     input.dispatchEvent(new Event("change"));
+
 });
 
 
@@ -904,6 +953,7 @@ document.getElementById('csvUploadFileInput').addEventListener('change', async f
     const fileNameDisplayPEle = document.getElementById('fileNameDisplay');
 
     if (!this.value.toLowerCase().endsWith(".csv") || !isValidCSV) {
+
         csvFileContentAsData = null;  // Reset the csvFileContentAsData to null if error occurs
         displayCSVValidationErrors("Only non-empty valid .CSV files are allowed!");
         enableDisableNextStepButton(currentStep);
@@ -912,8 +962,8 @@ document.getElementById('csvUploadFileInput').addEventListener('change', async f
         this.value = "";
         fileNameDisplayPEle.textContent = "";
         return;
-    }
 
+    }
 
     fileNameDisplayPEle.textContent = '(' + this.files[0]?.name + ')' || "";
     currentBulkImportTemplate = {};
@@ -944,6 +994,7 @@ document.getElementById('btnStep1Next').addEventListener('click', function (even
 });
 
 
+// Preview the data with correct field mappings!
 document.getElementById('btnStep2Next').addEventListener('click', function (event) {
 
     event.preventDefault();

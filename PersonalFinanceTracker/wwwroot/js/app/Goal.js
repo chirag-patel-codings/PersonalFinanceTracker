@@ -20,7 +20,8 @@ const appendGoalDetailForm = function (record) {
 
 }
 
-// Generates the forms for all the budget settings records. Single form for each record!!!
+
+// Generates the forms for all the goal settings records. Single form for each record!!!
 const generateGoalDetailsForm = function (record) {
 
     // Create the main form element
@@ -40,6 +41,7 @@ const generateGoalDetailsForm = function (record) {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'row d-flex flex-wrap align-items-center p-1';
     rowDiv.style.width = '95%';
+
     // --- COLUMN 1: Goal Period Start Date ---
     const col1 = document.createElement('div');
     col1.className = 'col-sm field pe-2 d-flex flex-column';
@@ -126,9 +128,12 @@ const generateGoalDetailsForm = function (record) {
     // Add dropdown options and set active selection conditionally
     selectGoalPeriodInterval.add(createBlankOptionForSelect(' -- Select Goal Interval -- ', true));
     let goalIntervalTypeOption = null;
+
     goalIntervalTypesJSON.forEach((item) => {
+
         goalIntervalTypeOption = new Option(item.listOptionName, item.listOptionId);
         selectGoalPeriodInterval.add(goalIntervalTypeOption);
+
     });
     selectGoalPeriodInterval.style.padding = "8px 12px";
     selectGoalPeriodInterval.value = record ? record.goalInterval : "";
@@ -173,7 +178,6 @@ const generateGoalDetailsForm = function (record) {
     goalPeriodAmountLabel.htmlFor = 'modalGoalAmountId-' + elementsIdIndex;
     goalPeriodAmountLabel.textContent = '* Goal Amount';
 
-
     // Error Message
     const goalPeriodAmountSpan = document.createElement('span');
     goalPeriodAmountSpan.setAttribute("data-valmsg-for", "goalAmount-" + elementsIdIndex);
@@ -207,8 +211,10 @@ const generateGoalDetailsForm = function (record) {
 
 }
 
+
 // Displays the data in the table in UI (<tbody id="goalsTBody">)...
 const displayGoalData = function (goalsData, pagination) {
+    
     // Select the table body element
     const tbody = document.getElementById("goalsTBody");
 
@@ -235,7 +241,9 @@ const displayGoalData = function (goalsData, pagination) {
 
     const row = getPaginationRow(pagination, 5);
     tbody.appendChild(row);
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditGoalModal = function (show) {
@@ -267,10 +275,12 @@ const showHideAddEditGoalModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditGoalModal = function (data) {
 
     if (data) {
+
         document.getElementById('modalGoalDetailsContainerId').innerHTML = '';  // remove all the exsiting DETAILS
         populateSelectFromJSON('modalGoalTypeId', goalTypesJSON, 'listOptionId', 'listOptionName', '-- Goal Type --');
 
@@ -279,11 +289,14 @@ const showAddEditGoalModal = function (data) {
         data.goalDetails?.forEach((record) => {
             appendGoalDetailForm(record);
         });
+
     }
 
     // Open up the Bootstrap modal visually
     showHideAddEditGoalModal(true);
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like goal types, goal interval types and pagination values from server, subsequent requests will not retrieve these common data from server.
@@ -334,6 +347,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single Goal record
 const getGoalRecord = function (goalId) {
 
@@ -362,7 +376,9 @@ const getGoalRecord = function (goalId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Data to be retrieved from every main and child forms (BEFORE SAVE)!!!
 const getGoalAndDetailsData = function () {
@@ -372,13 +388,16 @@ const getGoalAndDetailsData = function () {
 
     data.goalDetails = [];
     document.querySelectorAll('#modalGoalDetailsContainerId form').forEach((detailsForm) => {
+
         var detail = getFormEntries(detailsForm.id);
         detail = changeKeyIndexes(detail);      // remove the trailing number and '-' from field name
         detail.goalInterval = Number(detail.goalInterval);
         detail.goalAmount = Number(detail.goalAmount);
         data.goalDetails.push(detail);
+
     });
     return data;
+
 }
 
 // Save Current Record or Add New Record with details!!
@@ -408,6 +427,7 @@ const saveGoalRecord = function () {
                 return;
             }
         });
+
 }
 
 // Delete the Goal Record!!!
@@ -441,6 +461,7 @@ const deleteGoalRecord = function (goalId) {
         });
 
 }
+
 
 // Listen for clicks anywhere inside the table body
 document.querySelector('tbody').addEventListener('click', function (event) {
@@ -489,8 +510,10 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 });
 
-// ADD 
+
+// Attach an Click Event handler for "Add".
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     prevQueriedRecordId = '';
     goalsDataMode = 'Add';
     clearFormData('#addEditGoalFormId');
@@ -500,18 +523,25 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 
 });
 
+
 // Load the first time data!!!
 doNavigation(null, 'first', true);
+
 
 // Start Date and End Date Validations...
 appendLessThanDateValueValidationFunctionality();
 
+
 // Configure Unobtrusive Validations Settings On Modal and it's MAIN Form
 setUpUnobtrusiveValidationOnModal('#addEditGoalModal');
 
+
+// Click event hander for 'btnGoalModalSaveChanges'. Validates Main form (Goal) + all the sub-forms (goal-details)
+// Identifies each goal-detail form by it's class-name and performs validation!
 $('#btnGoalModalSaveChanges').on('click', function () {
+
     // Select the main form AND all detail/child forms
-    // (Give your child forms a shared class, like .detail-form)
+    // (Give child forms a shared class, like .detail-form)
     const $mainForm = $('#addEditGoalFormId');
     const $detailForms = $('.goal-details-form');
 
@@ -524,10 +554,12 @@ $('#btnGoalModalSaveChanges').on('click', function () {
 
     // Loop through every detail form and trigger validation
     $detailForms.each(function () {
+
         // Calling .valid() triggers visual error messages on this specific form
         if (!$(this).valid()) {
             allFormsValid = false;
         }
+
     });
 
     // Stop execution if ANY form failed validation
@@ -539,4 +571,5 @@ $('#btnGoalModalSaveChanges').on('click', function () {
     // Proceed with your save action if everything passed
     console.log("All forms are valid! Sending AJAX payload...");
     saveGoalRecord();
+
 });

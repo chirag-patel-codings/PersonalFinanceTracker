@@ -39,10 +39,13 @@ const getCurrencyDetailsAndRegisterLicenseKey = function () {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Initialize upon page load
 getCurrencyDetailsAndRegisterLicenseKey();
+
 
 // PIE CHART: Function to render the Category-wise Expense chart
 const renderCategoryWiseExpenseChart = function (rawData) {
@@ -91,6 +94,7 @@ const renderCategoryWiseExpenseChart = function (rawData) {
     pieChart.appendTo('#categoryWiseReportChartDiv');
 
 }
+
 
 // Bar (Grouped Column) Chart: Function to render the Income vs Expense chart
 const renderIncomeExpenseChart = function(rawData) {
@@ -147,7 +151,9 @@ const renderIncomeExpenseChart = function(rawData) {
     });
 
     chart.appendTo('#monthlyIncomeExpenseReportChartDiv');
+
 }
+
 
 // Line Chart: Function to render the Net Income chart
 const renderNetIncomeChart = function (rawData) {
@@ -199,6 +205,7 @@ const renderNetIncomeChart = function (rawData) {
     });
 
     lineChart.appendTo('#netIncomeReportChartDiv');
+
 }
 
 
@@ -252,7 +259,9 @@ const renderNetWorthChart = function (rawData) {
     });
 
     lineChart.appendTo('#netWorthReportChartDiv');
+
 }
+
 
 // Retrieve Currency Details and License Key for the current user
 const getReportsData = function () {
@@ -288,10 +297,11 @@ const getReportsData = function () {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
 
 
-
+// Refresh Data on "Enter" keypress for date controls or click event of submit button
 const events = ['keypress', 'click'];
 events.forEach(eventType => {
 
@@ -307,11 +317,15 @@ events.forEach(eventType => {
             }
     
         }
+
     });
 
 });
 
+
+// Append validation for Start & End Date comparisions
 appendLessThanDateValueValidationFunctionality();
+
 
 // only after every image and asset has completely finished downloading
 window.addEventListener('load', (event) => {

@@ -8,6 +8,7 @@ let categoriesDataMode = '';
 
 // Displays the data in the table in UI (<tbody id="categoriesTBody">)...
 const displayCategoryData = function (categoriesData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("categoriesTBody");
 
@@ -16,6 +17,7 @@ const displayCategoryData = function (categoriesData, pagination) {
 
     // Iterate over the new data and append new rows
     categoriesData.forEach(item => {
+
         // Create a new row element
         const row = document.createElement("tr");
         //data-secure
@@ -31,11 +33,14 @@ const displayCategoryData = function (categoriesData, pagination) {
 
         // Append the complete row to the table body
         tbody.appendChild(row);
+
     });
 
     const row = getPaginationRow(pagination, 6);
     tbody.appendChild(row);
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditCategoryModal = function (show) {
@@ -67,10 +72,12 @@ const showHideAddEditCategoryModal = function (show) {
 
 }
 
-// Display the modal with Data
+
+// Displays the modal with Data
 const showAddEditCategoryModal = function (record) {
 
     if (record) {
+
         populateSelectFromJSON('modalStandardizeCategory', standardCategoriesJSON, 'categoryId', 'categoryName', '-- Standard Category --');
         populateSelectFromJSON('modalCategoryType', categoryTypesJSON.filter(ct => ct.categoryTypeId != 0), 'categoryTypeId', 'categoryTypeName', '-- Category Type --');
 
@@ -80,7 +87,9 @@ const showAddEditCategoryModal = function (record) {
 
     // Open up the Bootstrap modal visually
     showHideAddEditCategoryModal(true);
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like Standard categories, category types and pagination values from server, subsequent requests will not retrieve these common data from server.
@@ -131,6 +140,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getCategoryRecord = function (categoryId) {
 
@@ -159,24 +169,32 @@ const getCategoryRecord = function (categoryId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
-}
 
+}
 
 
 // Updates the Standard Categories JSON at Client Side / Browser only for 'Edit' & 'Delete'
 const updateStandardCategoriesJSON = function (record) {
+
     if (categoriesDataMode == 'Edit') {
+
         const standardCategoriesJSONItemIndex = standardCategoriesJSON.findIndex(t => t.categoryId === record.categoryId);
         if (standardCategoriesJSONItemIndex > 0) {
             standardCategoriesJSON[standardCategoriesJSONItemIndex].categoryName = record.categoryName;
         }
+
     }
+
     if (categoriesDataMode == 'Delete') {
+
         standardCategoriesJSON = standardCategoriesJSON.filter(t => t.categoryId !== record.categoryId);
+
     }
+
 }
 
-// Save Current Record or Add New Record!!
+
+// Update Current Record or Add New Record!!
 const saveCategoryRecord = function () {
 
     var data = getFormEntries('addEditCategoryForm');
@@ -194,6 +212,7 @@ const saveCategoryRecord = function () {
     })
         .then(res => res.json())
         .then(result => {
+
             if (result.success) {
                 showHideAddEditCategoryModal(false);
                 updateStandardCategoriesJSON(data);
@@ -209,6 +228,7 @@ const saveCategoryRecord = function () {
         });
 
 }
+
 
 // Delete the Category Record!!!
 const deleteCategoryRecord = function (categoryId) {
@@ -227,6 +247,7 @@ const deleteCategoryRecord = function (categoryId) {
             return response.json();
         })
         .then(data => {
+
             if(data.success){
                 updateStandardCategoriesJSON({ categoryId: categoryId });
                 doNavigation(null, 'current');  // Refresh the page!
@@ -236,6 +257,7 @@ const deleteCategoryRecord = function (categoryId) {
                 console.error(data.message);
                 showDbMessage("Error: Category has not been deleted successfully!!!", false);
             }
+
         })
         .catch(error => {
             console.error("Fetch operation failed:", error);
@@ -289,22 +311,30 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 });
 
+
+// 'Click' Event handler for "Add" action
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     prevQueriedRecordId = '';
     categoriesDataMode = 'Add';
     clearFormData('#addEditCategoryForm');
     rebindValidation($("#addEditCategoryForm"));
     const record = getFormEntries('addEditCategoryForm');    // Retrieve a blank record!!!
     showAddEditCategoryModal(record);
+
 });
 
 
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 
+
 // Configure Unobtrusive Validations Settings On Modal and it's Form
 setUpUnobtrusiveValidationOnModal('#addEditCategoryModal');
 
+
+// Bind the click event handler for "btnCategoryModalSaveChanges" button on modal that validates the values of the all the elements on the 
+// 'addEditCategoryForm' as per their data- attributes
 $(document).ready(function () {
 
     // Check validation on Save click

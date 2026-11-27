@@ -4,8 +4,10 @@ let accountTypesJSON = '';
 let accountsDataMode = '';
 let prevQueriedRecordId = '';
 
+
 // Displays the data in the table in UI (<tbody id="accountsTBody">)...
 const displayAccountData = function (accountsData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("accountsTBody");
 
@@ -35,7 +37,9 @@ const displayAccountData = function (accountsData, pagination) {
 
     const row = getPaginationRow(pagination, 6);
     tbody.appendChild(row);
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like account types and pagination values from server, subsequent requests will not retrieve these common data from server.
@@ -85,6 +89,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getAccountRecord = function (accountId) {
 
@@ -113,7 +118,9 @@ const getAccountRecord = function (accountId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditAccountModal = function (show) {
@@ -145,19 +152,22 @@ const showHideAddEditAccountModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditAccountModal = function (record) {
+
     if (record) {
 
         populateSelectFromJSON('modalAccountTypeId', accountTypesJSON, 'accountTypeId', 'accountTypeNameAndDescription', '-- Account Type--');
-
         setFormData('addEditAccountForm', record);
 
     }
 
     // Open up the Bootstrap modal visually
     showHideAddEditAccountModal(true);
+
 }
+
 
 // Save Current Record or Add New Record!!
 const saveAccountRecord = function () {
@@ -192,6 +202,7 @@ const saveAccountRecord = function () {
         });
 
 }
+
 
 // Delete the Account Record!!!
 const deleteAccountRecord = function (accountId) {
@@ -232,7 +243,6 @@ document.querySelector('tbody').addEventListener('click', function (event) {
     // Check if the clicked element (or its parent) has a title of "Edit" or "Delete"
     const clickedAction = event.target.closest('span[title="Edit"], span[title="Delete"]');
 
-    
     // If the click wasn't on one of those spans, ignore it
     if (!clickedAction) return;
 
@@ -275,6 +285,7 @@ document.querySelector('tbody').addEventListener('click', function (event) {
         } else if (actionType === "Delete") {
 
             if (isALinkedAccount === "1") {
+
                 // For Linked Accounts, we will not show the modal, instead we will open the Plaid Link to update the account details
                 if (confirm("To delete this account, you must unselect it in the next screen!\nPlease select another account if it is the only account linked and other accounts available for selection!\n\nYou may NOT be able to un-select, if it's the only account from an institution!\n\nDeleting this account, will delete all of it's related records from your account permanently!\n\nDo you want to proceed?")) {
 
@@ -284,26 +295,34 @@ document.querySelector('tbody').addEventListener('click', function (event) {
                         showDbMessage("Account deleted successfully.", true);
                     });
                 }
+
             }
             else {
+
                 if (confirm("Do you want to delete the account?\nDeleting this account, will delete all of it's related records from your account permanently!")) {
                     deleteAccountRecord(recordId);
                 }
+
             }
+
         }
 
     }
 
 });
 
+
+// Event Listener for "Add" action
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     prevQueriedRecordId = '';
     accountsDataMode = 'Add';
     clearFormData('#addEditAccountForm');
     rebindValidation($("#addEditAccountForm"));
     const record = getFormEntries('addEditAccountForm');    // Retrieve a blank record!!!
-    record.isALinkedAccount = 0; // Account Created By User is not a linked account, so set it to 0
+    record.isALinkedAccount = 0;                            // Account Created By User is not a linked account, so set it to 0
     showAddEditAccountModal(record);
+
 });
 
 
@@ -311,17 +330,20 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
 
 // Attach directly to your button click event
 document.getElementById('addLinkedAccount').onclick = function () {
+
     if(confirm("In the next screen, only select the account(s), that you want to be newly added.\n\nIf you add any same existing linked account, all of it's current details will be permanently deleted and would be processed from scratch as new account!\n\nPlease confirm!")){
         setupPlaidLink("add", null, null);
     }
     
 };
 
+
 // Define a global handler variable
 let plaidHandler = null;
 
+
 // Gets a temporary Token from Plaid which is required to open the Plaid Modal.
-async function getPlaidTemporaryLinkToken(dataMode, accountId = null) {
+const getPlaidTemporaryLinkToken = async function (dataMode, accountId = null) {
 
     let requestUri = '/api/plaid/create-link-token';
 
@@ -348,6 +370,7 @@ async function getPlaidTemporaryLinkToken(dataMode, accountId = null) {
     return data.link_token;
 
 }
+
 
 // Links an external account through Plaid.
 async function setupPlaidLink(dataMode, accountId = null, onCompleteCallback = null) {
@@ -416,6 +439,7 @@ async function setupPlaidLink(dataMode, accountId = null, onCompleteCallback = n
     } catch (error) {
         console.error('Error initializing Plaid Link:', error);
     }
+    
 }
 
 // Plaid Create Token - End
@@ -424,6 +448,9 @@ async function setupPlaidLink(dataMode, accountId = null, onCompleteCallback = n
 // Configure Unobtrusive Validations Settings On Modal and it's Form
 setUpUnobtrusiveValidationOnModal('#addEditAccountModal');
 
+
+// Bind the click event handler for "btnAccountModalSaveChanges" button on modal that validates the values of the all the elements on the 
+// 'addEditAccountForm' as per their data- attributes
 $(document).ready(function () {
 
     // Check validation on Save click
@@ -439,7 +466,8 @@ $(document).ready(function () {
 
 });
 
-// Load the first time data!!!
+
+// Load the first time data after all the resources have been loaded!!!
 window.addEventListener('load', (event) => {
     doNavigation(null, 'first', true);
 });

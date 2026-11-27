@@ -67,6 +67,7 @@ const setUpUnobtrusiveValidationOnModal = function (modalId) {
 
 }
 
+
 // This functionality would work for any modules where appeneded and validates if the start date is less than end date...
 const appendLessThanDateValueValidationFunctionality = function () {
 
@@ -183,6 +184,7 @@ const appendAmountValidationForCategoryType = function (categoryElementName, amo
 
 }
 
+
 // Clears the existing data on the form!!!
 const clearFormData = function (formId) {
 
@@ -210,6 +212,7 @@ const clearFormData = function (formId) {
 
 }
 
+
 // Prepares and returns the row element with pagination controls enabled/disabled based upon the values of the paginationJSON object!!!
 const getPaginationRow = function (paginationJSON, noOfColumnsInTable) {
 
@@ -225,6 +228,7 @@ const getPaginationRow = function (paginationJSON, noOfColumnsInTable) {
     return row;
 
 }
+
 
 // Updates the paginationJSON object with new start and end record numbers based upon the navigationRequest ('first', 'prev', 'next', 'last') and returns the updated object!!!
 const getNewRecordStartAndEndNumber = function (paginationJSON, navigationRequest) {
@@ -268,6 +272,7 @@ const getNewRecordStartAndEndNumber = function (paginationJSON, navigationReques
 
 }
 
+
 // Gets returns the antiforgery token and they removes the generated hidden element from form
 const getSecurityToken = function (formElementId) {
 
@@ -277,12 +282,14 @@ const getSecurityToken = function (formElementId) {
 
 }
 
+
 // Valiates the form and returns true if valid, otherwise false. It uses jQuery Validation plugin to check the validity of the form with the given formId.
 const isValidForm = function (formId) {
 
     const $form = $('#' + formId);
     return $form.valid();
 }
+
 
 // BULK IMPORT VALIDATIONS - START HERE...
 
@@ -306,39 +313,6 @@ const isValidAmount = function (amount) {
 
 }
 
-/*
-// Checks if the date string is in a valid format (M/D/YYYY or MM/DD/YYYY) and does not accept blank, empty, or null values, and 
-// represents a real calendar date, including leap years and month lengths.
-const isValidDate2 = function (dateString) {
-
-    // Reject non-strings, empty strings, or whitespace-only strings
-    if (typeof dateString !== 'string' || !dateString.trim()) {
-        return false;
-    }
-
-    // Check format using Regular Expression (allows /, ., or - as separators)
-    const regex = /^(0?[1-9]|1[0-2])[\/.-](0?[1-9]|[12][0-9]|3[01])[\/.-]\d{4}$/;
-
-    if (!regex.test(dateString)) {
-        return false;
-    }
-
-    // Parse string into integers by splitting on any separator
-    const parts = dateString.split(/[\/.-]/);
-    const month = parseInt(parts[0], 10);
-    const day = parseInt(parts[1], 10);
-    const year = parseInt(parts[2], 10);
-
-    // Check calendar validity (handles leap years and month lengths)
-    const dateObj = new Date(year, month - 1, day);
-
-    return (
-        dateObj.getFullYear() === year &&
-        dateObj.getMonth() === month - 1 &&
-        dateObj.getDate() === day
-    );
-}
-    */
 
 const isValidDate2 = function (dateString) {
 
@@ -393,6 +367,7 @@ const isValidDate  = function (value) {
 
 }
 
+
 // Returns today's date in 'YYYY-MM-DD' format for USA
 const formatDateToYYYYMMDD = function (d) {
 
@@ -404,6 +379,7 @@ const formatDateToYYYYMMDD = function (d) {
     
 }
 
+
 // Get the date object from a 'YYYY-MM-DD' formatted string
 const parseLocalDate = function (yyyyMmDd) {
 
@@ -411,6 +387,7 @@ const parseLocalDate = function (yyyyMmDd) {
     return new Date(Number(y), Number(m) - 1, Number(d));
 
 }
+
 
 // Formats a date string to a local format (like "mm/dd/yyyy" for en-US, "dd/mm/yyyy" for en-GB, "yyyy-mm-dd" for ja-JP, etc.)
 const formatToLocalDate = function (yyyyMmDd, locale) {
@@ -432,6 +409,7 @@ const createBlankOptionForSelect = function (blankOptionText, blankOptionDisable
     return blankOption;
 
 }
+
 
 // Populates the 'select' on the form with the supplied JSON Array of data.
 // selectElementName must be element Name NOT Id and It's Name and Case must match the Model's member names.
@@ -455,6 +433,7 @@ const populateSelectFromJSON = function (selectElementId, jsonArray, valueField,
 
 }
 
+
 // Function to strip "-index" from all key names
 const changeKeyIndexes = function (obj) {
 
@@ -467,6 +446,7 @@ const changeKeyIndexes = function (obj) {
     }, {});
 
 }
+
 
 // Element Name required with the same as Model Record Name & Case
 // Returns JSON 
@@ -495,6 +475,7 @@ const getFormEntries = function (formId) {
 
 }
 
+
 // This function will work if all the elements in the form has name and it is the same as Record Model Element Name & in Same Case
 const setFormData = function (formId, record){
 
@@ -509,6 +490,7 @@ const setFormData = function (formId, record){
 
 }
 
+
 // Shows the material-symbols-outlined icons as oneline with the text. This is useful for buttons and other UI elements where you want to combine an icon with a label.
 const iconText = function (icon, text) {
 
@@ -518,6 +500,7 @@ const iconText = function (icon, text) {
             </span>`;
 
 }
+
 
 // Displays the message in the 'dbMessage' div, TO BE USED FOR DATABASE OPERATION RESULT!!!
 const showDbMessage = function (message, isSuccess = true) {
@@ -543,6 +526,7 @@ const showDbMessage = function (message, isSuccess = true) {
     }, 1000);
 
 }
+
 
 // for bootstrap pop-over required!!!
 document.addEventListener("DOMContentLoaded", function () {

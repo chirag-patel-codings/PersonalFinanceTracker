@@ -3,8 +3,10 @@ let prevQueriedRecordId = '';
 let tagsPaginationJSON = '';
 let tagsDataMode = '';
 
+
 // Displays the data in the table in UI (<tbody id="tagsTBody">)...
 const displayTagData = function (tagsData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("tagsTBody");
 
@@ -13,6 +15,7 @@ const displayTagData = function (tagsData, pagination) {
 
     // Iterate over the new data and append new rows
     tagsData.forEach(item => {
+        
         // Create a new row element
         const row = document.createElement("tr");
         //data-secure
@@ -27,11 +30,14 @@ const displayTagData = function (tagsData, pagination) {
 
         // Append the complete row to the table body
         tbody.appendChild(row);
+
     });
 
     const row = getPaginationRow(pagination, 5);
     tbody.appendChild(row);
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like pagination values from server, subsequent requests will not retrieve these common data from server.
@@ -79,6 +85,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getTagRecord = function (tagId) {
 
@@ -107,7 +114,9 @@ const getTagRecord = function (tagId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditTagModal = function (show) {
@@ -139,6 +148,7 @@ const showHideAddEditTagModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditTagModal = function (record) {
 
@@ -147,6 +157,7 @@ const showAddEditTagModal = function (record) {
     }
     // Open up the Bootstrap modal visually
     showHideAddEditTagModal(true);
+
 }
 
 // Save Current Record or Add New Record!!
@@ -178,6 +189,7 @@ const saveTagRecord = function () {
         });
 
 }
+
 
 // Delete the Tag Record!!!
 const deleteTagRecord = function (tagId) {
@@ -257,21 +269,30 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 });
 
+
+// Event handler for "Add" action
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     prevQueriedRecordId = '';
     tagsDataMode = 'Add';
     clearFormData('#addEditTagForm');
     rebindValidation($("#addEditTagForm"));
     const record = getFormEntries('addEditTagForm');    // Retrieve a blank record!!!
     showAddEditTagModal(record);
+
 });
+
 
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 
+
 // Configure Unobtrusive Validations Settings On Modal and it's Form
 setUpUnobtrusiveValidationOnModal('#addEditTagModal');
 
+
+// Attach a click event handler for 'btnTagModalSaveChanges' button that validates the values of the all the elements on the 'addEditTagForm'
+// as per their data- attributes
 $(document).ready(function () {
 
     // Check validation on Save click

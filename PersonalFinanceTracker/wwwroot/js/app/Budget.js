@@ -6,6 +6,7 @@ let budgetStartDate = formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 0,
 let budgetEndDate = formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 11, 31));       // correct way!!!
 let budgetFiltersChanged = false;
 
+
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditBudgetSettingsModal = function (show) {
 
@@ -29,6 +30,7 @@ const showHideAddEditBudgetSettingsModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditBudgetSettingsModal = function (data) {
 
@@ -48,8 +50,12 @@ const showAddEditBudgetSettingsModal = function (data) {
 
     // Open up the Bootstrap modal visually
     showHideAddEditBudgetSettingsModal(true);
+
 }
 
+
+// will enable or disable budget over and under settings selects and change it's values upon the change event of the budget rollover checkbox of 
+// every single setting of budget settings modal .
 const enableDisableUnderOverSelectSettings = function (isChecked, formId) {
 
     const budgetIfUnderSettingsSelect = document.querySelector(`#${formId} #modalBudgetIfUnderSettingsId`);
@@ -67,9 +73,10 @@ const enableDisableUnderOverSelectSettings = function (isChecked, formId) {
     budgetIfOverSettingsSelect.disabled = !isChecked;
 
     saveBtn.disabled = false;
+
 };
 
-// Generates the forms for all the budget settings records. Single form for each record!!!
+// Generates the forms programtically for all the budget settings records. Single form for each record!!!
 const generateBudgetSettingsForms = function (record, drawBorderTop) {
 
     // Create the main form element
@@ -138,7 +145,6 @@ const generateBudgetSettingsForms = function (record, drawBorderTop) {
     col2.appendChild(switchDiv);
     rowDiv.appendChild(col2);
 
-
     // --- COLUMN 3: Budget If Under Dropdown ---
     const col3 = document.createElement('div');
     col3.className = 'col-sm field pt-2';
@@ -165,10 +171,12 @@ const generateBudgetSettingsForms = function (record, drawBorderTop) {
     selectBudgetIfUnderSettings.disabled = !budgetToBeRolledOverSwitchInput.checked;
 
     selectBudgetIfUnderSettings.addEventListener('change', (e) => {
+
         e.preventDefault();
         if (e.target.disabled == false) {
             document.querySelector(`#${form.id} #btnBudgetSettingsModalSaveChanges`).disabled = false;
         }
+
     });
 
     col3.appendChild(selectBudgetIfUnderSettings);
@@ -200,19 +208,22 @@ const generateBudgetSettingsForms = function (record, drawBorderTop) {
     selectBudgetIfOverSettings.disabled = !budgetToBeRolledOverSwitchInput.checked;
 
     selectBudgetIfOverSettings.addEventListener('change', (e) => {
+
         e.preventDefault();
         if (e.target.disabled == false) {
             document.querySelector(`#${form.id} #btnBudgetSettingsModalSaveChanges`).disabled = false;
         }
+
     });
 
     col4.appendChild(selectBudgetIfOverSettings);
     col4.appendChild(labelOver);
     rowDiv.appendChild(col4);
-
+    
+    // --- ACTION BUTTON: Save Trigger ---
     const col5 = document.createElement('div');
     col5.className = 'col-sm field pt-1';
-    // --- ACTION BUTTON: Save Trigger ---
+
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'btn btn-primary';
@@ -221,13 +232,15 @@ const generateBudgetSettingsForms = function (record, drawBorderTop) {
     // saveBtn.textContent = '💾 Save';
     saveBtn.innerHTML = iconText('save', 'Save');
     saveBtn.disabled = true;
+
     saveBtn.addEventListener('click', (e) => {
+
         e.preventDefault();
         const record = getFormEntries(form.id);
         saveBudgetSettings(record);
-        // console.log('record: ', record);
         // e.target.disabled = true;
         e.currentTarget.disabled = true;
+
     });
 
     col5.appendChild(saveBtn);
@@ -269,6 +282,7 @@ const getBudgetSettings = function () {
 
 }
 
+
 // Saves the current budget setting to the database!
 const saveBudgetSettings = function (record) {
 
@@ -276,8 +290,7 @@ const saveBudgetSettings = function (record) {
     record.budgetToBeRolledOver = Number(record.budgetToBeRolledOver);     // Change data type to number
     record.budgetIfUnderSettings = Number(record.budgetIfUnderSettings);
     record.budgetIfOverSettings = Number(record.budgetIfOverSettings);
-    //console.log('record - saveBudgetSettings: ', record);
-
+    
     fetch("/Budget/SaveBudgetSettings", {
         method: "POST",
         credentials: "include",   // REQUIRED for antiforgery cookie
@@ -299,7 +312,9 @@ const saveBudgetSettings = function (record) {
             }
 
         });
+
 }
+
 
 // Gets all the budget data from start date to end date...
 const getBudgetDetails = function (budgetStartDate, budgetEndDate) {
@@ -336,6 +351,7 @@ const getBudgetDetails = function (budgetStartDate, budgetEndDate) {
 
 }
 
+
 // Displays the budget data table header with month year
 const displayBudgetDataHeader = function (budgetsMonthYear) {
 
@@ -351,7 +367,9 @@ const displayBudgetDataHeader = function (budgetsMonthYear) {
 
     // ADD DETAILS/ROW
     theadRow.innerHTML = theadNewCols;
+
 }
+
 
 // Displays the actual budget data
 const displayBudgetDataDetails = function (budgetDetailsData) {
@@ -399,7 +417,9 @@ const displayBudgetDataDetails = function (budgetDetailsData) {
 
 }
 
+
 // First time load only!!!
+// Generates the lines for budget income and expense summaries
 const generateBudgetDataSummaryRows = function (budgetSummaryData, categoryType, cellText, idPrefix) {
 
     // Select the table body element
@@ -419,6 +439,7 @@ const generateBudgetDataSummaryRows = function (budgetSummaryData, categoryType,
     tbody.appendChild(row);
 
 }
+
 
 // Displays the data in the table in UI (<tbody id="budgetsTBody">)...
 const displayBudgetData = function (budgetDetailsData, budgetsMonthYear) {
@@ -452,6 +473,7 @@ const displayBudgetData = function (budgetDetailsData, budgetsMonthYear) {
 
 }
 
+
 // Generates the sum as per type/group of categories per month
 const getSumOfICategoryTypePerMonth = function (categoryType, budgetDateDigit) {
 
@@ -468,6 +490,7 @@ const getSumOfICategoryTypePerMonth = function (categoryType, budgetDateDigit) {
 
 }
 
+
 // Updates the Net summary only
 const getNetSummary = function (budgetDateDigit) {
 
@@ -478,7 +501,8 @@ const getNetSummary = function (budgetDateDigit) {
 
 }
 
-// Updates the Income/Expense summary and Net
+
+// Updates the Income/Expense category wise summary and Net
 const updateBudgetSummary = function (categoryType, budgetDateDigit) {
 
     // Change the Income or Expense Summary
@@ -486,7 +510,9 @@ const updateBudgetSummary = function (categoryType, budgetDateDigit) {
     tdElement.textContent = `${userCurrencyDetailsJSON.currencySymbol}${getSumOfICategoryTypePerMonth(categoryType, budgetDateDigit)}`;
 
     document.getElementById('N' + budgetDateDigit).textContent = `${userCurrencyDetailsJSON.currencySymbol}${getNetSummary(budgetDateDigit)}`;
+
 }
+
 
 // Save Current Record or Add New Record!!
 const saveBudgetRecord = function (record) {
@@ -552,26 +578,35 @@ const deleteBudgetRecord = function (record) {
 
 }
 
+
+// First time screen display 
 document.getElementById('budgetDetailsStartDate').value = budgetStartDate;
 document.getElementById('budgetDetailsEndDate').value = budgetEndDate;
 
 getBudgetDetails(budgetStartDate, budgetEndDate);
 
+
 // Any element on the modal has focus, will be blurred
 $('#addEditBudgetSettingsModal').on('hide.bs.modal', function () {
+
     if (this.contains(document.activeElement)) {
         document.activeElement.blur();
     }
+    
 });
 
-// Note: The unobtrusive validation only shows the error messages unless form's submit validation has been implemented for othen than standard validations...
+
+// Note: The unobtrusive validation only shows the error messages unless form's submit validation has been implemented for other than standard validations...
+// Refreshes the data when start date and/or end date changes
 const refreshBudgetData = function () {
 
     if (isValidDate(budgetStartDate) && isValidDate(budgetEndDate) && (budgetEndDate >= budgetStartDate) && budgetFiltersChanged) {
         getBudgetDetails(budgetStartDate, budgetEndDate);
         budgetFiltersChanged = false;
     }
+
 }
+
 
 // Fires when the DOM is loaded completely!!!
 document.addEventListener('DOMContentLoaded', () => {
@@ -582,74 +617,104 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // blur event listner for all the input [type = number] in budget data table
     document.addEventListener('blur', function (event) {
+
         const input = event.target;
 
         if (input.tagName === 'INPUT' && input.type === 'number') {
+
             let budgetIdAndDate = input.id.split("-");
             let index = budgetDetailsDataJSON.findIndex(d => d.budgetId == budgetIdAndDate[0] && d.budgetDateDigits == budgetIdAndDate[1]);
             let currentBudgetRecord = budgetDetailsDataJSON[index];
+            
             // UPDATE DATABASE
             if (((currentBudgetRecord.budgetAmount ?? "") != input.value) || (currentBudgetRecord.budgetAmount == "0" && input.value == "")) {
+                
                 if (input.value == "") {
+
                     // Delete the record
                     deleteBudgetRecord(currentBudgetRecord);
                     currentBudgetRecord.budgetAmount = null;      // Updates the 'budgetDetailsDataJSON' as well
+
                 }
                 else {
 
                     currentBudgetRecord.budgetAmount = String(input.value); // Updates the 'budgetDetailsDataJSON' as well, must be of type "String" as other value
                     // Save Record
                     saveBudgetRecord(currentBudgetRecord);
+
                 }
                 // UPDATE SUMMARY AT CLIENT
                 updateBudgetSummary(currentBudgetRecord.categoryType, currentBudgetRecord.budgetDateDigits);
+
             }
 
         }
+
     }, true); // capture phase
+
 
     // Shrink & Expand Filter Region
     document.getElementById('showHideBudgetFilters').addEventListener('click', function (event) {
+
         const containerDiv = document.getElementById('budgetDataFilterDiv');
         if (this.innerText == 'call_received') {
+
             filterForm.style.display = 'block';
             containerDiv.style.minHeight = '150px';
             this.innerText = 'call_made';
             this.title = 'Hide Filter';
+
         }
         else {
+
             filterForm.style.display = 'none';
             containerDiv.style.minHeight = '50px';
             this.innerText = 'call_received';
             this.title = 'Show Filter';
+
         }
+
     });
 
 
     // Refresh the budget data - Start
     filterStartDate.addEventListener('change', function () {
+
         budgetStartDate = this.value;
         budgetFiltersChanged = true;
+
     });
+
 
     filterStartDate.addEventListener('keydown', function (event) {
+
         if (event.key === 'Enter' && this.value !== '' && this.checkValidity()) {
+
             event.preventDefault(); // stops the date picker from reopening
             refreshBudgetData();
+
         }
+
     });
+
 
     filterEndDate.addEventListener('change', function () {
+
         budgetEndDate = this.value;
         budgetFiltersChanged = true;
+
     });
 
+
     filterEndDate.addEventListener('keydown', function (event) {
+
         if (event.key === 'Enter' && this.value !== '' && this.checkValidity()) {
             event.preventDefault(); // stops the date picker from reopening
             refreshBudgetData();
         }
+
     });
+
 
     document.getElementById('viewBudgetData').addEventListener('click', (event) => {
 
@@ -662,8 +727,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
 // Add new data-validation check functions
 $.validator.addMethod("lessThan", function (value, element, params) {
+
     if (!value) return true;
 
     var targetValue = $(params).val();
@@ -676,23 +743,36 @@ $.validator.addMethod("lessThan", function (value, element, params) {
     var endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
 
     return startDate <= endDate;
+
 }, "Start date must be less than or equal to end date.");
 
+
 $.validator.unobtrusive.adapters.add("lessThan", ["other"], function (options) {
+
     options.rules["lessThan"] = "#" + options.params.other;
     options.messages["lessThan"] = options.message;
+
 });
+
 
 // Start Date & End Date Validations
 $(document).ready(function () {
+
     var $form = $("#budgetDataFilterForm");
+    
     // Enable validation on blur
     $form.data("validator").settings.onfocusout = function (element) {
+
         $(element).valid();
+
     };
+
     // Force validation to run IMMEDIATELY when a date input changes
     $("#budgetDetailsStartDate, #budgetDetailsEndDate").on("change blur", function () {
+
         $('#budgetDetailsStartDate').valid();
         $('#budgetDetailsEndDate').valid();
+
     });
+
 });

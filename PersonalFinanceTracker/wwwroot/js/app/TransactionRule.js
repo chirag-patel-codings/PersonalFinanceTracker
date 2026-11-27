@@ -13,6 +13,7 @@ let prevQueriedRecordId = '';
 
 // Displays the data in the table in UI (<tbody id="transactionRulesTBody">)...
 const displayTransactionRulesData = function (transactionRulesData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("transactionRulesTBody");
 
@@ -42,13 +43,18 @@ const displayTransactionRulesData = function (transactionRulesData, pagination) 
 
     const row = getPaginationRow(pagination, 8);
     tbody.appendChild(row);
+
 }
+
 
 // Dynamically show or hide the transaction amount input field based on the selected value in the "Transaction Amount Match Comparison" dropdown. 
 // If the user selects "Exact Amount" (value 3), the input field will be displayed; otherwise, it will be hidden.
 const showHideTransactionAmountInput = function (value) {
+
     document.getElementById("exactTransactionAmountContainerDiv").style.display = value == 3 ? "block" : "none"; // Enable only if "Exact Amount" is selected
+
 }
+
 
 // Displays the functional text in the modal based on the current selections and inputs made by the user.
 const displayTransactionRuleFunctionalText = function () {
@@ -82,6 +88,7 @@ const displayTransactionRuleFunctionalText = function () {
 
 }
 
+
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditTransactionRulesModal = function (show) {
 
@@ -112,10 +119,12 @@ const showHideAddEditTransactionRulesModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditTransactionRulesModal = function (record) {
 
     if (record) {
+
         populateSelectFromJSON('modalAccountId', accountsListJSON, 'listOptionId', 'listOptionName', 'All Accounts', false);
         populateSelectFromJSON('modalTransactionTextMatchComparision', transactionTextMatchComparisionListJSON, 'listOptionId', 'listOptionName');
         populateSelectFromJSON('modalTransactionAmountMatchComparision', transactionAmountMatchComparisionListJSON, 'listOptionId', 'listOptionName');
@@ -133,12 +142,14 @@ const showAddEditTransactionRulesModal = function (record) {
 
         // Display the rule description in the modal
         displayTransactionRuleFunctionalText();
+
     }
 
     // Open up the Bootstrap modal visually
     showHideAddEditTransactionRulesModal(true);
 
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like user currency details, categories list, accounts list, tags list, goals list, 
@@ -195,6 +206,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getTransactionRuleRecord = function (transactionRuleId) {
 
@@ -223,10 +235,11 @@ const getTransactionRuleRecord = function (transactionRuleId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
 
+
 // Save Current Record or Add New Record!!
-// PENDING: APPLY RULE TO EXISTING TRANSACTIONS!!!
 const saveTransactionRuleRecord = function () {
 
     const modalApplyRuleToExistingTransactions = document.getElementById("modalApplyRuleToExistingTransactions");
@@ -268,6 +281,7 @@ const saveTransactionRuleRecord = function () {
 
 }
 
+
 // Delete the TransactionRules Record!!!
 const deleteTransactionRuleRecord = function (transactionRuleId) {
 
@@ -299,6 +313,7 @@ const deleteTransactionRuleRecord = function (transactionRuleId) {
         });
 
 }
+
 
 // Listen for clicks anywhere inside the table body
 document.querySelector('tbody').addEventListener('click', function (event) {
@@ -344,8 +359,10 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 });
 
-// Add new transaction record
+
+// Add new transaction rule record
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     prevQueriedRecordId = '';
     transactionRulesDataMode = 'Add';
     clearFormData('#addEditTransactionRuleForm');
@@ -356,10 +373,13 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
     record.transactionAmountMatchComparision = 0; // Default to "Any Amount"
 
     showAddEditTransactionRulesModal(record);
+
 });
+
 
 // Change the title of the select
 document.getElementById("addEditTransactionRuleModal").addEventListener("change", e => {
+
     if (e.target.tagName === "SELECT") {
         e.target.title = e.target.options[e.target.selectedIndex].text;
         if(e.target.id === "modalTransactionAmountMatchComparision") {
@@ -368,50 +388,40 @@ document.getElementById("addEditTransactionRuleModal").addEventListener("change"
     }
 
     displayTransactionRuleFunctionalText();
+
 });
 
 
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 
-/*
 
-
-// The field becomes required only when the dropdown value is "3"
+// Add custom validation method for data attribute: 'data-val-requiredif'
 $.validator.addMethod("requiredif", function (value, element) {
-    const other = $("#modalTransactionAmountMatchComparision").val();
 
-    // If dropdown is "3", the field must not be empty
-    if (other === "3") {
-        return $.trim(value).length > 0;
-    }
-
-    return true; // otherwise pass
-});
-
-// Register with unobtrusive validation
-$.validator.unobtrusive.adapters.addBool("requiredif");
-*/
-
-// Add custom validation method
-$.validator.addMethod("requiredif", function (value, element) {
     const other = $("#modalTransactionAmountMatchComparision").val();
     if (other === "3") {
         return $.trim(value).length > 0;
     }
     return true;
+
 });
+
 
 // Register with unobtrusive validation using 'add' (supports error messages)
 $.validator.unobtrusive.adapters.add("requiredif", function (options) {
+
     options.rules["requiredif"] = true;
     options.messages["requiredif"] = options.message;
+
 });
+
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form (Must be last always)
 setUpUnobtrusiveValidationOnModal('#addEditTransactionRuleModal');
 
-// Save the transaction record
+
+// validate and Save the transaction record
 $(document).ready(function () {
 
     // Check validation on Save click
@@ -426,4 +436,3 @@ $(document).ready(function () {
     });
 
 });
-

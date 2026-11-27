@@ -9,6 +9,8 @@ using System.Security.Claims;
 
 namespace PersonalFinanceTracker.Models.Authentication
 {
+
+    // This class is used to get and store the user's details 
     public class SessionUser : ISessionUser
     {
         public ulong? UserId { get; set; }      // is used to retrieve from database
@@ -23,4 +25,5 @@ namespace PersonalFinanceTracker.Models.Authentication
         public string? CurrencySymbol { get; set; }
 
     }
+
 }

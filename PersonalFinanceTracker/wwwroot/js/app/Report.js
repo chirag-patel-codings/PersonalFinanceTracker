@@ -47,8 +47,8 @@ const setReportParameters = function () {
         reportParametersJSON.tagId = (tagId.value == "" || tagId.value == null) ? null : tagId.value;
     }
 
-
 }
+
 
 // Get the tag names and currency details for current user
 const getTagsAndCurrencyDetails = function () {
@@ -79,13 +79,18 @@ const getTagsAndCurrencyDetails = function () {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 getTagsAndCurrencyDetails();
 
+
 // Returns the sum of items' property
 const getSum = function (items, propName) {
+
     return items.reduce((total, item) => total + (Number(item[propName]) || 0), 0);
+
 }
 
 // Generate 'tr' element
@@ -123,6 +128,7 @@ const generateTHTDElement = function (eleType, val, colspan, textBold = false, h
 
 }
 
+
 // Generates and displays Net Summary.
 const appendNetSummaryRow = function (reportAmount1, reportAmount2, netSummaryRowHeaderText) {
 
@@ -152,8 +158,10 @@ const appendNetSummaryRow = function (reportAmount1, reportAmount2, netSummaryRo
 
 }
 
+
 // Append the data rows with their summary...
 const appendDataRowsWithSummary = function (filteredData, summaryRowId, summaryRowHeaderText) {
+    
     // Get the table header & body element
     const tbody = document.getElementById("reportsTBody");
     let newTD = null;
@@ -169,9 +177,11 @@ const appendDataRowsWithSummary = function (filteredData, summaryRowId, summaryR
         currentRow = document.getElementById(dataRowId) ? document.getElementById(dataRowId) : generateTRElement(dataRowId);
 
         if (currentRow.childElementCount == 0) {
+
             newTD = generateTHTDElement('td', filteredData[i].reportName, 1, false, 'left', 15, headingBackgroundColor, true);
             newTD.style.setProperty('font-weight', 'normal', 'important');
             currentRow.appendChild(newTD);
+
         }
 
         // amount2 is the 'Actual'
@@ -179,9 +189,11 @@ const appendDataRowsWithSummary = function (filteredData, summaryRowId, summaryR
         currentRow.appendChild(newTD);
 
         if (reportParametersJSON.reportName != 'NetWorth') {
+
             // Amount 1 is budget/goal...Not Displayed for NetWorth report
             newTD = generateTHTDElement('td', `${userCurrencyDetailsJSON.currencySymbol}${Number(filteredData[i].reportAmount1).toFixed(2)}`, 1, false, 'right', 0, null, false);
             currentRow.appendChild(newTD);
+
         }
 
         tbody.appendChild(currentRow);
@@ -195,8 +207,10 @@ const appendDataRowsWithSummary = function (filteredData, summaryRowId, summaryR
         currentRow.classList.add('top-bottom-single-border');
 
         if (currentRow.childElementCount == 0) {
+
             newTD = generateTHTDElement('td', summaryRowHeaderText, 1, true, 'center', 0, headingBackgroundColor, true);
             currentRow.appendChild(newTD);
+
         }
         // amount2 is the 'Actual'
         newTD = generateTHTDElement('td', `${userCurrencyDetailsJSON.currencySymbol}${getSum(filteredData, 'reportAmount2').toFixed(2)}`, 1, true, 'right', 0, headingBackgroundColor, false);
@@ -204,14 +218,18 @@ const appendDataRowsWithSummary = function (filteredData, summaryRowId, summaryR
 
         // Amount 1 is budget/goal...Not Displayed for NetWorth report
         if (reportParametersJSON.reportName != 'NetWorth') {
+
             newTD = generateTHTDElement('td', `${userCurrencyDetailsJSON.currencySymbol}${getSum(filteredData, 'reportAmount1').toFixed(2)}`, 1, true, 'right', 0, headingBackgroundColor, false);
             currentRow.appendChild(newTD);
+
         }
 
         tbody.appendChild(currentRow);
+
     }
 
 }
+
 
 // Displays the actual report data
 const displayReportData = function (data) {
@@ -278,71 +296,89 @@ const displayReportData = function (data) {
 
             let headerRow1NewTH2Text = reportParametersJSON.reportName == 'IncomeExpense' ? 'Budget' : 'Goal';
             if (headerRow1.childElementCount == 0) {
+
                 let cellContents = reportParametersJSON.reportInterval == 1 ? '' : headerRow0Col0Content;
                 let header1RowCol0 = generateTHTDElement('th', cellContents, 1, true, 'left', 5, headingBackgroundColor, true);
                 header1RowCol0.style.setProperty('border-bottom', '1px solid #000', 'important');
                 headerRow1.appendChild(header1RowCol0);
+
             }
 
             let amountColsRepeatCounter = data[0].reportMonthYear != null ? headerRow0.childElementCount - 1 : 1;
 
             for (let i = 0; i < amountColsRepeatCounter; i++) {
+
                 let headerRow1NewTH1 = generateTHTDElement('th', 'Actual', 1, true, 'center', 0, headingBackgroundColor, false);
                 let headerRow1NewTH2 = generateTHTDElement('th', headerRow1NewTH2Text, 1, true, 'center', 0, headingBackgroundColor, false);
 
                 headerRow1.appendChild(headerRow1NewTH1);
                 headerRow1.appendChild(headerRow1NewTH2);
+
             }
 
             thead.appendChild(headerRow1);
 
         }
 
-        // Pending: Place in earlier code
         let dataRowSummary0HeaderText = '';
         let dataRowSummary1HeaderText = '';
         let netSummaryRowHeaderText = '';
         if (reportParametersJSON.reportName == 'IncomeExpense') {
+
             dataRowSummary0HeaderText = 'Total Income';
             dataRowSummary1HeaderText = 'Total Expense';
             netSummaryRowHeaderText = 'Net Income';
+
         }
         else if (reportParametersJSON.reportName == 'NetWorth') {
+
             dataRowSummary0HeaderText = 'Total Assets';
             dataRowSummary1HeaderText = 'Total Liabilities';
             netSummaryRowHeaderText = 'Net Worth';
+
         }
 
         // DETAILS AND SUMMARY ROWS:
         if (data[0].reportMonthYear != null) {  // Report is monthly (If data has 'reportMonthYear')
 
             for (let i = 0; i < data.length; i = i + colCounter) {
+
                 let monthYearData = data.filter(d => d.reportMonthYear == data[i].reportMonthYear);
                 if (reportParametersJSON.reportName != 'Goal') {
+
                     let incomeCreditData = monthYearData.filter(d => d.reportClassification == '1');
                     let expenseDebitData = monthYearData.filter(d => d.reportClassification == '-1');
                     appendDataRowsWithSummary(incomeCreditData, 0, dataRowSummary0HeaderText);
                     appendDataRowsWithSummary(expenseDebitData, 1, dataRowSummary1HeaderText);
                     appendNetSummaryRow(getSum(incomeCreditData, 'reportAmount1') + getSum(expenseDebitData, 'reportAmount1'), getSum(incomeCreditData, 'reportAmount2') + getSum(expenseDebitData, 'reportAmount2'), netSummaryRowHeaderText);
+                
                 }
                 else {
+                
                     appendDataRowsWithSummary(monthYearData, 0, dataRowSummary0HeaderText);
+                
                 }
+
             }
 
         }
         else {   // Total Period
 
             for (let i = 0; i < data.length; i = i + colCounter) {
+
                 if (reportParametersJSON.reportName != 'Goal') {
+
                     let incomeCreditData = data.filter(d => d.reportClassification == '1');
                     let expenseDebitData = data.filter(d => d.reportClassification == '-1');
                     appendDataRowsWithSummary(incomeCreditData, 0, dataRowSummary0HeaderText);
                     appendDataRowsWithSummary(expenseDebitData, 1, dataRowSummary1HeaderText);
                     appendNetSummaryRow(getSum(incomeCreditData, 'reportAmount1') + getSum(expenseDebitData, 'reportAmount1'), getSum(incomeCreditData, 'reportAmount2') + getSum(expenseDebitData, 'reportAmount2'), netSummaryRowHeaderText);
+                
                 }
                 else {
+                
                     appendDataRowsWithSummary(data, 0, dataRowSummary0HeaderText);
+                
                 }
 
             }
@@ -350,6 +386,8 @@ const displayReportData = function (data) {
     }
 
 }
+
+
 // Gets all the report data from start date to end date...
 const getReport = function () {
 
@@ -402,7 +440,9 @@ const getReport = function () {
 
 // show/hide the tag selection based on the report type selected
 document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
+
     radio.addEventListener("change", function () {
+
         let tagElement = document.getElementById('tagSelectContainer');
         if (this.id == 'btnRadioIncomeExpense' && this.checked) {
             tagElement.style.display = 'block';
@@ -410,8 +450,11 @@ document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
         else {
             tagElement.style.display = 'none';
         }
+
     });
+
 });
+
 
 // Get the report on click of the 'getReport' button
 document.getElementById('viewReport').addEventListener('click', (event) => {
@@ -423,6 +466,7 @@ document.getElementById('viewReport').addEventListener('click', (event) => {
     }
 
 });
+
 
 // Requery report data
 document.getElementById("reportDataFilterDiv").addEventListener("keypress", (e) => {
@@ -436,7 +480,9 @@ document.getElementById("reportDataFilterDiv").addEventListener("keypress", (e) 
         }
 
     }
+
 });
+
 
 // Export to Excel - Start
 
@@ -446,13 +492,14 @@ const exportToExcel = function () {
     let table = document.getElementById("reportsTable");
 
     TableToExcel.convert(table, {
-      name: reportParametersJSON.reportName + '.xlsx',
-      sheet: {
-        name: "Sheet1"
-      }
+        name: reportParametersJSON.reportName + '.xlsx',
+        sheet: {
+            name: "Sheet1"
+        }
     });
 
-  }
+}
+
 
 // Event handler for the 'Export to Excel' click
 document.getElementById('spanExportToExcel').addEventListener('click', (event) => {
@@ -467,10 +514,14 @@ document.getElementById('spanExportToExcel').addEventListener('click', (event) =
 
 // Export to Excel - End
 
+// Start date must be lower than End date
 appendLessThanDateValueValidationFunctionality();
+
 
 // At first time load.
 // only after every image and asset has completely finished downloading
 window.addEventListener('load', (event) => {
+
     getReport();
+
 });

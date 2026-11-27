@@ -8,6 +8,7 @@ let transactionsPaginationJSON = '';
 let userCurrencyDetailsJSON = '';
 
 let transactionFilterJSON = {
+
     transactionFilterStartDate: formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 0, 1)),
     transactionFilterEndDate: formatDateToYYYYMMDD(new Date(new Date().getFullYear(), 11, 31)),
     transactionFilterCategoryId: null,
@@ -17,6 +18,7 @@ let transactionFilterJSON = {
     transactionFilterGoalId: null,
     transactionFilterCategorization: 0,
     transactionFilterType: 0
+
 };
 
 let categoriesListJSON = '';
@@ -45,6 +47,7 @@ const populateFilterSelects = function () {
 
 }
 
+
 // Set the values of Filter Forms to query transaction data!!!
 const setTransactionFilterFormValues = function () {
 
@@ -65,6 +68,7 @@ const setTransactionFilterFormValues = function () {
 
 }
 
+
 // Sets the filter JSON data to retrieve filtered transaction data
 const setTransactionFilterJSONValues = function () {
 
@@ -84,6 +88,7 @@ const setTransactionFilterJSONValues = function () {
 
 // Displays the data in the table in UI (<tbody id="transactionsTBody">)...
 const displayTransactionData = function (transactionsData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("transactionsTBody");
 
@@ -113,7 +118,9 @@ const displayTransactionData = function (transactionsData, pagination) {
 
     const row = getPaginationRow(pagination, 8);
     tbody.appendChild(row);
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditTransactionModal = function (show) {
@@ -147,6 +154,7 @@ const showHideAddEditTransactionModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditTransactionModal = function (record) {
 
@@ -166,14 +174,18 @@ const showAddEditTransactionModal = function (record) {
     
     // Open up the Bootstrap modal visually
     showHideAddEditTransactionModal(true);
+
 }
 
 
 // Show or Hide Transaction Repeat Details in Modal
 const showHideTransactionRepeatContainerDiv = function (show) {
+
     transactionRepeatContainerDiv = document.getElementById('transactionRepeatFieldsContainerDiv');
     transactionRepeatContainerDiv.style.display = show ? 'block' : 'none';
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like user currency details, categories list, accounts list, tags list, goals list, transaction categorization list, transaction type list, transaction repeat interval list
@@ -234,6 +246,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getTransactionRecord = function (transactionId) {
 
@@ -263,7 +276,9 @@ const getTransactionRecord = function (transactionId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Save Current Record or Add New Record!!
 const saveTransactionRecord = function () {
@@ -311,6 +326,7 @@ const saveTransactionRecord = function () {
 
 }
 
+
 // Delete the Transaction Record!!!
 const deleteTransactionRecord = function (transactionId) {
 
@@ -343,6 +359,7 @@ const deleteTransactionRecord = function (transactionId) {
 
 }
 
+
 // Shrink & Expand Filter Region
 document.getElementById('showHideTransactionFilters').addEventListener('click', function (event) {
 
@@ -361,6 +378,7 @@ document.getElementById('showHideTransactionFilters').addEventListener('click', 
         this.innerText = 'call_received';
         this.title = 'Expand Filter';
     }
+
 });
 
 
@@ -402,8 +420,10 @@ document.querySelector('tbody').addEventListener('click', function (event) {
 
 });
 
+
 // Add new transaction record
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     transactionsDataMode = 'Add';
     clearFormData('#addEditTransactionForm');
     rebindValidation($("#addEditTransactionForm"));
@@ -414,33 +434,45 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
     record.transactionRepeatInterval = 3; // Default to "Monthly" in 'Add' mode. * REQUIRED FIELD
 
     showAddEditTransactionModal(record);
+
 });
+
 
 // Change the title of the select
 document.getElementById("transactionDataFilterDiv").addEventListener("change", e => {
+
     if (e.target.tagName === "SELECT") {
         e.target.title = e.target.options[e.target.selectedIndex].text;
     }
+
 });
+
 
 // Show or Hide Transaction Repeat Details:
 document.getElementById("modalIsTransactionRepeatActive").addEventListener("change", e => {
+
     e.preventDefault();
     const isChecked = e.target.checked;
     e.target.value = isChecked ? 1 : 0;
     document.getElementById("transactionRepeatFieldsContainer").style.display = isChecked ? "block" : "none";
+
 });
 
+
 // Requery transaction data - Start
+
 const refreshTransactionData = function(formId) {
 
     setTransactionFilterJSONValues();       // Filter values are changed only here!!!
+
     if (isValidForm(formId)) {
         doNavigation(null, 'first', true);
     }
     
 }
 
+
+// Requery transaction data - On 'viewTransactionData' button click
 document.getElementById("viewTransactionData").addEventListener("click", (e) => {
     
     e.preventDefault();
@@ -448,15 +480,19 @@ document.getElementById("viewTransactionData").addEventListener("click", (e) => 
     
 });
 
+
+// Requery transaction data - on "Enter" keypress
 document.getElementById("transactionDataFilterDiv").addEventListener("keypress", (e) => {
 
     if ((e.target.tagName === "INPUT" || e.target.tagName === "SELECT") && e.key === "Enter") {
         e.preventDefault();
         refreshTransactionData('transactionDataFilterForm-1');
     }
+
 });
 
 // Requery transaction data - End
+
 
 //  Set the Category Type value for the hidden field to validate amount!
 document.getElementById('modalCategoryId').addEventListener("change", (e) => {
@@ -466,6 +502,8 @@ document.getElementById('modalCategoryId').addEventListener("change", (e) => {
 
 });
 
+
+// Set the category type to perform validation of amount value agianst the category type.
 document.getElementById('modalTransactionAmount').addEventListener("input", (e) => {
 
     e.preventDefault();
@@ -474,6 +512,7 @@ document.getElementById('modalTransactionAmount').addEventListener("input", (e) 
 
 });
 
+
 // Load the first time data!!!
 doNavigation(null, 'first', true);
 
@@ -481,6 +520,7 @@ doNavigation(null, 'first', true);
 // The date must be greater than or equal to today's date. This validation is applied only when the checkbox is checked.
 // Register the comparison logic
 $.validator.addMethod("dategte", function (value, element) {
+
   const checkbox = $("#modalIsTransactionRepeatActive");
   
   // If checkbox is not checked or input is empty, validation passes
@@ -496,21 +536,26 @@ $.validator.addMethod("dategte", function (value, element) {
   today.setHours(0, 0, 0, 0);
 
   return inputDate >= today;
+
 });
 
 // Register with Unobtrusive Validation
 $.validator.unobtrusive.adapters.addBool("dategte");
 
+
 // Validate Amount Value for Category!!
 appendAmountValidationForCategoryType( 'categoryId' , 'transactionAmount' );
+
 
 // Start Date must be lower than End Date
 appendLessThanDateValueValidationFunctionality();
 
+
 // Configure Unobtrusive Validations Settings On Modal and it's Form (Must be last always)
 setUpUnobtrusiveValidationOnModal('#addEditTransactionModal');
 
-// Save the transaction record
+
+//  Bind validations + perform validations before save. 
 $(document).ready(function () {
 
     // Re-evaluate date when checkbox changes
@@ -518,21 +563,24 @@ $(document).ready(function () {
         $("#modalTransactionDate").valid();
     });
 
+
     // Re-evaluate date on direct change or input
     $("#modalTransactionDate").on("change input", function () {
         $(this).valid();
     });
 
-    // Check validation on Save click
+
+    // Check validation on Save click. Save the record if all the values are valid
     $('#btnTransactionModalSaveChanges').on('click', function () {
+
         const $form = $('#addEditTransactionForm');
         if (!$form.valid()) {
             return;
         }
+
         console.log("Form is valid! Sending AJAX payload...");
         saveTransactionRecord();
 
     });
 
 });
-

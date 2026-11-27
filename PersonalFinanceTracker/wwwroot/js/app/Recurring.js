@@ -17,6 +17,7 @@ let recurringsDataMode = '';
 
 // Displays the data in the table in UI (<tbody id="recurringsTBody">)...
 const displayRecurringData = function (recurringsData, pagination) {
+
     // Select the table body element
     const tbody = document.getElementById("recurringsTBody");
 
@@ -24,8 +25,10 @@ const displayRecurringData = function (recurringsData, pagination) {
     tbody.innerHTML = "";
 
     let recurringStatus = '';
+
     // Iterate over the new data and append new rows
     recurringsData.forEach(item => {
+
         // Create a new row element
         const row = document.createElement("tr");
         //data-secure
@@ -45,11 +48,14 @@ const displayRecurringData = function (recurringsData, pagination) {
 
         // Append the complete row to the table body
         tbody.appendChild(row);
+
     });
 
     const row = getPaginationRow(pagination, 8);
     tbody.appendChild(row);
+
 }
+
 
 // Generates/Creates a new modal and shows or hide the same modal...
 const showHideAddEditRecurringModal = function (show) {
@@ -85,6 +91,7 @@ const showHideAddEditRecurringModal = function (show) {
 
 }
 
+
 // Display the modal with Data
 const showAddEditRecurringModal = function (record) {
 
@@ -106,7 +113,9 @@ const showAddEditRecurringModal = function (record) {
     
     // Open up the Bootstrap modal visually
     showHideAddEditRecurringModal(true);
+
 }
+
 
 // Changes the start and end record number for the request and Fetches the requested data from server and displays in UI...
 // First request retrieves the common data like user currency details, categories list, accounts list, tags list, goals list and pagination values from server, subsequent requests will not retrieve these common data from server.
@@ -161,6 +170,7 @@ const doNavigation = function (event, navigationRequest, firstRequest) {
 
 }
 
+
 // Retrieve single record
 const getRecurringRecord = function (recurringId) {
 
@@ -190,7 +200,9 @@ const getRecurringRecord = function (recurringId) {
         .catch(error => {
             console.error("Fetch operation failed:", error);
         });
+
 }
+
 
 // Save Current Record or Add New Record!!
 const saveRecurringRecord = function () {
@@ -231,6 +243,7 @@ const saveRecurringRecord = function () {
 
 }
 
+
 // Deletes the entire series of recurring records if deleteSeries is true.
 const deleteRecurringSeries = function (event) {
 
@@ -245,6 +258,7 @@ const deleteRecurringSeries = function (event) {
     }
 
 }
+
 
 // Delete the Recurring Record!!!
 const deleteRecurringRecord = function (recurringId, deleteSeries) {
@@ -297,6 +311,7 @@ document.querySelector('tbody').addEventListener('click', function (event) {
     const row = clickedAction.closest('tr');
 
     if (row) {
+        
         // Grab the hidden ID from that specific row
         const recordId = row.getAttribute('data-secure-index');
 
@@ -310,17 +325,21 @@ document.querySelector('tbody').addEventListener('click', function (event) {
             getRecurringRecord(recordId);
 
         } else if (actionType === "Delete") {
+
             if (confirm('Do you want to delete the recurring?')) {
                 deleteRecurringRecord(recordId, false);
             }
+
         }
 
     }
 
 });
 
+
 // Add new recurring record
 document.querySelector('span[title="Add"]').addEventListener('click', function (event) {
+
     recurringsDataMode = 'Add';
     clearFormData('#addEditRecurringForm');
     rebindValidation($("#addEditRecurringForm"));
@@ -331,12 +350,16 @@ document.querySelector('span[title="Add"]').addEventListener('click', function (
     record.transactionRepeatInterval = 3; // Default to "Monthly" in 'Add' mode. * REQUIRED FIELD
     
     showAddEditRecurringModal(record);
+
 });
+
 
 // Set Checkbox Value to 1 or 0 instead of true or false for the backend processing
 document.getElementById("modalIsTransactionRepeatActive").addEventListener("change", e => {
+
     e.preventDefault();
     e.target.value = e.target.checked ? 1 : 0;
+
 });
 
 
@@ -349,6 +372,7 @@ document.getElementById('modalCategoryId').addEventListener("change", (e) => {
 });
 
 
+// Set the "modalCategoryType" value to perform validation for "Amount" value against the selected category type
 document.getElementById('modalRecurringAmount').addEventListener("input", (e) => {
 
     e.preventDefault();
@@ -357,8 +381,10 @@ document.getElementById('modalRecurringAmount').addEventListener("input", (e) =>
 
 });
 
+
 // Load the first time data!!!
 doNavigation(null, 'first', true);
+
 
 // Create Date Validator for UI Validation. 
 // Date value must be greater than or equal to today's date.
@@ -376,7 +402,9 @@ $.validator.addMethod("dategte", function (value, element) {
     today.setHours(0, 0, 0, 0);
 
     return inputDate >= today;
+
 });
+
 
 // Add the adapter for unobtrusive validation
 $.validator.unobtrusive.adapters.addBool("dategte");
@@ -385,8 +413,10 @@ $.validator.unobtrusive.adapters.addBool("dategte");
 // Validate Amount Value for Category!!
 appendAmountValidationForCategoryType( 'categoryId' , 'recurringAmount' );
 
+
 // Start Date must be lower than End Date
 appendLessThanDateValueValidationFunctionality();
+
 
 // Configure Unobtrusive Validations Settings On Modal and it's Form (MUST BE LAST ALWAYS)
 // Attach the unobtrusive validation to the modal form after the DOM is ready
@@ -394,6 +424,8 @@ setUpUnobtrusiveValidationOnModal('#addEditRecurringModal');
 
 
 // Save the recurring record
+// Attach the click event handler to the 'btnRecurringModalSaveChanges' that validates the values of all the elements 
+// of 'addEditRecurringForm' form as per their data- attributes
 $(document).ready(function () {
 
     // Check validation on Save click
@@ -408,4 +440,3 @@ $(document).ready(function () {
     });
 
 });
-

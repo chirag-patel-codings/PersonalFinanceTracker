@@ -49,6 +49,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
 
         }
 
+
         [HttpGet("login")]
         [HttpGet("/")]  // Making this default page.
         public IActionResult Login()
@@ -87,7 +88,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
                         // Issue the encrypted tracking cookie to the browser
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
                                                         new ClaimsPrincipal(claimsIdentity));
-
+                            
                         if(connString == null)      // NOT TO BE PERFORMED IN TEST MODE!
                         {
                             try
@@ -227,6 +228,7 @@ namespace PersonalFinanceTracker.Controllers.Authentication
             return RedirectToAction("Login", "Authentication");
 
         }
+
 
         // On browser close (Works on Edge but NOT on Chrome. NOT PERFECT BUT WORKS!!!)
         [HttpPost("/Authentication/WindowClosedLogout")]
